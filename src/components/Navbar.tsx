@@ -20,13 +20,15 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    let lastState = false;
     const onScroll = () => {
-      const isPast = window.scrollY > 36;
-      if (isPast !== lastState && headerRef.current) {
-        lastState = isPast;
-        headerRef.current.dataset.scrolled = isPast ? "true" : "false";
-      }
+      const isPast = window.scrollY > 24;
+      const el = headerRef.current;
+      if (!el) return;
+      el.dataset.scrolled = isPast ? "true" : "false";
+      el.style.backgroundColor = isPast ? "#140B0A" : "rgba(42, 13, 12, 0.88)";
+      el.style.borderBottomColor = isPast
+        ? "rgba(242, 201, 138, 0.22)"
+        : "rgba(255, 255, 255, 0.08)";
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -51,7 +53,11 @@ export function Navbar() {
     <header
       ref={headerRef}
       data-scrolled="false"
-      className="fixed top-0 left-0 right-0 z-50 bg-transparent text-[#FAF6EE] transition-colors duration-300 data-[scrolled=true]:bg-[#140B0A] data-[scrolled=true]:border-b data-[scrolled=true]:border-white/10 data-[scrolled=true]:shadow-xl"
+      style={{
+        backgroundColor: "rgba(42, 13, 12, 0.88)",
+        borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+      }}
+      className="fixed top-0 left-0 right-0 z-50 text-[#FAF6EE] transition-colors duration-300"
     >
       <div className="mx-auto flex h-16 lg:h-[68px] max-w-[1440px] items-center justify-between gap-3 px-4 sm:px-8 lg:px-10 xl:px-12">
         {/* Clean Sculptural Wordmark */}

@@ -15,21 +15,37 @@ const PILLARS = [
     metric: "96%",
     title: "Enamel Preserved",
     note: "Additive restorations without aggressive crown grinding",
+    badgeBg: "bg-[#F7E3DF]",
+    badgeText: "text-[#7A2825]",
+    metricColor: "text-[#7A2825]",
+    dotColor: "bg-[#E59888]",
   },
   {
     metric: "0.2 mm",
     title: "No-Prep Veneers",
     note: "Contact-lens thin porcelain hand-layered on platinum foil",
+    badgeBg: "bg-[#F9EED8]",
+    badgeText: "text-[#9A6B26]",
+    metricColor: "text-[#9A6B26]",
+    dotColor: "bg-[#C6A46C]",
   },
   {
     metric: "60 sec",
     title: "Optical 3D Scan",
     note: "Radiation-free light imaging with zero putty impressions",
+    badgeBg: "bg-[#DFF0EC]",
+    badgeText: "text-[#164239]",
+    metricColor: "text-[#1F5C4F]",
+    dotColor: "bg-[#5CE6C4]",
   },
   {
     metric: "Calm-First",
     title: "Private Penthouse",
     note: "One patient at a time with warm buffered numbing",
+    badgeBg: "bg-[#E3ECF7]",
+    badgeText: "text-[#1E3F66]",
+    metricColor: "text-[#1E3F66]",
+    dotColor: "bg-[#68B8F8]",
   },
 ] as const;
 
@@ -40,7 +56,6 @@ export function HeroSceneSection() {
   const progressBarRef = useRef<HTMLDivElement | null>(null);
   const copyColRef = useRef<HTMLDivElement | null>(null);
 
-  // Choreographed entrance animation on mount
   useGSAP(
     () => {
       if (!copyColRef.current) return;
@@ -71,7 +86,7 @@ export function HeroSceneSection() {
         const active = btn.dataset.heroActPill === String(actIdx);
         btn.setAttribute("aria-selected", active ? "true" : "false");
         btn.className = active
-          ? "flex-1 rounded-full py-1.5 px-3 text-[11px] font-semibold tracking-wider uppercase transition-all cursor-pointer bg-[#C6A46C] text-[#140B0A] shadow-sm"
+          ? "flex-1 rounded-full py-1.5 px-3 text-[11px] font-semibold tracking-wider uppercase transition-all cursor-pointer bg-gradient-to-r from-[#F2C98A] via-[#C6A46C] to-[#E59888] text-[#140B0A] shadow-sm"
           : "flex-1 rounded-full py-1.5 px-3 text-[11px] font-medium tracking-wider uppercase transition-all cursor-pointer bg-white/10 text-[#FAF6EE]/80 hover:bg-white/20";
       });
   }, []);
@@ -116,20 +131,21 @@ export function HeroSceneSection() {
           style={{ backgroundColor: scene.sectionBgHex, color: "#FAF6EE" }}
         >
           <div className="mx-auto w-full max-w-[1440px] px-4 sm:px-8 lg:px-10 xl:px-12 grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 items-center">
-            {/* Left Column (5 Cols): Restrained, Breathing Editorial Copy */}
+            {/* Left Column (5 Cols): Elegant Playfair Display Editorial Copy */}
             <div
               ref={copyColRef}
               className="lg:col-span-5 order-2 lg:order-1 flex flex-col justify-between"
             >
               <div>
-                <p className="text-xs font-medium uppercase tracking-[0.2em] text-[#C6A46C] mb-2">
-                  {scene.eyebrow}
-                </p>
+                <div className="inline-flex items-center gap-2 rounded-full border border-[#E59888]/35 bg-[#7A2825]/45 px-3.5 py-1 text-[11px] font-medium uppercase tracking-[0.2em] text-[#F2C98A] mb-3">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#5CE6C4]" />
+                  <span>{scene.eyebrow}</span>
+                </div>
 
-                <h1 className="font-serif text-3xl sm:text-5xl lg:text-[42px] xl:text-[54px] font-normal leading-[1.04] tracking-tight text-[#FAF6EE]">
+                <h1 className="font-serif text-3xl sm:text-5xl lg:text-[44px] xl:text-[56px] font-normal leading-[1.06] tracking-tight text-[#FAF6EE]">
                   Living enamel,
                   <br />
-                  <span className="italic text-[#C6A46C]">
+                  <span className="italic font-normal text-rose-gold">
                     left untouched.
                   </span>
                 </h1>
@@ -141,8 +157,8 @@ export function HeroSceneSection() {
                 </p>
               </div>
 
-              {/* Minimal Single-Card Chapter Switcher */}
-              <div className="mt-4 lg:mt-6 rounded-2xl border border-white/15 bg-black/20 p-4 sm:p-5">
+              {/* Minimal Single-Card Chapter Switcher with Multi-Tonal Accents */}
+              <div className="mt-4 lg:mt-6 rounded-2xl border border-[#E59888]/25 bg-[#2A0E0D]/85 p-4 sm:p-5 shadow-xl">
                 {scene.acts.map((act, idx) => (
                   <div
                     key={act.id}
@@ -153,9 +169,9 @@ export function HeroSceneSection() {
                       <h2 className="font-serif text-lg sm:text-xl text-[#FAF6EE]">
                         {act.title}
                       </h2>
-                      <span className="shrink-0 font-serif text-lg text-[#C6A46C]">
+                      <span className="shrink-0 font-serif italic text-lg text-[#5CE6C4]">
                         {act.metricValue}{" "}
-                        <span className="font-sans text-[11px] text-[#FAF6EE]/70">
+                        <span className="not-italic font-sans text-[11px] text-[#F2C98A]">
                           {act.metricLabel}
                         </span>
                       </span>
@@ -181,7 +197,7 @@ export function HeroSceneSection() {
                       onClick={() => handleManualActClick(idx as 0 | 1 | 2)}
                       className={
                         idx === 0
-                          ? "flex-1 rounded-full py-1.5 px-3 text-[11px] font-semibold tracking-wider uppercase transition-all cursor-pointer bg-[#C6A46C] text-[#140B0A] shadow-sm"
+                          ? "flex-1 rounded-full py-1.5 px-3 text-[11px] font-semibold tracking-wider uppercase transition-all cursor-pointer bg-gradient-to-r from-[#F2C98A] via-[#C6A46C] to-[#E59888] text-[#140B0A] shadow-sm"
                           : "flex-1 rounded-full py-1.5 px-3 text-[11px] font-medium tracking-wider uppercase transition-all cursor-pointer bg-white/10 text-[#FAF6EE]/80 hover:bg-white/20"
                       }
                     >
@@ -193,7 +209,7 @@ export function HeroSceneSection() {
                 <div className="mt-3 h-1 w-full overflow-hidden rounded-full bg-white/15">
                   <div
                     ref={progressBarRef}
-                    className="h-full w-full origin-left rounded-full bg-[#C6A46C] will-change-transform"
+                    className="h-full w-full origin-left rounded-full bg-gradient-to-r from-[#F2C98A] via-[#5CE6C4] to-[#E59888] will-change-transform"
                     style={{ transform: "scaleX(0.05)" }}
                   />
                 </div>
@@ -204,7 +220,7 @@ export function HeroSceneSection() {
                 <MagneticButton
                   type="button"
                   onClick={() => smoothScrollTo("#services")}
-                  className="inline-flex h-11 items-center gap-2 rounded-full bg-[#FAF6EE] px-5 text-xs font-semibold uppercase tracking-[0.12em] text-[#140B0A] hover:bg-[#C6A46C] transition-colors cursor-pointer whitespace-nowrap shadow-md"
+                  className="inline-flex h-11 items-center gap-2 rounded-full bg-gradient-to-r from-[#FAF6EE] via-[#F9EED8] to-[#F7E3DF] px-5 text-xs font-semibold uppercase tracking-[0.12em] text-[#140B0A] hover:brightness-105 transition-all cursor-pointer whitespace-nowrap shadow-md"
                 >
                   <span>Explore Treatments</span>
                   <ArrowUpRightIcon className="w-3.5 h-3.5" />
@@ -212,7 +228,7 @@ export function HeroSceneSection() {
                 <MagneticButton
                   type="button"
                   onClick={() => smoothScrollTo("#booking")}
-                  className="inline-flex h-11 items-center rounded-full border border-white/35 bg-white/5 px-5 text-xs font-semibold uppercase tracking-[0.12em] text-[#FAF6EE] hover:bg-white/15 transition-colors cursor-pointer whitespace-nowrap"
+                  className="inline-flex h-11 items-center rounded-full border border-[#F2C98A]/45 bg-white/5 px-5 text-xs font-semibold uppercase tracking-[0.12em] text-[#FAF6EE] hover:bg-white/15 transition-colors cursor-pointer whitespace-nowrap"
                 >
                   Book a Visit
                 </MagneticButton>
@@ -234,18 +250,28 @@ export function HeroSceneSection() {
         </div>
       </div>
 
-      {/* Calm 4-Pillar Strip on Warm Travertine (#DFD3C3) */}
-      <div className="border-b border-[#C8B9A6] bg-[#DFD3C3] text-[#181210]">
-        <div className="mx-auto max-w-[1440px] px-5 sm:px-8 lg:px-12 py-10 grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-10">
+      {/* Multi-Tonal 4-Pillar Bar on Warm Pearl Ivory (#FFFDF9) */}
+      <div className="border-b border-[#E6DEC8] bg-[#FFFDF9] text-[#181210]">
+        <div className="mx-auto max-w-[1440px] px-5 sm:px-8 lg:px-12 py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-7">
           {PILLARS.map((p) => (
-            <div key={p.title}>
-              <div className="font-serif text-3xl sm:text-4xl text-[#4B1917]">
+            <div
+              key={p.title}
+              className="rounded-2xl border border-[#EAE2D3] bg-[#FAF6EE]/65 p-5 transition-transform duration-300 hover:-translate-y-1"
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span
+                  className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-semibold ${p.badgeBg} ${p.badgeText}`}
+                >
+                  <span className={`h-1.5 w-1.5 rounded-full ${p.dotColor}`} />
+                  <span>{p.title}</span>
+                </span>
+              </div>
+              <div
+                className={`font-serif italic text-3xl sm:text-4xl ${p.metricColor}`}
+              >
                 {p.metric}
               </div>
-              <div className="mt-1 text-sm sm:text-base font-semibold text-[#181210]">
-                {p.title}
-              </div>
-              <p className="mt-0.5 text-xs sm:text-sm text-[#544A40]">
+              <p className="mt-1.5 text-xs sm:text-sm text-[#544A40] leading-relaxed">
                 {p.note}
               </p>
             </div>

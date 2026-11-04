@@ -1,13 +1,13 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Plus_Jakarta_Sans } from "next/font/google";
+import { Playfair_Display, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { FAQ_ITEMS } from "@/data/clinicData";
 
-const cormorant = Cormorant_Garamond({
+const playfair = Playfair_Display({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
-  variable: "--font-cormorant",
+  variable: "--font-playfair",
   display: "swap",
 });
 
@@ -29,33 +29,13 @@ export const metadata: Metadata = {
     process.env.NEXT_PUBLIC_SITE_URL || "https://aurumbiomimetic.com"
   ),
   title: {
-    default:
-      "Aurum Biomimetic Dental Atelier | Enamel-Conserving Dentistry in Beverly Hills",
-    template: "%s | Aurum Biomimetic Beverly Hills",
+    default: "Aurum Atelier | Biomimetic Dentistry in Beverly Hills",
+    template: "%s | Aurum Atelier Beverly Hills",
   },
   description:
-    "Swiss 0.2mm no-prep lithium disilicate veneers, 51.5 MPa Immediate Dentin Sealing, ATZ ceramic-gold bio-implants, and 8,000 fps radiation-free optical coherence scans in Beverly Hills.",
-  keywords: [
-    "biomimetic dentist Beverly Hills",
-    "no-prep veneers Beverly Hills",
-    "Swiss zirconia dental implants",
-    "airway orthodontics Los Angeles",
-    "nano-hydroxyapatite whitening",
-    "Immediate Dentin Sealing dentist",
-    "Aurum Biomimetic Dental Atelier",
-  ],
+    "Enamel-preserving 0.2mm porcelain veneers, ceramic-gold dental implants, clear aligners, and 60-second touchless optical 3D scans in Beverly Hills.",
   alternates: {
     canonical: "/",
-  },
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    url: "https://aurumbiomimetic.com",
-    siteName: "Aurum Biomimetic Dental Atelier",
-    title:
-      "Aurum Biomimetic Dental Atelier | Living Enamel Preserved by Swiss Art",
-    description:
-      "Discover 0.2mm no-prep Swiss porcelain veils, ATZ zirconia & 24k gold bio-implants, and 8,000 fps optical coherence diagnostics in Beverly Hills.",
   },
 };
 
@@ -67,9 +47,9 @@ export default function RootLayout({
   const dentistJsonLd = {
     "@context": "https://schema.org",
     "@type": "Dentist",
-    name: "Aurum Biomimetic Dental Atelier",
+    name: "Aurum Atelier",
     description:
-      "Enamel-conserving biomimetic prosthodontics, Swiss ATZ ceramic-gold implants, airway orthodontics, and 8,000 fps optical diagnostics in Beverly Hills.",
+      "Enamel-preserving biomimetic prosthodontics, ceramic-gold implants, clear aligners, and optical 3D diagnostics in Beverly Hills.",
     url: "https://aurumbiomimetic.com",
     telephone: "+1-310-555-0148",
     priceRange: "$$$$",
@@ -81,26 +61,6 @@ export default function RootLayout({
       postalCode: "90210",
       addressCountry: "US",
     },
-    geo: {
-      "@type": "GeoCoordinates",
-      latitude: 34.0692,
-      longitude: -118.4055,
-    },
-    openingHoursSpecification: [
-      {
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
-        ],
-        opens: "08:30",
-        closes: "18:00",
-      },
-    ],
   };
 
   const faqJsonLd = {
@@ -117,10 +77,7 @@ export default function RootLayout({
   };
 
   return (
-    <html
-      lang="en"
-      className={`${cormorant.variable} ${jakarta.variable}`}
-    >
+    <html lang="en" className={`${playfair.variable} ${jakarta.variable}`}>
       <head>
         <script
           type="application/ld+json"

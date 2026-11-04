@@ -118,7 +118,11 @@ export function BookingAndFooterSection({
       <section
         id="booking"
         aria-labelledby="booking-heading"
-        className="bg-[#DFD3C3] text-[#181210] py-24 sm:py-32 border-t border-[#C8B9A6]"
+        style={{
+          background:
+            "linear-gradient(155deg, #F7E3DF 0%, #FAF6EE 48%, #DFF0EC 100%)",
+        }}
+        className="text-[#181210] py-24 sm:py-32 border-t border-[#E6DEC8]"
       >
         <div className="mx-auto max-w-[1440px] px-5 sm:px-8 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">

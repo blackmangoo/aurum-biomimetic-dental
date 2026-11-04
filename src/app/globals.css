@@ -1,19 +1,39 @@
 @import "tailwindcss";
 
-@theme {
-  --font-serif: var(--font-cormorant), Georgia, serif;
+@theme inline {
+  --font-serif: var(--font-playfair), Georgia, "Times New Roman", serif;
   --font-sans: var(--font-jakarta), system-ui, -apple-system, sans-serif;
 
-  --color-travertine: #EDE6DA;
+  /* Foundation Surfaces */
+  --color-travertine: #DFD3C3;
   --color-alabaster: #FAF6EE;
+  --color-ivory: #FFFDF9;
   --color-hairline: #D8CFC0;
   --color-espresso: #181210;
-  --color-obsidian: #120E0D;
-  --color-burgundy: #6E1B2B;
-  --color-garnet: #8F263B;
+  --color-obsidian: #0E0C08;
+
+  /* Rich Multi-Tonal Jewel & Botanical Palette */
+  --color-burgundy: #4B1917;
+  --color-garnet: #7A2825;
+  --color-rose-blush: #F7E3DF;
+  --color-rose-coral: #E59888;
+
+  --color-cypress: #164239;
+  --color-emerald-sage: #1F5C4F;
+  --color-mint-mist: #DFF0EC;
+  --color-bioluminescent: #5CE6C4;
+
+  --color-sapphire: #1E3F66;
+  --color-sapphire-mist: #E3ECF7;
+  --color-sky-lumen: #68B8F8;
+
   --color-gold: #C6A46C;
-  --color-bronze: #8C6B37;
-  --color-emerald: #5CE6C4;
+  --color-amber-bronze: #9A6B26;
+  --color-honey-wash: #F9EED8;
+  --color-honey-gold: #F2C98A;
+
+  --color-terracotta: #B84A32;
+  --color-apricot-blush: #FBE6DC;
 }
 
 html {
@@ -22,6 +42,33 @@ html {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Luxury Editorial Serif Typography Refinement */
+.font-serif {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-feature-settings: "liga" 1, "dlig" 1, "kern" 1;
+  letter-spacing: -0.018em;
+}
+
+/* Multi-tonal metallic & editorial text gradients */
+.text-gold-shimmer {
+  background: linear-gradient(125deg, #FFF3D6 0%, #E5C48B 45%, #C6A46C 75%, #F7DFB2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-rose-gold {
+  background: linear-gradient(125deg, #FFE6E0 0%, #F2C98A 52%, #E59888 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-emerald-gold {
+  background: linear-gradient(125deg, #5CE6C4 0%, #A8F2DF 48%, #F2C98A 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 /* Synchronized CSS <-> JS scene pinning contract */
