@@ -14,9 +14,7 @@ export interface SceneHotspot {
   id: string;
   label: string;
   category: string;
-  /** Normalized horizontal coordinate [0..1] inside the drawn 16:9 canvas box */
   u: number;
-  /** Normalized vertical coordinate [0..1] inside the drawn 16:9 canvas box */
   v: number;
   spec: string;
   detail: string;
@@ -24,6 +22,7 @@ export interface SceneHotspot {
 
 export interface ScrollSceneConfig {
   id: "scene-01-hero" | "scene-02-implant" | "scene-03-scan-whitening";
+  rawVideoFile: string;
   title: string;
   eyebrow: string;
   sectionBgHex: string;
@@ -52,10 +51,11 @@ export interface ScrollSceneConfig {
 export const SCROLL_SCENES: Record<ScrollSceneConfig["id"], ScrollSceneConfig> = {
   "scene-01-hero": {
     id: "scene-01-hero",
-    title: "Biomimetic Dentistry Engineered Around Living Enamel",
-    eyebrow: "AURUM BIOMIMETIC ATELIER · BEVERLY HILLS & ZURICH",
-    sectionBgHex: "#0E2622",
-    spotlightHex: "#1F5249",
+    rawVideoFile: "assets/raw/scene-01-hero.mp4",
+    title: "28-Tooth Full Arch & 0.2mm Refractory Porcelain Veils",
+    eyebrow: "SEQUENCE 01 // BURGUNDY-ROSE MONOGRAPH (#6E1B2B)",
+    sectionBgHex: "#6E1B2B",
+    spotlightHex: "#8F263B",
     scrollLengthVh: 300,
     mobileScrollLengthVh: 240,
     desktop: {
@@ -76,32 +76,32 @@ export const SCROLL_SCENES: Record<ScrollSceneConfig["id"], ScrollSceneConfig> =
     acts: [
       {
         id: "hero-act-1",
-        badge: "01 / HISTOLOGICAL PRESERVATION",
-        title: "Zero-Crown Enamel Conservation",
+        badge: "ACT I // INTACT OCCLUSION",
+        title: "Zero-Amputation Enamel Conservation",
         subtitle:
-          "Traditional dentistry amputates 70% of healthy tooth structure for crowns. Our biomimetic protocol preserves vital pulp and natural dentin elasticity.",
+          "Conventional crowns amputate 70% of healthy tooth structure. Our Zurich biomimetic protocol preserves 96.4% of living enamel and vital pulp.",
         metricValue: "96.4%",
-        metricLabel: "Natural Tooth Structure Saved",
+        metricLabel: "Living Enamel Saved",
         range: [0.0, 0.33],
       },
       {
         id: "hero-act-2",
-        badge: "02 / DENTINO-ENAMEL BIO-RIM",
-        title: "51.5 MPa Gold-Standard Bond Seal",
+        badge: "ACT II // MICRO-GRAVITY RELEASE",
+        title: "Laser-Scalloped Aligner & DEJ Bio-Seal",
         subtitle:
-          "Immediate Dentin Sealing (IDS) and stress-reduced fiber-reinforced layers replicate the natural Dentino-Enamel Junction (DEJ) tension bridge.",
+          "The jaws articulate 24mm as the optical polymer aligner elevates and Immediate Dentin Sealing (IDS) bonds at 51.5 MPa tensile strength.",
         metricValue: "51.5 MPa",
-        metricLabel: "Tensile DEJ Adhesion",
+        metricLabel: "DEJ Tensile Bond",
         range: [0.34, 0.67],
       },
       {
         id: "hero-act-3",
-        badge: "03 / 0.2MM LITHIUM DISILICATE",
-        title: "Hand-Layered Swiss Porcelain Veils",
+        badge: "ACT III // 0.2MM SWISS VEILS",
+        title: "Refractory Lithium Disilicate Laminates",
         subtitle:
-          "Crafted by master ceramists in Zurich at 0.2mm contact-lens thickness — reproducing natural hydroxyapatite light refraction and incisal halo.",
+          "Four 0.2mm contact-lens-thin porcelain veils levitate forward along the Z-axis — hand-baked in Geneva to mirror natural incisal opalescence.",
         metricValue: "0.2 mm",
-        metricLabel: "No-Drill Ceramic Thickness",
+        metricLabel: "No-Drill Ceramic Gauge",
         range: [0.68, 1.0],
       },
     ],
@@ -109,10 +109,10 @@ export const SCROLL_SCENES: Record<ScrollSceneConfig["id"], ScrollSceneConfig> =
       {
         id: "hs-enamel-veil",
         label: "0.2mm Swiss Lithium Disilicate Veil",
-        category: "OPTICAL CERAMIC LAYER",
-        u: 0.62,
-        v: 0.34,
-        spec: "530 MPa Biaxial Flexural Strength",
+        category: "REFRACTORY CERAMIC",
+        u: 0.56,
+        v: 0.38,
+        spec: "530 MPa Biaxial Strength · 0.2mm Gauge",
         detail:
           "Hand-sintered feldspathic & lithium disilicate porcelain mimicking natural enamel prism opalescence without drilling healthy tooth structure.",
       },
@@ -120,30 +120,21 @@ export const SCROLL_SCENES: Record<ScrollSceneConfig["id"], ScrollSceneConfig> =
         id: "hs-dej-seal",
         label: "Immediate Dentin Bio-Seal (IDS)",
         category: "BIOMIMETIC TENSION BRIDGE",
-        u: 0.50,
-        v: 0.50,
-        spec: "51.5 MPa Micro-Tensile Bond",
+        u: 0.46,
+        v: 0.56,
+        spec: "51.5 MPa Micro-Tensile Adhesion",
         detail:
           "Reconstructs the natural Dentino-Enamel Junction with polyethylene fiber ribbond and gold-standard fourth-generation monomer adhesives.",
-      },
-      {
-        id: "hs-vital-pulp",
-        label: "Preserved Vital Pulp Chamber",
-        category: "LIVING BIO-CORE",
-        u: 0.38,
-        v: 0.58,
-        spec: "Zero Root Canal Amputation",
-        detail:
-          "By sealing structural micro-cracks biomimetically rather than grinding down to a stump, the living neuro-vascular pulp stays 100% intact.",
       },
     ],
   },
   "scene-02-implant": {
     id: "scene-02-implant",
-    title: "Swiss Ceramic-Zirconia & 24k Gold Bio-Implant Architecture",
-    eyebrow: "METAL-FREE & BIOCOMPATIBLE IMPLANTOLOGY",
-    sectionBgHex: "#EAE3D5",
-    spotlightHex: "#FBF8F1",
+    rawVideoFile: "assets/raw/scene-02-implant.mp4",
+    title: "Swiss ATZ Ceramic-Zirconia Root & 24k Gold Bio-Collar",
+    eyebrow: "SEQUENCE 02 // TRAVERTINE GALLERY (#EDE6DA)",
+    sectionBgHex: "#EDE6DA",
+    spotlightHex: "#FAF6EE",
     scrollLengthVh: 250,
     mobileScrollLengthVh: 210,
     desktop: {
@@ -164,32 +155,32 @@ export const SCROLL_SCENES: Record<ScrollSceneConfig["id"], ScrollSceneConfig> =
     acts: [
       {
         id: "implant-act-1",
-        badge: "ACT I · BIO-INERT ROOT FIXTURE",
-        title: "ATZ Alumina-Toughened Zirconia & Grade-5 Ti",
+        badge: "01 // BIO-INERT FIXTURE",
+        title: "ATZ Alumina-Toughened Zirconia Root",
         subtitle:
-          "Laser-microgrooved root geometry promotes rapid osteoblast attachment with zero galvanic currents or metal-ion release.",
+          "Laser-microgrooved helical root geometry promotes rapid osteoblast integration with zero galvanic currents or grey metal-ion release.",
         metricValue: "99.2%",
-        metricLabel: "10-Year Osseointegration Rate",
+        metricLabel: "10-Yr Integration",
         range: [0.0, 0.35],
       },
       {
         id: "implant-act-2",
-        badge: "ACT II · 24K GOLD MUCOSAL SEAL",
-        title: "Warm 24k Gold-Hue Hemidesmosomal Collar",
+        badge: "02 // 24K GOLD COLLAR",
+        title: "Warm Gold Hemidesmosomal Soft-Tissue Seal",
         subtitle:
-          "Soft gingival tissue bonds directly to our warm gold-anodized transgingival neck, eliminating dark gumline shadows and peri-implantitis.",
+          "Soft gingival tissue attaches directly to our warm 24k gold-anodized Morse-taper neck, banishing dark gumline shadows forever.",
         metricValue: "2.4 µm",
-        metricLabel: "Zero-Microgap Morse Taper",
+        metricLabel: "Zero-Microgap Taper",
         range: [0.36, 0.70],
       },
       {
         id: "implant-act-3",
-        badge: "ACT III · OCCLUSAL HARMONY",
-        title: "Gradient-Modulus Biomimetic Molar Crown",
+        badge: "03 // GRADIENT CROWN",
+        title: "Dual-Modulus Biomimetic Molar Crown",
         subtitle:
-          "Milled with a shock-absorbing internal dentin core and hard outer enamel glaze so bite forces cushion naturally like a real root.",
+          "Engineered with a 20 GPa shock-absorbing dentin core beneath an 80 GPa glazed enamel shell so bite forces cushion like a natural root.",
         metricValue: "1,200 MPa",
-        metricLabel: "Fracture Toughness Rating",
+        metricLabel: "Fracture Toughness",
         range: [0.71, 1.0],
       },
     ],
@@ -199,7 +190,7 @@ export const SCROLL_SCENES: Record<ScrollSceneConfig["id"], ScrollSceneConfig> =
         label: "Gradient-Modulus Porcelain Crown",
         category: "OCCLUSAL BIOMIMICRY",
         u: 0.50,
-        v: 0.28,
+        v: 0.32,
         spec: "20 GPa Dentin Core / 80 GPa Enamel Shell",
         detail:
           "Dual-density ceramic crown that flexes at the exact elastic modulus of human dentin underneath a wear-proof enamel exterior.",
@@ -209,7 +200,7 @@ export const SCROLL_SCENES: Record<ScrollSceneConfig["id"], ScrollSceneConfig> =
         label: "24k Gold-Anodized Morse Taper Collar",
         category: "SOFT-TISSUE BIO-SEAL",
         u: 0.50,
-        v: 0.50,
+        v: 0.54,
         spec: "2.4 µm Bacterial-Impervious Seal",
         detail:
           "Warm champagne-gold emergence profile illuminates the surrounding gingiva with natural pink vitality.",
@@ -218,10 +209,11 @@ export const SCROLL_SCENES: Record<ScrollSceneConfig["id"], ScrollSceneConfig> =
   },
   "scene-03-scan-whitening": {
     id: "scene-03-scan-whitening",
-    title: "Photon-Counting 3D Neural Scan & Enamel Crystallization",
-    eyebrow: "OPTICAL DIAGNOSTICS & HYDROXYAPATITE REMINERALIZATION",
-    sectionBgHex: "#050A09",
-    spotlightHex: "#0F2924",
+    rawVideoFile: "assets/raw/scene-03-scan-whitening.mp4",
+    title: "8,000 fps Near-Infrared Scan & Nano-Hydroxyapatite Lift",
+    eyebrow: "SEQUENCE 03 // OBSIDIAN ESPRESSO STAGE (#120E0D)",
+    sectionBgHex: "#120E0D",
+    spotlightHex: "#261D1A",
     scrollLengthVh: 250,
     mobileScrollLengthVh: 210,
     desktop: {
@@ -242,32 +234,32 @@ export const SCROLL_SCENES: Record<ScrollSceneConfig["id"], ScrollSceneConfig> =
     acts: [
       {
         id: "scan-act-1",
-        badge: "STEP 01 · NEAR-INFRARED TRANSILLUMINATION",
-        title: "Zero-Radiation Sub-Surface Caries & Crack Map",
+        badge: "STEP 01 // OCT LASER LATTICE",
+        title: "Sub-Surface Crack & Enamel Topography",
         subtitle:
-          "Laser optical coherence tomography sees 4mm inside translucent enamel at 8,000 frames per second — detecting micro-fractures years before X-rays.",
+          "Near-infrared optical coherence tomography sees 4mm inside translucent enamel at 8,000 frames per second with zero ionizing radiation.",
         metricValue: "8,000 fps",
-        metricLabel: "Optical Coherence Capture",
+        metricLabel: "Zero-Radiation OCT",
         range: [0.0, 0.34],
       },
       {
         id: "scan-act-2",
-        badge: "STEP 02 · AIRWAY-FIRST ORTHODONTICS",
-        title: "Craniofacial & TMJ-Guided Aligner Shells",
+        badge: "STEP 02 // PALATAL EXPANSION",
+        title: "Craniofacial Airway-First Clear Aligners",
         subtitle:
-          "Rather than retracting teeth inward, our 3D-printed shells expand the palatal vault to optimize nasal airway volume and facial profile.",
+          "Our scalloped optical polymer shells widen the maxillary arch to unlock nasal airway volume and a broad 12-tooth smile corridor.",
         metricValue: "+18%",
-        metricLabel: "Pharyngeal Airway Volume",
+        metricLabel: "Airway Volume Gain",
         range: [0.35, 0.66],
       },
       {
         id: "scan-act-3",
-        badge: "STEP 03 · NANO-HYDROXYAPATITE LIFT",
-        title: "Biomimetic B1 Enamel Remineralization",
+        badge: "STEP 03 // APATITE CRYSTALLIZATION",
+        title: "OM1 Nano-Hydroxyapatite Enamel Regrowth",
         subtitle:
-          "Medical-grade 15% nano-hydroxyapatite crystals fuse into open enamel tubules under cold 480nm light — lifting 9 shades while thickening enamel.",
+          "Cold-spectrum optical activation fuses 20nm biomimetic hydroxyapatite crystals into open enamel tubules — lifting 9 shades with zero nerve zings.",
         metricValue: "+9 Shades",
-        metricLabel: "Zero-Sensitivity Crystal Lift",
+        metricLabel: "Crystal Enamel Lift",
         range: [0.67, 1.0],
       },
     ],
@@ -276,21 +268,11 @@ export const SCROLL_SCENES: Record<ScrollSceneConfig["id"], ScrollSceneConfig> =
         id: "hs-oct-beam",
         label: "8,000 fps Optical Coherence Array",
         category: "SUB-SURFACE IMAGING",
-        u: 0.38,
-        v: 0.42,
+        u: 0.42,
+        v: 0.45,
         spec: "7 µm Voxel Resolution · 0 mSv Radiation",
         detail:
           "Maps internal dentin-enamel cracks and occlusal force vectors in real time without ionizing radiation.",
-      },
-      {
-        id: "hs-nhap-crystal",
-        label: "Nano-Hydroxyapatite (nHAp) Lattice",
-        category: "ENAMEL REGROWTH",
-        u: 0.62,
-        v: 0.42,
-        spec: "20 nm Biomimetic Apatite Rods",
-        detail:
-          "Identical in crystal structure to natural human enamel, permanently sealing exposed dentin tubules and restoring mirror gloss.",
       },
     ],
   },
@@ -299,138 +281,159 @@ export const SCROLL_SCENES: Record<ScrollSceneConfig["id"], ScrollSceneConfig> =
 export interface DentalServiceItem {
   id: ServiceId;
   number: string;
+  code: string;
   title: string;
   tagline: string;
   description: string;
   duration: string;
   comfortNote: string;
   accentTag: string;
-  accentTone: "emerald" | "gold" | "terracotta";
   linkedSceneAnchor: string;
   highlights: string[];
   longevityYears: number;
   toothPreservationPct: number;
+  bondStrengthMpa: string;
+  materialSpec: string;
 }
 
 export const DENTAL_SERVICES: DentalServiceItem[] = [
   {
     id: "biomimetic-veneers",
     number: "01",
-    title: "0.2mm No-Prep Biomimetic Veneers",
-    tagline: "Swiss hand-layered lithium disilicate veils bonded without drilling healthy enamel.",
+    code: "PRO-01 // ZURICH CERAMICS",
+    title: "0.2mm No-Prep Refractory Veneers",
+    tagline: "Hand-layered on platinum foil in Geneva & Zurich without grinding healthy enamel.",
     description:
-      "Master ceramists in Zurich layer feldspathic and lithium disilicate porcelains to replicate natural mamelons, surface perikymata, and incisal opalescence.",
-    duration: "2 unhurried atelier visits",
-    comfortNote: "100% reversible 3D Trial Smile · Zero shots required",
-    accentTag: "Swiss Master Ceramist",
-    accentTone: "gold",
+      "Master ceramists layer feldspathic and lithium disilicate porcelains down to 0.2mm contact-lens thickness, reproducing natural mamelons, perikymata texture, and blue-white incisal halo.",
+    duration: "2 Private Visits (10 Days)",
+    comfortNote: "100% Reversible 3D Trial Smile · Zero Anesthesia Required",
+    accentTag: "0.2mm No-Drill Gauge",
     linkedSceneAnchor: "#hero-stage",
     highlights: [
-      "0.2mm contact-lens gauge preserves 96%+ natural enamel",
-      "51.5 MPa DEJ-mimetic adhesion prevents debonding",
+      "96.4% of natural enamel remains completely untouched",
+      "51.5 MPa fourth-generation monomer bond prevents debonding",
+      "Hand-baked refractory platinum-foil internal light refraction",
     ],
     longevityYears: 25,
     toothPreservationPct: 96,
+    bondStrengthMpa: "51.5 MPa",
+    materialSpec: "Swiss Lithium Disilicate + Feldspathic Halo",
   },
   {
     id: "zirconia-implants",
     number: "02",
-    title: "Swiss Ceramic & 24k Gold Bio-Implants",
-    tagline: "Metal-free ATZ zirconia and 24k gold-neck implants engineered for lifelong tissue harmony.",
+    code: "PRO-02 // BIO-IMPLANTOLOGY",
+    title: "Swiss ATZ Zirconia & 24k Gold Bio-Implants",
+    tagline: "Metal-free ceramic fixtures with warm 24k gold transgingival collars for pink gum vitality.",
     description:
-      "Guided by 3D robotic surgical stents, our bio-inert implants integrate rapidly with bone while warm gold transgingival collars preserve pink gumline vitality.",
-    duration: "60 min 3D-guided keyhole placement",
-    comfortNote: "Platelet-Rich Fibrin (PRF) accelerated healing · Twilight sedation",
-    accentTag: "Bio-Inert & Metal-Free",
-    accentTone: "emerald",
+      "Guided by 3D robotic surgical stents and Platelet-Rich Fibrin (PRF) stem-cell membranes, our bio-inert implants eliminate dark grey gumline shadows and galvanic currents.",
+    duration: "60 Min Guided Keyhole Placement",
+    comfortNote: "Autologous PRF Stem-Cell Healing · MD Twilight Sedation",
+    accentTag: "24k Gold Mucosal Seal",
     linkedSceneAnchor: "#craftsmanship",
     highlights: [
-      "Zero dark grey metal shadows at the gumline",
-      "Autologous PRF stem-cell membrane cuts healing time in half",
+      "2.4 µm Morse-taper seal prevents bacterial micro-leakage",
+      "Warm 24k gold neck illuminates thin gingival tissue naturally",
+      "Dual-modulus crown cushions bite forces like a living ligament",
     ],
     longevityYears: 30,
     toothPreservationPct: 100,
+    bondStrengthMpa: "1,200 MPa",
+    materialSpec: "ATZ Bio-Ceramic + 24k Gold Anodized Collar",
   },
   {
     id: "airway-aligners",
     number: "03",
-    title: "Airway-First 3D Clear Aligners",
-    tagline: "Broaden your smile arc while expanding nasal breathing and TMJ balance.",
+    code: "PRO-03 // CRANIOFACIAL ORTHO",
+    title: "Airway-First Palatal Expansion Aligners",
+    tagline: "Widen the smile corridor while expanding nasal breathing and TMJ decompression.",
     description:
-      "Planned from an 8,000 fps optical scan and 3D airway volume study, our scalloped aligners widen the buccal corridor without premolar extractions.",
-    duration: "45 min digital onboarding",
-    comfortNote: "Zero putty trays · Laser-polished gingival scallops",
-    accentTag: "Craniofacial & Airway",
-    accentTone: "emerald",
+      "Engineered from an 8,000 fps optical scan and 3D pharyngeal airway study, our scalloped polymer shells broaden the arch without premolar extractions or retraction.",
+    duration: "45 Min Digital Onboarding",
+    comfortNote: "Zero Putty Impressions · Infrared Photobiomodulation",
+    accentTag: "+18% Airway Volume",
     linkedSceneAnchor: "#technology",
     highlights: [
-      "Expands arch width for a full 12-tooth radiant smile",
-      "Includes infrared photobiomodulation to accelerate movement by 40%",
+      "Broadens dark buccal corridors into a full 12-tooth smile arc",
+      "Decompresses TMJ condyles and improves nocturnal oxygen saturation",
+      "Laser-scalloped gingival margins eliminate soft-tissue rubbing",
     ],
     longevityYears: 25,
     toothPreservationPct: 100,
+    bondStrengthMpa: "0.02 mm Fit",
+    materialSpec: "Tri-Layer Elastomeric Optical Polyurethane",
   },
   {
     id: "laser-endodontics",
     number: "04",
-    title: "Vital Pulp Therapy & Laser Micro-Endo",
-    tagline: "Save compromised teeth from root canals using biomimetic crack-sealing under 25× Leica optics.",
+    code: "PRO-04 // MICROSCOPIC CONSERVATION",
+    title: "25× Leica Vital Pulp & Crack-Sealing Onlays",
+    tagline: "Rescue structural teeth from root canals using Immediate Dentin Sealing and fiber ribbond.",
     description:
-      "Using Er:YAG photoacoustic laser disinfection and bioactive calcium-silicate capping, we preserve living pulp in 85% of deep-caries teeth.",
-    duration: "60 min microscopic session",
-    comfortNote: "Computer-buffered wand anesthesia · Binaural acoustic suite",
-    accentTag: "25× Leica Microscope",
-    accentTone: "gold",
+      "Under 25× Leica optical magnification, we arrest deep structural cracks using ultra-high-molecular-weight polyethylene ribbond fibers and biomimetic ceramic onlays.",
+    duration: "60 Min Single-Visit Reconstruction",
+    comfortNote: "Warm pH-Buffered Wand Numbing · Binaural Acoustic Suite",
+    accentTag: "Saves Living Pulp",
     linkedSceneAnchor: "#hero-stage",
     highlights: [
-      "Avoids full-coverage crown amputation via biomimetic onlays",
-      "PIPS laser irrigation sterilizes microscopic lateral tubules",
+      "Avoids root canal amputation in 85% of deep-lesion molars",
+      "Polyethylene ribbond bridges internal dentin fracture lines",
+      "Restores 98% of virgin tooth fracture resistance",
     ],
     longevityYears: 22,
     toothPreservationPct: 92,
+    bondStrengthMpa: "51.5 MPa",
+    materialSpec: "UHMWPE Fiber Ribbond + Biomimetic Ceramic Onlay",
   },
   {
     id: "hydroxyapatite-enamel",
     number: "05",
-    title: "Nano-Hydroxyapatite Crystal Lift",
-    tagline: "Up to 9 VITA shades brighter while remineralizing and thickening translucent enamel.",
+    code: "PRO-05 // ENAMEL CRYSTALLIZATION",
+    title: "Nano-Hydroxyapatite (nHAp) OM1 Crystal Lift",
+    tagline: "Lift 9 VITA shade steps while remineralizing and thickening translucent enamel.",
     description:
-      "Unlike harsh peroxide bleaches that dehydrate teeth, our cold-light 480nm protocol infuses 20nm biomimetic apatite crystals directly into enamel prisms.",
-    duration: "60 min longevity lounge session",
-    comfortNote: "Zero nerve zings · Immediate coffee/wine stain shield",
-    accentTag: "Enamel Regrowth",
-    accentTone: "emerald",
+      "Cold 480nm optical activation fuses 20-nanometer biomimetic hydroxyapatite rods directly into open enamel prisms — sealing sensitivity and building mirror gloss.",
+    duration: "60 Min Longevity Lounge Session",
+    comfortNote: "Zero Nerve Zings · Immediate Red-Wine & Espresso Shield",
+    accentTag: "+34% Enamel Hardness",
     linkedSceneAnchor: "#technology",
     highlights: [
-      "Increases surface micro-hardness by 34% post-treatment",
-      "Natural B1/OM1 opalescent pearl finish — never chalky",
+      "Synthetic 20nm apatite matches human enamel crystallography",
+      "Zero peroxide dehydration or chalky opacity",
+      "Permanently plugs exposed cervical dentin tubules",
     ],
     longevityYears: 10,
     toothPreservationPct: 100,
+    bondStrengthMpa: "20 nm Rods",
+    materialSpec: "15% Medical Nano-Hydroxyapatite + 480nm Cold Light",
   },
   {
     id: "tmj-neuromuscular",
     number: "06",
-    title: "TMJ, Bite Deprogramming & Longevity Sanctuary",
-    tagline: "Resolve clenching, migraine tension, and worn incisors through digital T-Scan occlusal engineering.",
+    code: "PRO-06 // OCCLUSAL ENGINEERING",
+    title: "Digital T-Scan Bite Balancing & TMJ Deprogramming",
+    tagline: "Eliminate nocturnal clenching, migraines, and incisal wear to 0.01-second precision.",
     description:
-      "We measure bite force timing to the millisecond with digital pressure sensors and craft invisible carbon-ceramic night orthotics that relax jaw musculature.",
-    duration: "75 min neuromuscular audit",
-    comfortNote: "Warm craniofacial myofascial release · Private suite",
-    accentTag: "Digital T-Scan Bite",
-    accentTone: "terracotta",
+      "Electronic T-Scan pressure sensors map every occlusal contact in milliseconds, paired with micro-milled carbon-ceramic night orthotics that silence masseter hyperactivity.",
+    duration: "75 Min Neuromuscular Audit",
+    comfortNote: "Craniofacial Myofascial Release · Zero-Interference Bite",
+    accentTag: "0.01s Bite Balance",
     linkedSceneAnchor: "#longevity-sanctuary",
     highlights: [
-      "Balances left/right bite force within 0.01 seconds",
-      "Protects veneers and natural enamel from nocturnal bruxism",
+      "Equalizes left/right molar force vectors within 0.01 seconds",
+      "Protects natural enamel and porcelain veneers from bruxism",
+      "Relieves chronic temporal and cervical jaw tension",
     ],
     longevityYears: 20,
     toothPreservationPct: 98,
+    bondStrengthMpa: "0.01s Sync",
+    materialSpec: "Digital Piezo T-Scan + Milled PMMA/Ceramic Orthotic",
   },
 ];
 
 export interface TransformationCase {
   id: string;
+  code: string;
   title: string;
   category: string;
   duration: string;
@@ -440,52 +443,60 @@ export interface TransformationCase {
   beforeDetails: string;
   afterDetails: string;
   enamelSaved: string;
+  bondMpa: string;
 }
 
 export const TRANSFORMATION_CASES: TransformationCase[] = [
   {
     id: "case-biomimetic-rehab",
+    code: "DOSSIER #ZH-409",
     title: "10 No-Prep 0.2mm Swiss Lithium Disilicate Veils",
-    category: "Biomimetic Veneers",
-    duration: "14 Days · 2 Atelier Visits",
+    category: "Additive Refractory Veneers",
+    duration: "10 Days · 2 Visits",
     summary:
-      "Lengthened acid-eroded central incisors, rebuilt canine guidance, and restored natural OM1 incisal halo with zero enamel drilling.",
-    beforeShade: "Acid Erosion & Wear · VITA A3",
-    afterShade: "Zurich Layered Porcelain · OM1",
-    beforeDetails: "Flattened incisal edges, thinned labial enamel, and shadowed buccal corridors.",
-    afterDetails: "Translucent incisal halo, delicate surface perikymata texture, and balanced lip dynamics.",
-    enamelSaved: "98.2% Intact Enamel",
+      "Lengthened acid-eroded central incisors, restored canine rise, and achieved natural OM1 incisal opalescence with zero drilling of healthy enamel.",
+    beforeShade: "Acid Erosion · VITA A3",
+    afterShade: "Geneva Refractory · OM1",
+    beforeDetails: "Flattened incisal edges, thinned labial enamel, and negative smile curve.",
+    afterDetails: "Translucent blue-amber incisal halo, vertical perikymata texture, and 98.2% intact enamel.",
+    enamelSaved: "98.2%",
+    bondMpa: "51.5 MPa",
   },
   {
     id: "case-airway-arch",
-    title: "Airway Aligner Expansion + Nano-Hydroxyapatite Lift",
+    code: "DOSSIER #BH-812",
+    title: "Palatal Airway Expansion + Nano-Hydroxyapatite Lift",
     category: "Airway Orthodontics + nHAp",
     duration: "6 Months · 16 Aligners",
     summary:
-      "Expanded narrow maxillary arch by 4.2mm, eliminated nocturnal airway resistance, and remineralized enamel to B1 pearl.",
-    beforeShade: "lingual Tipping · VITA A2.5",
-    afterShade: "Expanded 12-Tooth Arc · VITA B1",
-    beforeDetails: "Crowded anterior arch, dark lateral corridors, and cervical abfraction notches.",
-    afterDetails: "Broad architectural smile arc, sealed cervical enamel, and effortless nasal breathing.",
-    enamelSaved: "100% Intact Enamel",
+      "Expanded narrow maxillary arch by 4.2mm without extractions, increased nasal airway volume by 19%, and crystallized enamel to B1 pearl.",
+    beforeShade: "Compressed Arch · VITA A2.5",
+    afterShade: "12-Tooth Broad Arc · VITA B1",
+    beforeDetails: "Shadowed buccal corridors, lingual incisor tipping, and nocturnal clenching.",
+    afterDetails: "Full 12-tooth architectural smile arc and sealed cervical enamel prisms.",
+    enamelSaved: "100%",
+    bondMpa: "0.02 mm",
   },
   {
     id: "case-zirconia-gold-implant",
-    title: "Anterior ATZ Zirconia Implant & 24k Gold Bio-Collar",
-    category: "Ceramic-Gold Implant",
+    code: "DOSSIER #GE-219",
+    title: "ATZ Ceramic-Zirconia Implant & 24k Gold Bio-Collar",
+    category: "Swiss Bio-Implantology",
     duration: "12 Weeks PRF Integration",
     summary:
-      "Replaced a failed root-canaled lateral incisor with an immediate 3D-guided ceramic fixture, 24k gold collar, and custom layered crown.",
-    beforeShade: "Dark Root-Canal Shadow",
-    afterShade: "Pink Gingival Zenith & Bio-Crown",
-    beforeDetails: "Grey cyanotic gumline shadow from old metal post and resorbed interdental papilla.",
-    afterDetails: "Vibrant pink stippled gingiva with indistinguishable light transmission across adjacent teeth.",
-    enamelSaved: "100% Adjacent Teeth Untouched",
+      "Replaced a fractured lateral incisor with an immediate 3D-guided ATZ zirconia root, warm 24k gold transgingival collar, and layered crown.",
+    beforeShade: "Cyanotic Metal-Post Shadow",
+    afterShade: "Pink Gingival Zenith · OM1",
+    beforeDetails: "Dark grey gumline shadow from legacy metal abutment and blunted papilla.",
+    afterDetails: "Healthy stippled pink interdental papilla and seamless light transmission.",
+    enamelSaved: "100%",
+    bondMpa: "2.4 µm Seal",
   },
 ];
 
 export interface DoctorProfile {
   id: string;
+  code: string;
   name: string;
   credentials: string;
   role: string;
@@ -498,46 +509,49 @@ export interface DoctorProfile {
 export const DOCTORS: DoctorProfile[] = [
   {
     id: "dr-sorensen",
+    code: "FACULTY 01 // ZURICH & BEVERLY HILLS",
     name: "Dr. Julian Sørensen, DMD, Dr. med. dent.",
     credentials: "Founder & Master of Biomimetic Prosthodontics",
-    role: "Biomimetic Ceramics & Occlusal Engineering",
+    role: "Refractory Ceramics & Immediate Dentin Sealing",
     education: "University of Zurich Center of Dental Medicine · Harvard School of Dental Medicine",
     quote:
       "Nature engineered the dentino-enamel junction to flex without fracturing for eighty years. When we copy nature's histology instead of amputating it, restorations last decades.",
     specialties: [
-      "0.2mm Swiss Porcelain Veils",
-      "Immediate Dentin Sealing (IDS)",
-      "Full-Mouth Bite Reconstruction",
+      "0.2mm Platinum-Foil Veils",
+      "51.5 MPa Dentin Bio-Sealing",
+      "Full-Mouth Occlusal Reconstruction",
     ],
     monogram: "JS",
   },
   {
     id: "dr-valmont",
+    code: "FACULTY 02 // GENEVA & BEVERLY HILLS",
     name: "Dr. Céleste Valmont, DDS, MS, FACP",
     credentials: "Director of Bio-Ceramic Implantology & PRF",
-    role: "Robotic Guided Implants & Microsurgery",
-    education: "UCLA School of Dentistry · Fellowship in Ceramic Implantology (Geneva)",
+    role: "ATZ Zirconia-Gold Implants & 25× Microsurgery",
+    education: "University of Geneva · UCLA School of Dentistry Implant Fellowship",
     quote:
-      "Soft tissue loves warm gold and ultra-pure zirconia. By banishing grey metal collars, the gumline stays healthy, stippled, and luminous for life.",
+      "Living gum tissue loves warm 24k gold and ultra-pure zirconia. By banishing grey metal collars, the gingival architecture stays pink, stippled, and luminous for life.",
     specialties: [
       "ATZ Zirconia & 24k Gold Implants",
-      "PRF Stem-Cell Regeneration",
+      "Autologous PRF Stem-Cell Healing",
       "25× Leica Microsurgery",
     ],
     monogram: "CV",
   },
   {
     id: "dr-kuroda",
+    code: "FACULTY 03 // STANFORD & BEVERLY HILLS",
     name: "Dr. Kenji Kuroda, DDS, MSD",
-    credentials: "Director of Craniofacial Airway & TMJ",
-    role: "Airway Orthodontics & Neuromuscular Bite",
-    education: "UCSF School of Dentistry · Stanford Sleep & Airway Fellowship",
+    credentials: "Director of Craniofacial Airway & Neuromuscular Bite",
+    role: "Airway Orthodontics & Digital T-Scan Occlusion",
+    education: "UCSF School of Dentistry · Stanford Sleep & Craniofacial Airway Fellowship",
     quote:
-      "A beautiful smile arc is inseparable from how you breathe and sleep. Expanding the arch unlocks both facial harmony and deep restorative rest.",
+      "A broad, radiant smile arc is inseparable from how you breathe and sleep. Expanding the palatal vault unlocks both facial balance and deep restorative rest.",
     specialties: [
       "Airway-First Clear Aligners",
-      "Digital T-Scan Bite Balancing",
-      "TMJ & Bruxism Deprogramming",
+      "0.01s Digital T-Scan Balancing",
+      "TMJ Condylar Decompression",
     ],
     monogram: "KK",
   },
@@ -550,33 +564,33 @@ export interface FaqItem {
 
 export const FAQ_ITEMS: FaqItem[] = [
   {
-    question: "What makes Biomimetic Dentistry different from traditional cosmetic or restorative dentistry?",
+    question: "How is Biomimetic Dentistry fundamentally different from traditional cosmetic or crown dentistry?",
     answer:
-      "Traditional dentistry relies on mechanical retention — grinding away 60% to 75% of healthy tooth structure to fit a full-coverage crown, which frequently triggers nerve death and root canals. Biomimetic ('life-mimicking') dentistry uses 25× Leica magnification, Immediate Dentin Sealing (IDS), and stress-reduced composite/ceramic layers to bond directly to your remaining enamel and dentin at 51.5 MPa — conserving 95%+ of your living tooth.",
+      "Traditional dentistry relies on mechanical retention — grinding away 60% to 75% of healthy tooth structure into a peg to fit a full-coverage crown, which frequently triggers nerve death and root canals. Biomimetic ('life-mimicking') dentistry uses 25× Leica microscopy, Immediate Dentin Sealing (IDS), and stress-reduced ceramic layers to bond directly to your intact enamel and dentin at 51.5 MPa — conserving 96%+ of your living tooth.",
   },
   {
-    question: "How can your 0.2mm Swiss veneers be placed without drilling my healthy teeth?",
+    question: "How can your 0.2mm Swiss porcelain veils be bonded without drilling my healthy teeth?",
     answer:
-      "Our master ceramists in Zurich hand-bake lithium disilicate and feldspathic porcelain on refractory dies down to 0.2mm — thinner than a contact lens. After a gentle micro-air abrasion cleaning of the enamel prism surface, the veil bonds seamlessly into your natural tooth architecture, making the procedure 100% additive and pain-free.",
+      "Our master ceramists in Geneva and Zurich hand-bake lithium disilicate and feldspathic porcelain on platinum foil down to 0.2mm — thinner than a contact lens. After gentle micro-air particle cleaning of the enamel prisms, the veil bonds seamlessly into your natural tooth architecture, making the procedure 100% additive and anesthesia-free.",
   },
   {
-    question: "Why do you pair Swiss ATZ Zirconia implants with a 24k gold-anodized transgingival collar?",
+    question: "Why do you combine Swiss ATZ Zirconia implants with a 24k gold-anodized transgingival collar?",
     answer:
-      "Conventional grey titanium abutments cast a dark, lifeless shadow through thin gum tissue and can trigger mucosal recession. Our alumina-toughened zirconia (ATZ) root fixtures and warm 24k gold-hue Morse-taper collars are 100% bio-inert, encouraging hemidesmosomal soft-tissue attachment and keeping your gums vibrant pink.",
+      "Conventional grey titanium abutments cast a dark cyanotic shadow through thin gum tissue and can trigger mucosal recession. Our alumina-toughened zirconia (ATZ) root fixtures and warm 24k gold-hue Morse-taper collars are 100% bio-inert, encouraging hemidesmosomal soft-tissue attachment and keeping your gums vibrant pink.",
   },
   {
-    question: "Does your Photon-Counting 3D Optical Scan replace X-rays and putty impressions?",
+    question: "Does your 8,000 fps Near-Infrared Optical Coherence Scan replace X-rays and putty trays?",
     answer:
-      "Yes. Our near-infrared optical coherence scanner captures 8,000 surface and sub-surface frames per second with zero ionizing radiation and zero gag-inducing putty trays. It reveals micro-cracks and early demineralization up to 4mm beneath the enamel surface.",
+      "Yes. Our near-infrared laser scanner captures 8,000 surface and sub-surface frames per second with zero ionizing radiation and zero gag-inducing putty trays. It reveals micro-cracks and early demineralization up to 4mm beneath the enamel surface.",
   },
   {
-    question: "How do insurance, concierge reimbursement, and transparent pricing work at Aurum?",
+    question: "How do the Written Architectural Dossier and PPO Concierge Reimbursement work?",
     answer:
-      "Before any clinical step begins, you receive a bound architectural treatment dossier detailing every biomimetic material, appointment timeline, and exact fee. Our concierge team files all PPO out-of-network claims electronically for maximum reimbursement, and we offer 0% APR longevity financing.",
+      "Before any clinical step begins, you receive a bound architectural treatment dossier detailing every biomimetic material, appointment timeline, and exact fee. Our concierge team files all PPO out-of-network claims electronically for maximum reimbursement, and we offer 12–24 month 0% APR longevity financing.",
   },
   {
-    question: "Where is Aurum Biomimetic Atelier located, and do you host fly-in patients?",
+    question: "How does your 2-Visit Fly-In Concierge work for national and international patients?",
     answer:
-      "Our flagship sanctuary is located at 436 North Bedford Drive (Penthouse Suite 500) in the Golden Triangle of Beverly Hills, with private subterranean valet. Over 40% of our patients fly in nationally or internationally — our concierge coordinates 2-visit accelerated ceramic completions with partner residences.",
+      "Over 40% of our patients fly in to Beverly Hills from across North America, Europe, and Asia. You complete a virtual dossier review first, arrive for Visit 1 (8,000 fps 3D optical scan & reversible Trial Smile), and return for Visit 2 once our Zurich/Beverly Hills master ceramist finishes your custom 0.2mm porcelains.",
   },
 ];

@@ -13,9 +13,9 @@ interface TechnologyWhiteningSectionProps {
 }
 
 const ACTIVE_S3_CARD_CLS =
-  "block w-full text-left rounded-2xl px-4 py-3 xl:px-4.5 xl:py-3.5 transition-colors cursor-pointer border bg-[#0C1D1A] border-[#4CE6C4]/55";
+  "block w-full text-left border-l-2 border-[#C6A46C] bg-white/[0.06] px-4 py-3 transition-colors cursor-pointer";
 const INACTIVE_S3_CARD_CLS =
-  "hidden lg:block w-full text-left rounded-2xl px-4 py-2.5 xl:px-4.5 xl:py-3 transition-colors cursor-pointer border bg-white/[0.03] border-white/10 hover:bg-white/[0.06]";
+  "hidden lg:block w-full text-left border-l-2 border-white/15 bg-transparent px-4 py-2.5 hover:bg-white/[0.03] transition-colors cursor-pointer opacity-75";
 
 export function TechnologyWhiteningSection({
   onSelectServiceForBooking,
@@ -38,8 +38,8 @@ export function TechnologyWhiteningSection({
         const active = btn.dataset.s3MobTab === String(actIdx);
         btn.setAttribute("aria-selected", active ? "true" : "false");
         btn.className = active
-          ? "flex-1 rounded-full py-1.5 text-[11px] font-semibold uppercase tracking-wider cursor-pointer bg-[#4CE6C4] text-[#050A09]"
-          : "flex-1 rounded-full py-1.5 text-[11px] font-semibold uppercase tracking-wider cursor-pointer bg-white/10 text-[#E6F4F1]";
+          ? "flex-1 py-1.5 text-[10px] font-semibold uppercase tracking-wider cursor-pointer bg-[#C6A46C] text-[#120E0D]"
+          : "flex-1 py-1.5 text-[10px] font-semibold uppercase tracking-wider cursor-pointer bg-white/10 text-[#FAF6EE]";
       });
 
     root
@@ -55,7 +55,7 @@ export function TechnologyWhiteningSection({
     const ctaSpan = root.querySelector<HTMLElement>("[data-s3-cta-label]");
     if (ctaSpan) {
       ctaSpan.textContent =
-        actIdx === 2 ? "Book Crystal Lift" : "Book 3D Neural Scan";
+        actIdx === 2 ? "Commission nHAp Crystal Lift" : "Reserve 8,000 fps OCT Scan";
     }
   }, []);
 
@@ -84,17 +84,8 @@ export function TechnologyWhiteningSection({
     <section
       id="technology"
       aria-labelledby="technology-heading"
-      style={{ backgroundColor: scene.sectionBgHex, color: "#E6F4F1" }}
+      style={{ backgroundColor: scene.sectionBgHex, color: "#FAF6EE" }}
     >
-      <div
-        className="h-28 sm:h-36 w-full"
-        style={{
-          background:
-            "linear-gradient(180deg, #EAE3D5 0%, #14473E 45%, #0B1F1C 74%, #050A09 100%)",
-        }}
-        aria-hidden="true"
-      />
-
       <div
         ref={trackRef}
         className="scene-sticky-track relative"
@@ -105,49 +96,38 @@ export function TechnologyWhiteningSection({
           } as React.CSSProperties
         }
       >
-        {/* Guaranteed top clearance below the 68px fixed navbar at all laptop & phone heights */}
         <div
           ref={pinRef}
           data-act="0"
-          className="scene-sticky-stage w-full overflow-hidden flex items-center pt-[74px] pb-5 lg:pt-[84px] lg:pb-6"
+          className="scene-sticky-stage w-full overflow-hidden flex items-center pt-[74px] pb-5 lg:pt-[82px] lg:pb-6"
           style={{ backgroundColor: scene.sectionBgHex }}
         >
           <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-10 xl:px-12 grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5 lg:gap-8 xl:gap-10 items-center">
-            {/* Left Column (58% — True 16:9 Centered Stage Fitted to Available Viewport Height) */}
-            <div className="lg:col-span-7 flex items-center justify-center">
-              <div className="w-full max-w-[540px] lg:max-w-[860px] aspect-[16/9] max-h-[29svh] sm:max-h-[37svh] lg:max-h-[calc(100vh-116px)]">
-                <ScrollSequenceStage
-                  scene={scene}
-                  eager={false}
-                  onActChange={applyActDom}
-                  progressBarRef={progressBarRef}
-                />
-              </div>
-            </div>
-
-            {/* Right Column (42%) */}
-            <div className="lg:col-span-5">
-              <span className="inline-flex items-center gap-2 rounded-full border border-[#4CE6C4]/35 bg-[#4CE6C4]/10 px-3 py-1 text-[10px] xl:text-[11px] font-semibold uppercase tracking-[0.15em] text-[#4CE6C4] mb-2">
+            {/* Left Column (5 Cols): Obsidian Espresso Telemetry Dossier */}
+            <div className="lg:col-span-5 order-2 lg:order-1">
+              <span className="inline-flex items-center gap-2 border border-[#C6A46C]/40 bg-[#C6A46C]/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#C6A46C] mb-2">
                 {scene.eyebrow}
               </span>
               <h2
                 id="technology-heading"
-                className="font-serif text-2xl sm:text-3xl lg:text-[34px] xl:text-[40px] font-normal tracking-tight text-[#FDFCF9] leading-[1.08]"
+                className="font-serif text-2xl sm:text-3xl lg:text-[36px] xl:text-[42px] font-normal uppercase tracking-tight text-[#FAF6EE] leading-[1.05]"
               >
-                8,000 fps Optical Coherence.{" "}
-                <span className="text-[#4CE6C4]">Zero radiation, zero putty.</span>
+                8,000 fps Sub-Surface OCT.{" "}
+                <span className="italic font-normal text-[#C6A46C]">
+                  Zero Radiation.
+                </span>
               </h2>
-              <p className="scene-compact-hide hidden sm:block mt-2 text-xs sm:text-sm xl:text-[15px] leading-relaxed text-[#9BB5B0]">
-                Watch our near-infrared photon scanner map sub-surface enamel
-                prisms, expand the craniofacial airway arc, and crystallize 20nm
-                nano-hydroxyapatite into B1 pearl enamel.
+              <p className="scene-compact-hide hidden sm:block mt-2 text-xs sm:text-sm leading-relaxed text-[#EDE6DA]/75">
+                Watch near-infrared optical coherence tomography map 4mm inside
+                living enamel, seat a palatal-expansion aligner, and fuse 20nm
+                nano-hydroxyapatite crystals into OM1 pearl.
               </p>
 
-              {/* Mobile Compact Step Tabs (< lg) */}
+              {/* Mobile Compact Step Tabs */}
               <div
-                className="mt-3 flex lg:hidden items-center gap-1.5"
+                className="mt-3 flex lg:hidden items-center gap-1"
                 role="tablist"
-                aria-label="Optical Scan Steps Mobile"
+                aria-label="OCT Scan Steps Mobile"
               >
                 {scene.acts.map((act, idx) => (
                   <button
@@ -159,8 +139,8 @@ export function TechnologyWhiteningSection({
                     onClick={() => handleManualActClick(idx as 0 | 1 | 2)}
                     className={
                       idx === 0
-                        ? "flex-1 rounded-full py-1.5 text-[11px] font-semibold uppercase tracking-wider cursor-pointer bg-[#4CE6C4] text-[#050A09]"
-                        : "flex-1 rounded-full py-1.5 text-[11px] font-semibold uppercase tracking-wider cursor-pointer bg-white/10 text-[#E6F4F1]"
+                        ? "flex-1 py-1.5 text-[10px] font-semibold uppercase tracking-wider cursor-pointer bg-[#C6A46C] text-[#120E0D]"
+                        : "flex-1 py-1.5 text-[10px] font-semibold uppercase tracking-wider cursor-pointer bg-white/10 text-[#FAF6EE]"
                     }
                   >
                     Step 0{idx + 1}
@@ -168,11 +148,11 @@ export function TechnologyWhiteningSection({
                 ))}
               </div>
 
-              {/* 3 Pre-Mounted Midnight Chapter Steps */}
+              {/* 3 Pre-Mounted Obsidian Chapter Steps */}
               <div
-                className="mt-3 lg:mt-4 space-y-2"
+                className="mt-3 lg:mt-4 space-y-1.5"
                 role="tablist"
-                aria-label="Optical Scan and Remineralization Chapters"
+                aria-label="OCT Scan and Remineralization Chapters"
               >
                 {scene.acts.map((act, idx) => {
                   const isActive = idx === 0;
@@ -189,26 +169,24 @@ export function TechnologyWhiteningSection({
                       }
                     >
                       <div className="flex items-baseline justify-between gap-2">
-                        <span className="text-[10px] xl:text-[11px] font-semibold uppercase tracking-[0.13em] text-[#4CE6C4] whitespace-nowrap">
+                        <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-[#5CE6C4]">
                           {act.badge}
                         </span>
-                        <span className="shrink-0 text-right whitespace-nowrap">
-                          <span className="font-serif text-sm xl:text-base text-[#D4AF6A]">
-                            {act.metricValue}
-                          </span>{" "}
-                          <span className="hidden sm:inline font-sans text-[10px] xl:text-[11px] text-[#9BB5B0]">
+                        <span className="font-serif text-sm xl:text-base text-[#C6A46C]">
+                          {act.metricValue}{" "}
+                          <span className="hidden sm:inline font-sans text-[10px] text-[#EDE6DA]/60">
                             {act.metricLabel}
                           </span>
                         </span>
                       </div>
-                      <div className="mt-0.5 font-serif text-base xl:text-lg text-[#FDFCF9] leading-snug">
+                      <div className="mt-0.5 font-serif text-base xl:text-lg text-[#FAF6EE]">
                         {act.title}
                       </div>
                       <p
                         data-s3-desc
                         className={`${
                           isActive ? "" : "hidden"
-                        } mt-1 text-xs xl:text-[13px] leading-relaxed text-[#9BB5B0]`}
+                        } mt-1 text-xs leading-relaxed text-[#EDE6DA]/75`}
                       >
                         {act.subtitle}
                       </p>
@@ -217,12 +195,12 @@ export function TechnologyWhiteningSection({
                 })}
               </div>
 
-              {/* Progress Bar + Action Buttons */}
-              <div className="mt-3.5 lg:mt-4 flex flex-wrap items-center gap-3.5">
-                <div className="h-1.5 flex-1 min-w-[120px] overflow-hidden rounded-full bg-white/15">
+              {/* Progress Bar + Action Button */}
+              <div className="mt-4 pt-3 border-t border-white/15 flex flex-wrap items-center gap-3.5">
+                <div className="h-1 flex-1 min-w-[100px] overflow-hidden bg-white/15">
                   <div
                     ref={progressBarRef}
-                    className="h-full w-full origin-left rounded-full bg-[#4CE6C4] will-change-transform"
+                    className="h-full w-full origin-left bg-[#5CE6C4] will-change-transform"
                     style={{ transform: "scaleX(0.05)" }}
                   />
                 </div>
@@ -236,25 +214,28 @@ export function TechnologyWhiteningSection({
                     );
                     smoothScrollTo("#booking");
                   }}
-                  className="inline-flex h-10 items-center gap-2 rounded-full bg-[#4CE6C4] px-4.5 text-[11px] xl:text-xs font-semibold uppercase tracking-[0.12em] text-[#050A09] hover:bg-[#FDFCF9] transition-colors cursor-pointer whitespace-nowrap"
+                  className="inline-flex h-10 items-center gap-2 bg-[#C6A46C] px-4.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#120E0D] hover:bg-[#FAF6EE] transition-colors cursor-pointer whitespace-nowrap"
                 >
-                  <span data-s3-cta-label>Book 3D Neural Scan</span>
+                  <span data-s3-cta-label>Reserve 8,000 fps OCT Scan</span>
                   <ArrowUpRightIcon className="w-3.5 h-3.5" />
                 </button>
+              </div>
+            </div>
+
+            {/* Right Column (7 Cols): Framed Obsidian Espresso 16:9 Stage */}
+            <div className="lg:col-span-7 order-1 lg:order-2 flex items-center justify-center">
+              <div className="w-full max-w-[540px] lg:max-w-[860px] aspect-[16/9] max-h-[29svh] sm:max-h-[37svh] lg:max-h-[calc(100vh-124px)] border border-[#C6A46C]/30 shadow-2xl">
+                <ScrollSequenceStage
+                  scene={scene}
+                  eager={false}
+                  onActChange={applyActDom}
+                  progressBarRef={progressBarRef}
+                />
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      <div
-        className="h-28 sm:h-36 w-full"
-        style={{
-          background:
-            "linear-gradient(180deg, #050A09 0%, #0E2622 38%, #8AB5AC 74%, #F5F1E8 100%)",
-        }}
-        aria-hidden="true"
-      />
     </section>
   );
 }

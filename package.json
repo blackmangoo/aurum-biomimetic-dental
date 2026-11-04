@@ -1,13 +1,14 @@
 {
   "name": "aurum-biomimetic-dental",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev -p 3030",
     "build": "next build",
     "start": "next start -p 3030",
     "lint": "tsc --noEmit",
-    "frames": "python tools/build_biomimetic_frames.py"
+    "frames": "python tools/extract_flow_videos.py --desktop-frames 180 --mobile-frames 144",
+    "bgcheck": "python tools/bgcheck_all.py"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

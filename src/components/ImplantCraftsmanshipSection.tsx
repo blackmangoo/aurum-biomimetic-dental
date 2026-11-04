@@ -12,11 +12,15 @@ interface ImplantCraftsmanshipSectionProps {
   onSelectServiceForBooking: (serviceId: ServiceId) => void;
 }
 
-const ACTIVE_CARD_CLS =
-  "block w-full text-left rounded-2xl px-4 py-3 xl:px-4.5 xl:py-3.5 transition-colors cursor-pointer border bg-[#FDFCF9] border-[#9A7432]/55 shadow-xs";
-const INACTIVE_CARD_CLS =
-  "hidden lg:block w-full text-left rounded-2xl px-4 py-2.5 xl:px-4.5 xl:py-3 transition-colors cursor-pointer border bg-[#FDFCF9]/45 border-[#11221F]/10 hover:bg-[#FDFCF9]/75";
+const ACTIVE_COL_CLS =
+  "text-left border-t-2 border-[#6E1B2B] bg-[#FAF6EE] px-4 py-3 transition-colors cursor-pointer";
+const INACTIVE_COL_CLS =
+  "text-left border-t-2 border-[#D8CFC0] bg-[#EDE6DA]/60 px-4 py-3 hover:bg-[#FAF6EE]/60 transition-colors cursor-pointer opacity-75";
 
+/**
+ * Cinema-Wide Travertine Gallery Stage (`#EDE6DA`) with Top Architectural Header
+ * and Bottom 3-Column Horizontal Chronograph Bar.
+ */
 export function ImplantCraftsmanshipSection({
   onSelectServiceForBooking,
 }: ImplantCraftsmanshipSectionProps) {
@@ -31,23 +35,11 @@ export function ImplantCraftsmanshipSection({
     root.dataset.act = String(actIdx);
 
     root
-      .querySelectorAll<HTMLButtonElement>("[data-s2-mob-tab]")
-      .forEach((btn) => {
-        const active = btn.dataset.s2MobTab === String(actIdx);
-        btn.setAttribute("aria-selected", active ? "true" : "false");
-        btn.className = active
-          ? "flex-1 rounded-full py-1.5 text-[11px] font-semibold uppercase tracking-wider cursor-pointer bg-[#14473E] text-[#FDFCF9]"
-          : "flex-1 rounded-full py-1.5 text-[11px] font-semibold uppercase tracking-wider cursor-pointer bg-[#11221F]/10 text-[#11221F]";
-      });
-
-    root
-      .querySelectorAll<HTMLButtonElement>("[data-s2-card]")
-      .forEach((card) => {
-        const active = card.dataset.s2Card === String(actIdx);
-        card.setAttribute("aria-selected", active ? "true" : "false");
-        card.className = active ? ACTIVE_CARD_CLS : INACTIVE_CARD_CLS;
-        const desc = card.querySelector<HTMLElement>("[data-s2-desc]");
-        if (desc) desc.classList.toggle("hidden", !active);
+      .querySelectorAll<HTMLButtonElement>("[data-s2-col]")
+      .forEach((col) => {
+        const active = col.dataset.s2Col === String(actIdx);
+        col.setAttribute("aria-selected", active ? "true" : "false");
+        col.className = active ? ACTIVE_COL_CLS : INACTIVE_COL_CLS;
       });
   }, []);
 
@@ -76,16 +68,8 @@ export function ImplantCraftsmanshipSection({
     <section
       id="craftsmanship"
       aria-labelledby="craftsmanship-heading"
-      style={{ backgroundColor: scene.sectionBgHex, color: "#11221F" }}
+      style={{ backgroundColor: scene.sectionBgHex, color: "#181210" }}
     >
-      <div
-        className="h-16 w-full"
-        style={{
-          background: "linear-gradient(180deg, #F5F1E8 0%, #EAE3D5 100%)",
-        }}
-        aria-hidden="true"
-      />
-
       <div
         ref={trackRef}
         className="scene-sticky-track relative"
@@ -96,137 +80,94 @@ export function ImplantCraftsmanshipSection({
           } as React.CSSProperties
         }
       >
-        {/* Guaranteed top clearance below the 68px fixed navbar at all Windows 125%/150% DPI & mobile heights */}
         <div
           ref={pinRef}
           data-act="0"
-          className="scene-sticky-stage w-full overflow-hidden flex items-center pt-[74px] pb-5 lg:pt-[84px] lg:pb-6"
+          className="scene-sticky-stage w-full overflow-hidden flex flex-col justify-between pt-[74px] pb-4 lg:pt-[80px] lg:pb-6"
           style={{ backgroundColor: scene.sectionBgHex }}
         >
-          <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-10 xl:px-12 grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5 lg:gap-8 xl:gap-10 items-center">
-            {/* Left Column (42%) */}
-            <div className="lg:col-span-5 order-2 lg:order-1">
-              <span className="inline-block text-[11px] font-semibold uppercase tracking-[0.16em] text-[#9A7432] mb-1.5">
-                {scene.eyebrow}
+          {/* Top Architectural Header Bar */}
+          <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-10 xl:px-12 flex flex-col sm:flex-row sm:items-end justify-between gap-2 pb-2 border-b border-[#D8CFC0]">
+            <div>
+              <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#6E1B2B]">
+                SECTION 03 // {scene.eyebrow}
               </span>
               <h2
                 id="craftsmanship-heading"
-                className="font-serif text-2xl sm:text-3xl lg:text-[34px] xl:text-[40px] font-normal tracking-tight text-[#11221F] leading-[1.08]"
+                className="font-serif text-xl sm:text-2xl lg:text-3xl font-normal uppercase tracking-tight text-[#181210]"
               >
                 {scene.title}
               </h2>
-              <p className="scene-compact-hide hidden sm:block mt-2 text-xs sm:text-sm xl:text-[15px] leading-relaxed text-[#4A5E5A]">
-                Scroll to torque our three-part Swiss ceramic-gold bio-implant
-                in micro-gravity — from the laser-grooved ATZ zirconia fixture to
-                the 24k gold mucosal collar and gradient-modulus crown.
-              </p>
-
-              {/* Mobile Compact Act Tabs (< lg) */}
-              <div
-                className="mt-3 flex lg:hidden items-center gap-1.5"
-                role="tablist"
-                aria-label="Implant Assembly Chapters Mobile"
-              >
-                {scene.acts.map((act, idx) => (
-                  <button
-                    key={act.id}
-                    type="button"
-                    role="tab"
-                    data-s2-mob-tab={String(idx)}
-                    aria-selected={idx === 0}
-                    onClick={() => handleManualActClick(idx as 0 | 1 | 2)}
-                    className={
-                      idx === 0
-                        ? "flex-1 rounded-full py-1.5 text-[11px] font-semibold uppercase tracking-wider cursor-pointer bg-[#14473E] text-[#FDFCF9]"
-                        : "flex-1 rounded-full py-1.5 text-[11px] font-semibold uppercase tracking-wider cursor-pointer bg-[#11221F]/10 text-[#11221F]"
-                    }
-                  >
-                    Act 0{idx + 1}
-                  </button>
-                ))}
-              </div>
-
-              {/* 3 Pre-Mounted Engineering Act Cards */}
-              <div
-                className="mt-3 lg:mt-4 space-y-2"
-                role="tablist"
-                aria-label="Implant Assembly Chapters"
-              >
-                {scene.acts.map((act, idx) => {
-                  const isActive = idx === 0;
-                  return (
-                    <button
-                      key={act.id}
-                      type="button"
-                      role="tab"
-                      data-s2-card={String(idx)}
-                      aria-selected={isActive}
-                      onClick={() => handleManualActClick(idx as 0 | 1 | 2)}
-                      className={isActive ? ACTIVE_CARD_CLS : INACTIVE_CARD_CLS}
-                    >
-                      <div className="flex items-baseline justify-between gap-2">
-                        <span className="text-[10px] xl:text-[11px] font-semibold uppercase tracking-[0.13em] text-[#9A7432] whitespace-nowrap">
-                          {act.badge}
-                        </span>
-                        <span className="shrink-0 text-right whitespace-nowrap">
-                          <span className="font-serif text-sm xl:text-base font-normal text-[#14473E]">
-                            {act.metricValue}
-                          </span>{" "}
-                          <span className="hidden sm:inline font-sans text-[10px] xl:text-[11px] text-[#4A5E5A]">
-                            {act.metricLabel}
-                          </span>
-                        </span>
-                      </div>
-                      <div className="mt-0.5 font-serif text-base xl:text-lg text-[#11221F] leading-snug">
-                        {act.title}
-                      </div>
-                      <p
-                        data-s2-desc
-                        className={`${
-                          isActive ? "" : "hidden"
-                        } mt-1 text-xs xl:text-[13px] leading-relaxed text-[#4A5E5A]`}
-                      >
-                        {act.subtitle}
-                      </p>
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* Progress Bar + CTA */}
-              <div className="mt-3.5 lg:mt-4 flex items-center gap-3.5">
-                <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-[#11221F]/15">
-                  <div
-                    ref={progressBarRef}
-                    className="h-full w-full origin-left rounded-full bg-[#14473E] will-change-transform"
-                    style={{ transform: "scaleX(0.05)" }}
-                  />
-                </div>
-                <button
-                  type="button"
-                  onClick={() => {
-                    onSelectServiceForBooking("zirconia-implants");
-                    smoothScrollTo("#booking");
-                  }}
-                  className="inline-flex h-10 items-center gap-2 rounded-full bg-[#14473E] px-4.5 text-[11px] xl:text-xs font-semibold uppercase tracking-[0.12em] text-[#FDFCF9] hover:bg-[#0B1F1C] transition-colors cursor-pointer whitespace-nowrap"
-                >
-                  <span>Plan Bio-Implant</span>
-                  <ArrowUpRightIcon className="w-3.5 h-3.5" />
-                </button>
-              </div>
             </div>
-
-            {/* Right Column (58% — True 16:9 Centered Stage Fitted to Available Viewport Height) */}
-            <div className="lg:col-span-7 order-1 lg:order-2 flex items-center justify-center">
-              <div className="w-full max-w-[540px] lg:max-w-[860px] aspect-[16/9] max-h-[30svh] sm:max-h-[38svh] lg:max-h-[calc(100vh-116px)]">
-                <ScrollSequenceStage
-                  scene={scene}
-                  eager={false}
-                  onActChange={applyActDom}
-                  progressBarRef={progressBarRef}
+            <div className="flex items-center gap-3">
+              <div className="w-28 sm:w-36 h-1.5 bg-[#D8CFC0] overflow-hidden">
+                <div
+                  ref={progressBarRef}
+                  className="h-full w-full origin-left bg-[#6E1B2B] will-change-transform"
+                  style={{ transform: "scaleX(0.05)" }}
                 />
               </div>
+              <button
+                type="button"
+                onClick={() => {
+                  onSelectServiceForBooking("zirconia-implants");
+                  smoothScrollTo("#booking");
+                }}
+                className="inline-flex h-9 items-center gap-1.5 bg-[#6E1B2B] px-4 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#FAF6EE] hover:bg-[#181210] transition-colors cursor-pointer whitespace-nowrap"
+              >
+                <span>Commission Bio-Implant</span>
+                <ArrowUpRightIcon className="w-3 h-3" />
+              </button>
             </div>
+          </div>
+
+          {/* Center Cinema-Wide 16:9 Gallery Stage */}
+          <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-10 xl:px-12 my-auto flex items-center justify-center">
+            <div className="w-full max-w-[920px] aspect-[16/9] max-h-[36svh] sm:max-h-[42svh] lg:max-h-[calc(100vh-275px)] border border-[#D8CFC0] shadow-lg">
+              <ScrollSequenceStage
+                scene={scene}
+                eager={false}
+                onActChange={applyActDom}
+                progressBarRef={progressBarRef}
+              />
+            </div>
+          </div>
+
+          {/* Bottom 3-Column Horizontal Chronograph Bar */}
+          <div
+            className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-10 xl:px-12 grid grid-cols-3 gap-2 sm:gap-4"
+            role="tablist"
+            aria-label="Swiss Bio-Implant Assembly Acts"
+          >
+            {scene.acts.map((act, idx) => {
+              const isActive = idx === 0;
+              return (
+                <button
+                  key={act.id}
+                  type="button"
+                  role="tab"
+                  data-s2-col={String(idx)}
+                  aria-selected={isActive}
+                  onClick={() => handleManualActClick(idx as 0 | 1 | 2)}
+                  className={isActive ? ACTIVE_COL_CLS : INACTIVE_COL_CLS}
+                >
+                  <div className="flex items-baseline justify-between gap-1">
+                    <span className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.14em] text-[#6E1B2B] truncate">
+                      {act.badge}
+                    </span>
+                    <span className="font-serif text-xs sm:text-sm text-[#181210] shrink-0">
+                      {act.metricValue}
+                    </span>
+                  </div>
+                  <div className="mt-0.5 font-serif text-xs sm:text-base text-[#181210] truncate">
+                    {act.title}
+                  </div>
+                  <p className="scene-compact-hide hidden md:block mt-0.5 text-[11px] text-[#5C5349] line-clamp-1">
+                    {act.subtitle}
+                  </p>
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>

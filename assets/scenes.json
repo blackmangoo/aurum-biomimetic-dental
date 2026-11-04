@@ -1,0 +1,42 @@
+{
+  "$comment": "Master configuration for Aurum Biomimetic Dental Atelier's 3 Google Flow sequences.",
+  "palette": {
+    "burgundyRose": "6E1B2B",
+    "velvetGarnet": "8F263B",
+    "travertine": "EDE6DA",
+    "alabaster": "FAF6EE",
+    "obsidianEspresso": "120E0D",
+    "espressoHalo": "261D1A",
+    "champagneGold": "C6A46C",
+    "iceEmerald": "5CE6C4"
+  },
+  "scenes": [
+    {
+      "id": "scene-01-hero",
+      "filename": "scene-01-hero.mp4",
+      "title": "The Burgundy-Rose Monograph — 28-Tooth Full Arch & 0.2mm Swiss Porcelain Veils",
+      "bgHex": "#6E1B2B",
+      "bgRgb": [110, 27, 43],
+      "centerGlowHex": "#8F263B",
+      "scrollLengthVh": 300
+    },
+    {
+      "id": "scene-02-implant",
+      "filename": "scene-02-implant.mp4",
+      "title": "Swiss Bio-Implantology — ATZ Zirconia Root, 24k Gold Bio-Collar & Molar Crown",
+      "bgHex": "#EDE6DA",
+      "bgRgb": [237, 230, 218],
+      "centerGlowHex": "#FAF6EE",
+      "scrollLengthVh": 250
+    },
+    {
+      "id": "scene-03-scan-whitening",
+      "filename": "scene-03-scan-whitening.mp4",
+      "title": "8,000 fps Near-Infrared Optical Coherence Scan & Nano-Hydroxyapatite Lift",
+      "bgHex": "#120E0D",
+      "bgRgb": [18, 14, 13],
+      "centerGlowHex": "#261D1A",
+      "scrollLengthVh": 250
+    }
+  ]
+}
