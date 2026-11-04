@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: var(--font-cormorant), Georgia, serif;
+  --font-sans: var(--font-jakarta), system-ui, -apple-system, sans-serif;
+
+  --color-alabaster: #F5F1E8;
+  --color-ivory: #FDFCF9;
+  --color-hairline: #DFD8C8;
+  --color-ink: #11221F;
+  --color-slate: #4A5E5A;
+  --color-emerald: #14473E;
+  --color-hero-emerald: #0E2622;
+  --color-craft-stone: #EAE3D5;
+  --color-tech-midnight: #050A09;
+  --color-gold: #D4AF6A;
+  --color-bronze: #9A7432;
+  --color-terracotta: #9E4732;
+  --color-bioluminescent: #4CE6C4;
+  --color-pearl: #E6F4F1;
+  --color-mist: #9BB5B0;
+}
+
+html {
+  background-color: #0E2622;
+  color: #11221F;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Synchronized CSS <-> JS scene pinning contract:
+   - Phones, tablets, and pure touch devices ((max-width: 1023px) or (hover: none) and (pointer: coarse))
+     use native GPU compositor CSS `position: sticky` inside an explicit scroll runway.
+   - Desktops and laptops (including Windows 11 touchscreen laptops that also have a fine trackpad/mouse,
+     where `hover: hover` is true) use GSAP ScrollTrigger pinning + Lenis smooth inertia. */
+@media (max-width: 1023px), (hover: none) and (pointer: coarse) {
+  .scene-sticky-track {
+    height: var(--mobile-track-h, 310svh);
+  }
+  .scene-sticky-stage {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    contain: layout style paint;
+  }
+}
+
+@media (min-width: 1024px) and (hover: hover) {
+  .scene-sticky-track {
+    height: auto;
+  }
+  .scene-sticky-stage {
+    position: relative;
+    height: 100vh;
+    contain: layout style paint;
+  }
+}
+
+/* On 150%-scaled 1080p laptops (e.g. 1280x600-680 CSS px), collapse secondary intro copy
+   so all 3 chapter cards + heading + CTA keep >35px clearance below the fixed navbar. */
+@media (min-width: 1024px) and (max-height: 690px) {
+  .scene-compact-hide {
+    display: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene-sticky-track {
+    height: auto !important;
+  }
+  .scene-sticky-stage {
+    position: relative !important;
+    height: auto !important;
+    min-height: 100svh;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
