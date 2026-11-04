@@ -1,12 +1,12 @@
 {
-  "$comment": "Master configuration for Aurum Biomimetic Dental Atelier's 3 Google Flow sequences.",
+  "$comment": "Master configuration for Aurum Atelier's 3 calibrated 1080p Google Flow sequences.",
   "palette": {
-    "burgundyRose": "6E1B2B",
-    "velvetGarnet": "8F263B",
-    "travertine": "EDE6DA",
+    "burgundyCrimson": "4B1917",
+    "velvetGarnet": "7A2825",
+    "travertine": "DFD3C3",
     "alabaster": "FAF6EE",
-    "obsidianEspresso": "120E0D",
-    "espressoHalo": "261D1A",
+    "obsidianEspresso": "0E0C08",
+    "espressoHalo": "241E15",
     "champagneGold": "C6A46C",
     "iceEmerald": "5CE6C4"
   },
@@ -14,28 +14,28 @@
     {
       "id": "scene-01-hero",
       "filename": "scene-01-hero.mp4",
-      "title": "The Burgundy-Rose Monograph — 28-Tooth Full Arch & 0.2mm Swiss Porcelain Veils",
-      "bgHex": "#6E1B2B",
-      "bgRgb": [110, 27, 43],
-      "centerGlowHex": "#8F263B",
+      "title": "Enamel-Preserving Restorative Artistry",
+      "bgHex": "#4B1917",
+      "bgRgb": [75, 25, 23],
+      "centerGlowHex": "#7A2825",
       "scrollLengthVh": 300
     },
     {
       "id": "scene-02-implant",
       "filename": "scene-02-implant.mp4",
-      "title": "Swiss Bio-Implantology — ATZ Zirconia Root, 24k Gold Bio-Collar & Molar Crown",
-      "bgHex": "#EDE6DA",
-      "bgRgb": [237, 230, 218],
-      "centerGlowHex": "#FAF6EE",
+      "title": "Ceramic & Warm Gold Implants",
+      "bgHex": "#DFD3C3",
+      "bgRgb": [223, 211, 195],
+      "centerGlowHex": "#F4EDE2",
       "scrollLengthVh": 250
     },
     {
       "id": "scene-03-scan-whitening",
       "filename": "scene-03-scan-whitening.mp4",
-      "title": "8,000 fps Near-Infrared Optical Coherence Scan & Nano-Hydroxyapatite Lift",
-      "bgHex": "#120E0D",
-      "bgRgb": [18, 14, 13],
-      "centerGlowHex": "#261D1A",
+      "title": "Optical Scanning & Enamel Radiance",
+      "bgHex": "#0E0C08",
+      "bgRgb": [14, 12, 8],
+      "centerGlowHex": "#241E15",
       "scrollLengthVh": 250
     }
   ]

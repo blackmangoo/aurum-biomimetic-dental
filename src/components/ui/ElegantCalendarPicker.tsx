@@ -184,31 +184,31 @@ export function ElegantCalendarPicker({
   );
 
   return (
-    <div className="w-full rounded-2xl border border-[#DFD8C8] bg-[#FDFCF9] p-4 sm:p-5 shadow-xs select-none">
+    <div className="w-full rounded-2xl border border-[#D8CFC0] bg-[#FAF6EE] p-4 sm:p-5 shadow-xs select-none">
       {/* Quick Presets Bar */}
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-2 border-b border-[#DFD8C8]/80 pb-3">
-        <span className="text-[11px] font-semibold uppercase tracking-wider text-[#9A7432]">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-2 border-b border-[#D8CFC0]/80 pb-3">
+        <span className="text-[11px] font-semibold uppercase tracking-wider text-[#9A6B26]">
           Select Atelier Date
         </span>
         <div className="flex items-center gap-1.5 text-xs">
           <button
             type="button"
             onClick={() => selectQuickPreset(1)}
-            className="rounded-full bg-[#F4EFE6] px-3 py-1 font-medium text-[#11221F] hover:bg-[#D9EAE6] hover:text-[#14473E] transition-colors cursor-pointer"
+            className="rounded-full bg-[#DFD3C3]/45 px-3 py-1 font-medium text-[#181210] hover:bg-[#F7E3DF] hover:text-[#4B1917] transition-colors cursor-pointer"
           >
             Tomorrow
           </button>
           <button
             type="button"
             onClick={() => selectQuickPreset(3)}
-            className="rounded-full bg-[#F4EFE6] px-3 py-1 font-medium text-[#11221F] hover:bg-[#D9EAE6] hover:text-[#14473E] transition-colors cursor-pointer"
+            className="rounded-full bg-[#DFD3C3]/45 px-3 py-1 font-medium text-[#181210] hover:bg-[#F7E3DF] hover:text-[#4B1917] transition-colors cursor-pointer"
           >
             In 3 Days
           </button>
           <button
             type="button"
             onClick={() => selectQuickPreset(7)}
-            className="rounded-full bg-[#F4EFE6] px-3 py-1 font-medium text-[#11221F] hover:bg-[#D9EAE6] hover:text-[#14473E] transition-colors cursor-pointer hidden sm:inline-block"
+            className="rounded-full bg-[#DFD3C3]/45 px-3 py-1 font-medium text-[#181210] hover:bg-[#F7E3DF] hover:text-[#4B1917] transition-colors cursor-pointer hidden sm:inline-block"
           >
             Next Week
           </button>
@@ -217,7 +217,7 @@ export function ElegantCalendarPicker({
 
       {/* Month Navigation Header */}
       <div className="flex items-center justify-between mb-3 px-1">
-        <h4 className="font-serif text-lg sm:text-xl font-normal tracking-tight text-[#11221F]">
+        <h4 className="font-serif text-lg sm:text-xl font-normal tracking-tight text-[#181210]">
           {MONTH_NAMES[viewMonth]} {viewYear}
         </h4>
         <div className="flex items-center gap-1">
@@ -226,7 +226,7 @@ export function ElegantCalendarPicker({
             onClick={handlePrevMonth}
             disabled={!canGoPrev}
             aria-label="Previous Month"
-            className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#DFD8C8] bg-[#F4EFE6] text-[#11221F] hover:bg-[#14473E] hover:text-[#FDFCF9] disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#D8CFC0] bg-[#DFD3C3]/45 text-[#181210] hover:bg-[#4B1917] hover:text-[#FAF6EE] disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer"
           >
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -237,7 +237,7 @@ export function ElegantCalendarPicker({
             onClick={handleNextMonth}
             disabled={!canGoNext}
             aria-label="Next Month"
-            className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#DFD8C8] bg-[#F4EFE6] text-[#11221F] hover:bg-[#14473E] hover:text-[#FDFCF9] disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#D8CFC0] bg-[#DFD3C3]/45 text-[#181210] hover:bg-[#4B1917] hover:text-[#FAF6EE] disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer"
           >
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -252,7 +252,7 @@ export function ElegantCalendarPicker({
           <div
             key={d}
             className={`py-1 text-[11px] font-semibold uppercase tracking-wider ${
-              i === 6 ? "text-[#9E4732]/70" : "text-[#4A5E5A]"
+              i === 6 ? "text-[#7A2825]/70" : "text-[#544A40]"
             }`}
           >
             {d}
@@ -271,7 +271,7 @@ export function ElegantCalendarPicker({
             return (
               <div
                 key={cell.iso}
-                className="flex h-9 sm:h-10 items-center justify-center text-xs text-[#11221F]/25 cursor-not-allowed"
+                className="flex h-9 sm:h-10 items-center justify-center text-xs text-[#181210]/25 cursor-not-allowed"
                 title={cell.isSunday ? "Atelier closed on Sundays" : "Date unavailable"}
               >
                 {cell.day}
@@ -288,8 +288,8 @@ export function ElegantCalendarPicker({
               aria-pressed={cell.isSelected}
               className={`relative flex h-9 sm:h-10 w-full items-center justify-center rounded-xl text-xs sm:text-sm font-medium transition-all cursor-pointer ${
                 cell.isSelected
-                  ? "bg-[#14473E] text-[#FDFCF9] font-semibold shadow-sm ring-2 ring-[#D4AF6A]/60 scale-[1.03]"
-                  : "bg-[#F4EFE6]/60 text-[#11221F] hover:bg-[#D9EAE6] hover:text-[#14473E]"
+                  ? "bg-[#4B1917] text-[#FAF6EE] font-semibold shadow-sm ring-2 ring-[#C6A46C]/60 scale-[1.03]"
+                  : "bg-[#DFD3C3]/45 text-[#181210] hover:bg-[#F7E3DF] hover:text-[#4B1917]"
               }`}
             >
               <span>{cell.day}</span>
@@ -299,19 +299,19 @@ export function ElegantCalendarPicker({
       </div>
 
       {/* Selected Date Summary */}
-      <div className="mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 rounded-xl bg-[#F4EFE6] p-2.5 sm:px-3.5 border border-[#DFD8C8]/80 text-xs">
-        <div className="flex items-center gap-2 text-[#11221F]">
-          <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#14473E] text-[#FDFCF9] text-[10px] font-bold">
+      <div className="mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 rounded-xl bg-[#DFD3C3]/35 p-2.5 sm:px-3.5 border border-[#D8CFC0]/80 text-xs">
+        <div className="flex items-center gap-2 text-[#181210]">
+          <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#4B1917] text-[#FAF6EE] text-[10px] font-bold">
             ✓
           </span>
           <span className="font-medium">
             Selected:{" "}
-            <span className="font-semibold text-[#14473E]">
+            <span className="font-semibold text-[#4B1917]">
               {formatPrettyDate(value)}
             </span>
           </span>
         </div>
-        <span className="text-[11px] text-[#4A5E5A] sm:text-right">
+        <span className="text-[11px] text-[#544A40] sm:text-right">
           1-Patient-at-a-Time Penthouse Suite · Beverly Hills
         </span>
       </div>

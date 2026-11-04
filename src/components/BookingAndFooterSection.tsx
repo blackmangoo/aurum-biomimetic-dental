@@ -24,7 +24,10 @@ function getDefaultTomorrowIso(): string {
   const d = new Date();
   d.setDate(d.getDate() + 2);
   if (d.getDay() === 0) d.setDate(d.getDate() + 1);
-  return d.toISOString().split("T")[0];
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
 }
 
 export function BookingAndFooterSection({
@@ -384,6 +387,7 @@ export function BookingAndFooterSection({
                         <input
                           type="text"
                           autoComplete="name"
+                          aria-label="Full Name"
                           placeholder="Full Name"
                           value={fullName}
                           onChange={(e) => setFullName(e.target.value)}
@@ -394,6 +398,7 @@ export function BookingAndFooterSection({
                           <input
                             type="email"
                             autoComplete="email"
+                            aria-label="Email Address"
                             placeholder="Email Address"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
@@ -403,6 +408,7 @@ export function BookingAndFooterSection({
                           <input
                             type="tel"
                             autoComplete="tel"
+                            aria-label="Phone Number"
                             placeholder="Phone Number"
                             value={phone}
                             onChange={(e) => setPhone(e.target.value)}

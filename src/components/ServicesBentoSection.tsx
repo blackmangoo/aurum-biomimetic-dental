@@ -345,8 +345,17 @@ export function ServicesBentoSection({
                 <article
                   key={srv.id}
                   data-srv-card
+                  role="button"
+                  tabIndex={0}
+                  aria-pressed={isSelected}
                   onClick={() => setActiveId(srv.id)}
-                  className={`group rounded-3xl border p-6 flex flex-col justify-between transition-all duration-300 cursor-pointer ${
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      setActiveId(srv.id);
+                    }
+                  }}
+                  className={`group rounded-3xl border p-6 flex flex-col justify-between transition-all duration-300 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4B1917] ${
                     isSelected
                       ? `${pal.activeBg} ${pal.activeBorder} text-[#FAF6EE] shadow-xl -translate-y-1`
                       : `${pal.restBg} ${pal.restBorder} text-[#181210] hover:shadow-md hover:-translate-y-1`

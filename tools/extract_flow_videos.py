@@ -220,8 +220,19 @@ def process_scene(spec: dict, desktop_count: int = 180, mobile_count: int = 144)
 
 
 def main() -> None:
+    import argparse
+
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--desktop-frames", type=int, default=180)
+    parser.add_argument("--mobile-frames", type=int, default=144)
+    args = parser.parse_args()
+
     for spec in SCENE_SPECS:
-        process_scene(spec)
+        process_scene(
+            spec,
+            desktop_count=args.desktop_frames,
+            mobile_count=args.mobile_frames,
+        )
 
 
 if __name__ == "__main__":

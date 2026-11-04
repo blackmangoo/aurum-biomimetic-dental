@@ -395,6 +395,11 @@ export function ScrollSequenceStage({
     loadedMaskRef.current = new Uint8Array(total);
     inFlightMaskRef.current = new Uint8Array(total);
     drawnFrameRef.current = -1;
+    posterHiddenRef.current = false;
+    if (posterElRef.current) {
+      posterElRef.current.style.display = "";
+      posterElRef.current.style.opacity = "1";
+    }
 
     const supportsBitmap = typeof createImageBitmap === "function";
 
