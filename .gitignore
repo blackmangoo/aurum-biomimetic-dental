@@ -6,3 +6,6 @@ dist/
 .env
 .env.local
 *.tsbuildinfo
+assets/raw/*.mp4
+docs/video-audit/
+

@@ -121,9 +121,9 @@ export function ImplantCraftsmanshipSection({
             </div>
           </div>
 
-          {/* Center Cinema-Wide 16:9 Gallery Stage */}
+          {/* Center Cinema-Wide 16:9 Gallery Stage (Seamless blend into #DFD3C3 Travertine) */}
           <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-10 xl:px-12 my-auto flex items-center justify-center">
-            <div className="w-full max-w-[920px] aspect-[16/9] max-h-[36svh] sm:max-h-[42svh] lg:max-h-[calc(100vh-275px)] border border-[#D8CFC0] shadow-lg">
+            <div className="w-full max-w-[920px] aspect-[16/9] max-h-[36svh] sm:max-h-[42svh] lg:max-h-[calc(100vh-275px)]">
               <ScrollSequenceStage
                 scene={scene}
                 eager={false}

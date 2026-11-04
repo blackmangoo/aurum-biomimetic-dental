@@ -190,14 +190,6 @@ function buildStaticVignetteCss(
   return `radial-gradient(50% 49.5% at 50% 50%, rgba(${r},${g},${b},0) ${innerStop}%, rgba(${r},${g},${b},0.18) ${s1}%, rgba(${r},${g},${b},0.56) ${s2}%, rgba(${r},${g},${b},0.88) ${s3}%, rgb(${r},${g},${b}) 97.5%)`;
 }
 
-/**
- * Pure Google Flow Frame-Sequence Stage.
- * Never renders procedural/synthetic cartoon shapes:
- * - When `public/frames/<scene>/` contains extracted Google Flow WebP / `.bin` frames,
- *   it streams and scrubs them at 60/120Hz via `{ alpha: false }` canvas + static vignette.
- * - While awaiting the Google Flow `.mp4` extraction (`npm run frames`), it displays an
- *   architectural studio calibration slate with the exact locked background hex & spotlight.
- */
 export function ScrollSequenceStage({
   scene,
   eager = false,
@@ -207,6 +199,7 @@ export function ScrollSequenceStage({
   actStepManual = null,
 }: ScrollSequenceStageProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const posterElRef = useRef<HTMLElement | null>(null);
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -219,10 +212,9 @@ export function ScrollSequenceStage({
   const drawnFrameRef = useRef<number>(-1);
   const activeActRef = useRef<0 | 1 | 2>(0);
   const totalFramesRef = useRef<number>(scene.desktop.frameCount);
+  const posterHiddenRef = useRef<boolean>(false);
   const rafIdRef = useRef<number>(0);
 
-  const [hasFlowFrames, setHasFlowFrames] = useState<boolean>(false);
-  const [activeActState, setActiveActState] = useState<0 | 1 | 2>(0);
   const [reducedMotion, setReducedMotion] = useState<boolean>(false);
   const [atClimax, setAtClimax] = useState<boolean>(false);
   const [selectedHotspot, setSelectedHotspot] = useState<SceneHotspot | null>(null);
@@ -296,6 +288,14 @@ export function ScrollSequenceStage({
       }
 
       drawnFrameRef.current = bestIdx;
+
+      if (!posterHiddenRef.current) {
+        posterHiddenRef.current = true;
+        if (posterElRef.current) {
+          posterElRef.current.style.opacity = "0";
+          posterElRef.current.style.display = "none";
+        }
+      }
     },
     [findNearestLoadedIndex, progressBarRef, scene.sectionBgHex]
   );
@@ -329,7 +329,6 @@ export function ScrollSequenceStage({
       const nextAct: 0 | 1 | 2 = p < 0.34 ? 0 : p < 0.68 ? 1 : 2;
       if (nextAct !== activeActRef.current) {
         activeActRef.current = nextAct;
-        setActiveActState(nextAct);
         onActChange?.(nextAct);
       }
 
@@ -437,7 +436,6 @@ export function ScrollSequenceStage({
       framesRef.current[idx0] = decoded;
       loadedMaskRef.current[idx0] = 1;
       inFlightMaskRef.current[idx0] = 0;
-      setHasFlowFrames(true);
 
       const curTarget = targetFrameRef.current;
       const curDrawn = drawnFrameRef.current;
@@ -468,6 +466,34 @@ export function ScrollSequenceStage({
         if (fIdx < 0 || fIdx >= st.meta.frames.length) return false;
         const entry = st.meta.frames[fIdx];
         return entry.o + entry.l <= st.receivedBytes;
+      };
+
+      const scheduleSafeEvict = () => {
+        if (evictTimer !== null) return;
+        const runEvict = () => {
+          evictTimer = null;
+          if (cancelled || isNearViewport) return;
+          if (performance.now() - globalLastScrollTs < 160) {
+            evictTimer = setTimeout(runEvict, 160);
+            return;
+          }
+          for (let i = 0; i < total; i++) {
+            if (!permanentStrideSet.has(i) && loadedMaskRef.current[i] === 1) {
+              const f = framesRef.current[i];
+              if (f && "close" in f) f.close();
+              framesRef.current[i] = null;
+              loadedMaskRef.current[i] = 0;
+            }
+          }
+          if (
+            drawnFrameRef.current >= 0 &&
+            !permanentStrideSet.has(drawnFrameRef.current)
+          ) {
+            drawnFrameRef.current = -1;
+            scheduleDraw(true);
+          }
+        };
+        evictTimer = setTimeout(runEvict, 160);
       };
 
       const countLoadedFrames = (): number => {
@@ -561,6 +587,15 @@ export function ScrollSequenceStage({
 
       let onChunkListener: (() => void) | null = null;
       const startMobilePack = async (urgent: boolean) => {
+        fetch(scene.mobile.poster, { cache: "force-cache" })
+          .then(async (pResp) => {
+            if (pResp.ok && !cancelled && loadedMaskRef.current[0] === 0) {
+              const pBmp = await decodeBlob(await pResp.blob());
+              if (pBmp) storeDecodedFrame(0, pBmp);
+            }
+          })
+          .catch(() => {});
+
         const st = await openStreamingMobilePack(
           scene.mobile.packJson,
           scene.mobile.packBin,
@@ -577,6 +612,57 @@ export function ScrollSequenceStage({
 
       void startMobilePack(eager);
 
+      const el = containerRef.current;
+      let screenIo: IntersectionObserver | null = null;
+      let preloadIo: IntersectionObserver | null = null;
+      let evictIo: IntersectionObserver | null = null;
+
+      if (el && typeof IntersectionObserver !== "undefined") {
+        screenIo = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              isOnScreen = entry.isIntersecting;
+            }
+          },
+          { rootMargin: "10% 0px 10% 0px" }
+        );
+        screenIo.observe(el);
+
+        preloadIo = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                isNearViewport = true;
+                if (evictTimer) {
+                  clearTimeout(evictTimer);
+                  evictTimer = null;
+                }
+                if (!packState) {
+                  void startMobilePack(true);
+                } else {
+                  spawnDecodeWorkers();
+                }
+              }
+            }
+          },
+          { rootMargin: "180% 0px 180% 0px" }
+        );
+        preloadIo.observe(el);
+
+        evictIo = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (!entry.isIntersecting) {
+                isNearViewport = false;
+                scheduleSafeEvict();
+              }
+            }
+          },
+          { rootMargin: "320% 0px 320% 0px" }
+        );
+        evictIo.observe(el);
+      }
+
       return () => {
         cancelled = true;
         if (resumeTimer) clearTimeout(resumeTimer);
@@ -584,6 +670,9 @@ export function ScrollSequenceStage({
         if (packState && onChunkListener) {
           packState.listeners.delete(onChunkListener);
         }
+        screenIo?.disconnect();
+        preloadIo?.disconnect();
+        evictIo?.disconnect();
         if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
         rafIdRef.current = 0;
         for (const f of framesRef.current) {
@@ -592,19 +681,19 @@ export function ScrollSequenceStage({
       };
     }
 
-    // DESKTOP 1920x1080 PROGRESSIVE STREAMER
+    // DESKTOP 1920x1080 PROGRESSIVE HTTP/2 STREAMER
     let desktopStarted = false;
     const startDesktop = async () => {
       if (desktopStarted || cancelled) return;
       desktopStarted = true;
 
-      const loadOne = async (idx0: number): Promise<boolean> => {
+      const loadOne = async (idx0: number) => {
         if (
           cancelled ||
           loadedMaskRef.current[idx0] === 1 ||
           inFlightMaskRef.current[idx0] === 1
         ) {
-          return true;
+          return;
         }
         inFlightMaskRef.current[idx0] = 1;
         try {
@@ -614,19 +703,17 @@ export function ScrollSequenceStage({
           );
           if (!resp.ok) {
             inFlightMaskRef.current[idx0] = 0;
-            return false;
+            return;
           }
           const bmp = await decodeBlob(await resp.blob());
           storeDecodedFrame(idx0, bmp);
-          return Boolean(bmp);
         } catch {
           inFlightMaskRef.current[idx0] = 0;
-          return false;
         }
       };
 
-      const firstOk = await loadOne(0);
-      if (cancelled || !firstOk) return;
+      await loadOne(0);
+      if (cancelled) return;
 
       const pickNext = (): number => {
         const target = targetFrameRef.current;
@@ -647,6 +734,12 @@ export function ScrollSequenceStage({
           }
           if (bestIdx >= 0) return bestIdx;
         }
+        if (
+          loadedMaskRef.current[total - 1] === 0 &&
+          inFlightMaskRef.current[total - 1] === 0
+        ) {
+          return total - 1;
+        }
         return -1;
       };
 
@@ -654,17 +747,51 @@ export function ScrollSequenceStage({
         while (!cancelled) {
           const next = pickNext();
           if (next < 0) break;
-          const ok = await loadOne(next);
-          if (!ok) break;
+          await loadOne(next);
         }
       };
-      await Promise.all(Array.from({ length: 6 }, () => worker()));
+      await Promise.all(Array.from({ length: 8 }, () => worker()));
     };
 
-    void startDesktop();
+    if (eager) {
+      void startDesktop();
+      return () => {
+        cancelled = true;
+        if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
+        rafIdRef.current = 0;
+        for (const f of framesRef.current) {
+          if (f && "close" in f) f.close();
+        }
+      };
+    }
+
+    const warmDelayMs = scene.id === "scene-02-implant" ? 550 : 1250;
+    const warmTimer = setTimeout(() => {
+      void startDesktop();
+    }, warmDelayMs);
+
+    const el = containerRef.current;
+    let io: IntersectionObserver | null = null;
+    if (el && typeof IntersectionObserver !== "undefined") {
+      io = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              void startDesktop();
+              io?.disconnect();
+              break;
+            }
+          }
+        },
+        { rootMargin: "250% 0px 250% 0px" }
+      );
+      io.observe(el);
+    }
 
     return () => {
       cancelled = true;
+      clearTimeout(warmTimer);
+      io?.disconnect();
       if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
       rafIdRef.current = 0;
       for (const f of framesRef.current) {
@@ -674,64 +801,34 @@ export function ScrollSequenceStage({
   }, [eager, scene, scheduleDraw]);
 
   const isLightStage = scene.id === "scene-02-implant";
-  const currentActObj = scene.acts[activeActState] || scene.acts[0];
 
   return (
     <div
       ref={containerRef}
       data-scene-stage={scene.id}
       className={`relative w-full h-full select-none overflow-hidden ${className}`}
-      style={{
-        background: `radial-gradient(48% 48% at 50% 50%, ${scene.spotlightHex} 0%, ${scene.sectionBgHex} 78%)`,
-      }}
+      style={{ backgroundColor: scene.sectionBgHex }}
       role="img"
       aria-label={scene.title}
     >
+      <picture
+        ref={posterElRef}
+        className="pointer-events-none absolute inset-0 flex items-center justify-center transition-opacity duration-200 opacity-100"
+      >
+        <source media={TOUCH_STICKY_MEDIA_QUERY} srcSet={scene.mobile.poster} />
+        <img
+          src={scene.desktop.poster}
+          alt={scene.title}
+          className="w-full h-full object-contain"
+          loading={eager ? "eager" : "lazy"}
+          fetchPriority={eager ? "high" : "auto"}
+        />
+      </picture>
+
       <canvas
         ref={canvasRef}
-        className={`pointer-events-none block w-full h-full object-contain transform-gpu ${
-          hasFlowFrames ? "opacity-100" : "opacity-0"
-        }`}
+        className="pointer-events-none block w-full h-full object-contain transform-gpu"
       />
-
-      {/* Architectural Studio Calibration Slate (Shown when Google Flow MP4 frames have not been extracted yet) */}
-      {!hasFlowFrames && (
-        <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
-          <div
-            className={`max-w-md rounded-2xl border p-6 sm:p-8 ${
-              isLightStage
-                ? "border-[#181210]/15 bg-[#FAF6EE]/80 text-[#181210]"
-                : "border-[#C6A46C]/30 bg-black/25 text-[#FAF6EE]"
-            }`}
-          >
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#C6A46C]/45 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#C6A46C]">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#C6A46C]" />
-              <span>GOOGLE FLOW 16:9 STAGE READY</span>
-            </div>
-            <div className="mt-3 font-serif text-xl sm:text-2xl">
-              {currentActObj.title}
-            </div>
-            <p
-              className={`mt-1.5 text-xs leading-relaxed ${
-                isLightStage ? "text-[#5C5349]" : "text-[#E8DFD1]/80"
-              }`}
-            >
-              {currentActObj.subtitle}
-            </p>
-            <div
-              className={`mt-4 pt-3 border-t text-[11px] font-mono ${
-                isLightStage
-                  ? "border-[#181210]/10 text-[#6E1B2B]"
-                  : "border-white/10 text-[#C6A46C]"
-              }`}
-            >
-              Drop <strong>{scene.rawVideoFile}</strong> &amp; run{" "}
-              <code>npm run frames</code> · Color Lock:{" "}
-              <strong>{scene.sectionBgHex}</strong>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Static GPU-cached radial feather vignette — zero per-frame canvas mask recomposition */}
       <div
@@ -759,10 +856,10 @@ export function ScrollSequenceStage({
                   }
                   className={`group relative flex h-7 w-7 items-center justify-center rounded-full border transition-transform cursor-pointer ${
                     isSelected
-                      ? "scale-125 border-[#C6A46C] bg-[#6E1B2B] shadow-lg"
+                      ? "scale-125 border-[#C6A46C] bg-[#4B1917] shadow-lg"
                       : isLightStage
-                      ? "border-[#6E1B2B] bg-[#FAF6EE]/95 hover:scale-110 shadow-md"
-                      : "border-[#C6A46C] bg-[#120E0D]/90 hover:scale-110 shadow-md"
+                      ? "border-[#4B1917] bg-[#FAF6EE]/95 hover:scale-110 shadow-md"
+                      : "border-[#C6A46C] bg-[#0E0C08]/90 hover:scale-110 shadow-md"
                   }`}
                 >
                   <span
@@ -770,7 +867,7 @@ export function ScrollSequenceStage({
                       isSelected
                         ? "bg-[#FAF6EE]"
                         : isLightStage
-                        ? "bg-[#6E1B2B]"
+                        ? "bg-[#4B1917]"
                         : "bg-[#C6A46C]"
                     }`}
                   />
@@ -783,7 +880,7 @@ export function ScrollSequenceStage({
 
       {/* Selected Anatomical Hotspot Popover */}
       {selectedHotspot && (
-        <div className="pointer-events-auto absolute bottom-3 left-3 right-3 sm:left-auto sm:right-4 sm:bottom-4 z-30 sm:max-w-xs rounded-2xl border border-[#C6A46C]/45 bg-[#120E0D]/95 p-3.5 text-[#FAF6EE] shadow-2xl">
+        <div className="pointer-events-auto absolute bottom-3 left-3 right-3 sm:left-auto sm:right-4 sm:bottom-4 z-30 sm:max-w-xs rounded-2xl border border-[#C6A46C]/45 bg-[#0E0C08]/95 p-3.5 text-[#FAF6EE] shadow-2xl">
           <div className="flex items-start justify-between gap-2">
             <div>
               <span className="block text-[9px] font-semibold uppercase tracking-[0.18em] text-[#C6A46C]">
@@ -812,7 +909,7 @@ export function ScrollSequenceStage({
       )}
 
       {reducedMotion && (
-        <div className="pointer-events-auto absolute top-3 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 rounded-full border border-white/25 bg-[#120E0D]/95 px-3.5 py-1.5 text-xs text-white shadow-lg">
+        <div className="pointer-events-auto absolute top-3 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 rounded-full border border-white/25 bg-[#0E0C08]/95 px-3.5 py-1.5 text-xs text-white shadow-lg">
           <span className="opacity-85 whitespace-nowrap">Reduced motion:</span>
           {[0, 1, 2].map((step) => (
             <button

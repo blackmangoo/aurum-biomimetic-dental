@@ -35,9 +35,9 @@ const MONOGRAPH_SPECS = [
 ] as const;
 
 const ACTIVE_ACT_ROW =
-  "w-full text-left border-l-2 border-[#C6A46C] bg-black/25 px-4 py-2.5 transition-colors cursor-pointer";
+  "w-full text-left border-l-2 border-[#C6A46C] bg-black/25 px-3.5 py-2 xl:px-4 xl:py-2.5 transition-colors cursor-pointer";
 const INACTIVE_ACT_ROW =
-  "hidden lg:block w-full text-left border-l-2 border-white/15 bg-transparent px-4 py-2 hover:bg-black/15 transition-colors cursor-pointer opacity-75";
+  "hidden lg:block w-full text-left border-l-2 border-white/15 bg-transparent px-3.5 py-1.5 xl:px-4 xl:py-2 hover:bg-black/15 transition-colors cursor-pointer opacity-75";
 
 export function HeroSceneSection() {
   const scene = SCROLL_SCENES["scene-01-hero"];
@@ -95,7 +95,7 @@ export function HeroSceneSection() {
   return (
     <section
       id="hero-stage"
-      aria-label="Monograph 01 — Burgundy-Rose Biomimetic Arch Stage"
+      aria-label="Monograph 01 — Burgundy-Crimson Biomimetic Arch Stage"
     >
       <div
         ref={trackRef}
@@ -107,22 +107,22 @@ export function HeroSceneSection() {
           } as React.CSSProperties
         }
       >
-        {/* Asymmetric Swiss Monograph Split Stage on Deep Burgundy-Rose (#6E1B2B) */}
+        {/* Asymmetric Swiss Monograph Split Stage on Deep Burgundy-Crimson (#4B1917) */}
         <div
           ref={pinSectionRef}
           data-act="0"
-          className="scene-sticky-stage w-full overflow-hidden flex items-center pt-[74px] pb-4 lg:pt-[82px] lg:pb-6"
+          className="scene-sticky-stage w-full overflow-hidden flex items-center pt-[74px] pb-4 lg:pt-[84px] lg:pb-6"
           style={{ backgroundColor: scene.sectionBgHex, color: "#FAF6EE" }}
         >
-          <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-10 xl:px-12 grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 items-center">
+          <div className="mx-auto w-full max-w-[1440px] px-4 sm:px-8 lg:px-10 xl:px-12 grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-5 lg:gap-8 items-center">
             {/* Left Column (5 Cols): Swiss Architectural Monograph Index & Vertical Act Ledger */}
             <div className="lg:col-span-5 order-2 lg:order-1 flex flex-col justify-between">
               <div>
-                <div className="inline-flex items-center gap-2 border border-[#C6A46C]/45 bg-black/20 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#C6A46C]">
+                <div className="inline-flex items-center gap-2 border border-[#C6A46C]/45 bg-black/20 px-2.5 py-0.5 text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.18em] text-[#C6A46C]">
                   <span>MONOGRAPH N° 01 // GENEVA &amp; BEVERLY HILLS</span>
                 </div>
 
-                <h1 className="mt-2.5 font-serif text-3xl sm:text-4xl lg:text-[42px] xl:text-[50px] font-normal uppercase leading-[1.02] tracking-tight text-[#FAF6EE]">
+                <h1 className="mt-1.5 lg:mt-2 font-serif text-2xl sm:text-4xl lg:text-[34px] xl:text-[46px] font-normal uppercase leading-[1.03] tracking-tight text-[#FAF6EE]">
                   We Never Grind
                   <br />
                   Living Teeth{" "}
@@ -131,7 +131,7 @@ export function HeroSceneSection() {
                   </span>
                 </h1>
 
-                <p className="scene-compact-hide hidden sm:block mt-2.5 text-xs sm:text-sm leading-relaxed text-[#FAF6EE]/85">
+                <p className="scene-compact-hide hidden sm:block mt-2 text-xs sm:text-sm leading-relaxed text-[#FAF6EE]/85">
                   Conventional crowns amputate 70% of healthy tooth structure.
                   Our Swiss biomimetic laboratory bonds 0.2mm platinum-foil
                   porcelain veils directly to intact enamel at 51.5 MPa.
@@ -140,7 +140,7 @@ export function HeroSceneSection() {
 
               {/* Mobile Compact Act Switcher */}
               <div
-                className="mt-3 flex lg:hidden items-center gap-1"
+                className="mt-2.5 flex lg:hidden items-center gap-1"
                 role="tablist"
                 aria-label="Hero Sequence Acts Mobile"
               >
@@ -165,7 +165,7 @@ export function HeroSceneSection() {
 
               {/* Vertical Swiss Hairline Act Ledger */}
               <div
-                className="mt-3 lg:mt-4 space-y-1.5"
+                className="mt-2.5 lg:mt-3 space-y-1.5"
                 role="tablist"
                 aria-label="Hero Sequence Acts"
               >
@@ -182,7 +182,7 @@ export function HeroSceneSection() {
                       className={isActive ? ACTIVE_ACT_ROW : INACTIVE_ACT_ROW}
                     >
                       <div className="flex items-baseline justify-between gap-2">
-                        <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C6A46C]">
+                        <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-[#C6A46C]">
                           {act.badge}
                         </span>
                         <span className="font-serif text-sm sm:text-base text-[#FAF6EE]">
@@ -192,14 +192,14 @@ export function HeroSceneSection() {
                           </span>
                         </span>
                       </div>
-                      <div className="mt-0.5 font-serif text-base xl:text-lg text-[#FAF6EE]">
+                      <div className="mt-0.5 font-serif text-sm sm:text-base xl:text-lg text-[#FAF6EE]">
                         {act.title}
                       </div>
                       <p
                         data-hero-act-sub
                         className={`${
                           isActive ? "" : "hidden"
-                        } mt-1 text-xs leading-relaxed text-[#FAF6EE]/80`}
+                        } mt-0.5 text-xs leading-relaxed text-[#FAF6EE]/80 line-clamp-2`}
                       >
                         {act.subtitle}
                       </p>
@@ -209,27 +209,27 @@ export function HeroSceneSection() {
               </div>
 
               {/* Bottom Progress Rail & Dual Actions */}
-              <div className="mt-4 pt-3 border-t border-white/15">
-                <div className="mb-3 h-1 w-full overflow-hidden bg-black/30">
+              <div className="mt-3 pt-2.5 border-t border-white/15">
+                <div className="mb-2.5 h-1 w-full overflow-hidden bg-black/30">
                   <div
                     ref={progressBarRef}
                     className="h-full w-full origin-left bg-[#C6A46C] will-change-transform"
                     style={{ transform: "scaleX(0.05)" }}
                   />
                 </div>
-                <div className="flex flex-wrap items-center gap-2.5">
+                <div className="flex items-center gap-2">
                   <button
                     type="button"
                     onClick={() => smoothScrollTo("#services")}
-                    className="inline-flex h-10 sm:h-11 items-center gap-2 bg-[#FAF6EE] px-5 text-xs font-semibold uppercase tracking-[0.14em] text-[#120E0D] hover:bg-[#C6A46C] transition-colors cursor-pointer"
+                    className="inline-flex h-9 sm:h-10 items-center gap-1.5 bg-[#FAF6EE] px-3.5 sm:px-4.5 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.12em] text-[#120E0D] hover:bg-[#C6A46C] transition-colors cursor-pointer whitespace-nowrap"
                   >
-                    <span>Inspect Protocol Matrix</span>
+                    <span>Protocol Matrix</span>
                     <ArrowUpRightIcon className="w-3.5 h-3.5" />
                   </button>
                   <button
                     type="button"
                     onClick={() => smoothScrollTo("#booking")}
-                    className="inline-flex h-10 sm:h-11 items-center border border-[#C6A46C]/60 bg-black/20 px-4 text-xs font-semibold uppercase tracking-[0.14em] text-[#FAF6EE] hover:bg-white/10 transition-colors cursor-pointer"
+                    className="inline-flex h-9 sm:h-10 items-center border border-[#C6A46C]/60 bg-black/20 px-3.5 sm:px-4 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.12em] text-[#FAF6EE] hover:bg-white/10 transition-colors cursor-pointer whitespace-nowrap"
                   >
                     Commission Dossier
                   </button>
@@ -237,9 +237,9 @@ export function HeroSceneSection() {
               </div>
             </div>
 
-            {/* Right Column (7 Cols): Framed Burgundy-Rose 16:9 Studio Aperture */}
+            {/* Right Column (7 Cols): Seamless Burgundy-Crimson 16:9 Studio Aperture */}
             <div className="lg:col-span-7 order-1 lg:order-2 flex flex-col items-center justify-center">
-              <div className="relative w-full max-w-[540px] lg:max-w-[880px] aspect-[16/9] max-h-[30svh] sm:max-h-[38svh] lg:max-h-[calc(100vh-130px)] border border-[#C6A46C]/30 shadow-2xl">
+              <div className="relative w-full max-w-[540px] lg:max-w-[880px] aspect-[16/9] max-h-[26svh] sm:max-h-[36svh] lg:max-h-[calc(100vh-120px)]">
                 <ScrollSequenceStage
                   scene={scene}
                   eager={true}
@@ -252,21 +252,21 @@ export function HeroSceneSection() {
         </div>
       </div>
 
-      {/* Architectural Hairline Specification Strip on Raw Travertine (#EDE6DA) */}
-      <div className="border-t border-b border-[#D8CFC0] bg-[#EDE6DA] text-[#181210]">
-        <div className="mx-auto max-w-[1440px] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-[#D8CFC0]">
+      {/* Architectural Hairline Specification Strip on Warm Travertine (#DFD3C3) */}
+      <div className="border-t border-b border-[#C8B9A6] bg-[#DFD3C3] text-[#181210]">
+        <div className="mx-auto max-w-[1440px] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-[#C8B9A6]">
           {MONOGRAPH_SPECS.map((sp) => (
             <div key={sp.code} className="px-6 py-7 lg:py-8">
-              <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#8C6B37]">
+              <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#7A5928]">
                 {sp.code}
               </div>
-              <div className="mt-2 font-serif text-3xl sm:text-4xl text-[#6E1B2B]">
+              <div className="mt-2 font-serif text-3xl sm:text-4xl text-[#4B1917]">
                 {sp.metric}
               </div>
               <div className="mt-1 text-sm font-semibold uppercase tracking-[0.08em] text-[#181210]">
                 {sp.title}
               </div>
-              <p className="mt-0.5 text-xs text-[#5C5349]">{sp.note}</p>
+              <p className="mt-0.5 text-xs text-[#544A40]">{sp.note}</p>
             </div>
           ))}
         </div>

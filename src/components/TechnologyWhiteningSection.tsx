@@ -222,9 +222,9 @@ export function TechnologyWhiteningSection({
               </div>
             </div>
 
-            {/* Right Column (7 Cols): Framed Obsidian Espresso 16:9 Stage */}
+            {/* Right Column (7 Cols): Seamless Obsidian Espresso 16:9 Stage (#0E0C08) */}
             <div className="lg:col-span-7 order-1 lg:order-2 flex items-center justify-center">
-              <div className="w-full max-w-[540px] lg:max-w-[860px] aspect-[16/9] max-h-[29svh] sm:max-h-[37svh] lg:max-h-[calc(100vh-124px)] border border-[#C6A46C]/30 shadow-2xl">
+              <div className="w-full max-w-[540px] lg:max-w-[860px] aspect-[16/9] max-h-[29svh] sm:max-h-[37svh] lg:max-h-[calc(100vh-124px)]">
                 <ScrollSequenceStage
                   scene={scene}
                   eager={false}

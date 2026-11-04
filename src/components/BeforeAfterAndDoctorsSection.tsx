@@ -33,6 +33,7 @@ export function BeforeAfterAndDoctorsSection() {
   const [selectedCaseIdx, setSelectedCaseIdx] = useState(0);
   const [selectedShadeIdx, setSelectedShadeIdx] = useState(0);
   const [teethCount, setTeethCount] = useState<8 | 10 | 20>(10);
+  const [sliderPct, setSliderPct] = useState<number>(52);
 
   const activeCase = TRANSFORMATION_CASES[selectedCaseIdx];
   const activeShade = SHADE_SWATCHES[selectedShadeIdx];
@@ -139,7 +140,7 @@ export function BeforeAfterAndDoctorsSection() {
             </div>
           </div>
 
-          {/* Right Column: Interactive Zurich Ceramic Shade & Fly-In Dossier Planner */}
+          {/* Right Column: Interactive Real-Frame Before/After Optical Slider + Zurich Ceramic Planner */}
           <div className="lg:col-span-6 border border-[#D8CFC0] bg-[#FAF6EE] p-7 sm:p-10">
             <div className="flex items-center justify-between pb-4 border-b border-[#D8CFC0]">
               <div>
@@ -147,12 +148,62 @@ export function BeforeAfterAndDoctorsSection() {
                   ZURICH CERAMIC CALIBRATOR
                 </span>
                 <h3 className="font-serif text-2xl text-[#181210]">
-                  Optical Shade &amp; Arch Configurator
+                  Optical Comparator &amp; Arch Planner
                 </h3>
               </div>
-              <span className="border border-[#6E1B2B]/30 px-3 py-1 text-[10px] font-mono font-semibold text-[#6E1B2B]">
+              <span className="border border-[#4B1917]/30 px-3 py-1 text-[10px] font-mono font-semibold text-[#4B1917]">
                 {activeCase.code}
               </span>
+            </div>
+
+            {/* Interactive Real-Frame Before/After Optical Comparator */}
+            <div className="mt-5">
+              <div className="relative aspect-[16/9] w-full overflow-hidden border border-[#D8CFC0] bg-[#0E0C08] select-none">
+                <img
+                  src="/frames/scene-03-scan-whitening/desktop/frame_0180.webp"
+                  alt={`Completed Biomimetic Outcome — ${activeCase.afterShade}`}
+                  className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+                  loading="lazy"
+                />
+                <div
+                  className="pointer-events-none absolute inset-0 overflow-hidden"
+                  style={{ clipPath: `inset(0 ${100 - sliderPct}% 0 0)` }}
+                >
+                  <img
+                    src="/frames/scene-03-scan-whitening/desktop/frame_0055.webp"
+                    alt={`Pre-Restoration Scan — ${activeCase.beforeShade}`}
+                    className="block h-full w-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="pointer-events-none absolute top-3 left-3 bg-[#0E0C08]/90 border border-white/15 px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider text-[#FAF6EE]">
+                  BEFORE · {activeCase.beforeShade}
+                </div>
+                <div className="pointer-events-none absolute top-3 right-3 bg-[#4B1917]/95 border border-[#C6A46C]/45 px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider text-[#FAF6EE]">
+                  AFTER · {activeCase.afterShade}
+                </div>
+                <div
+                  style={{ left: `${sliderPct}%` }}
+                  className="pointer-events-none absolute top-0 bottom-0 -translate-x-1/2 w-0.5 bg-[#C6A46C]"
+                />
+              </div>
+              <div className="mt-2.5 flex items-center gap-3">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-[#5C5349]">
+                  OPTICAL SWEEP
+                </span>
+                <input
+                  type="range"
+                  min={5}
+                  max={95}
+                  value={sliderPct}
+                  onChange={(e) => setSliderPct(Number(e.target.value))}
+                  aria-label="Before and after optical comparison slider"
+                  className="w-full accent-[#4B1917] cursor-pointer h-1.5 bg-[#D8CFC0]"
+                />
+                <span className="text-[10px] font-mono text-[#4B1917] w-9 text-right">
+                  {sliderPct}%
+                </span>
+              </div>
             </div>
 
             {/* 1. Optical Ceramic Swatch Selector */}

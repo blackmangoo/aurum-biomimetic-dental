@@ -35,11 +35,11 @@ export function LongevityAndFaqSection({
 
   return (
     <>
-      {/* 1. Oral Longevity & TMJ Engineering Section on Deep Burgundy-Rose (#6E1B2B) */}
+      {/* 1. Oral Longevity & TMJ Engineering Section on Deep Burgundy-Crimson (#4B1917) */}
       <section
         id="longevity-sanctuary"
         aria-labelledby="longevity-heading"
-        className="bg-[#6E1B2B] text-[#FAF6EE] py-24 sm:py-28 border-b border-[#C6A46C]/30"
+        className="bg-[#4B1917] text-[#FAF6EE] py-24 sm:py-28 border-b border-[#C6A46C]/30"
       >
         <div className="mx-auto max-w-[1440px] px-5 sm:px-8 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
