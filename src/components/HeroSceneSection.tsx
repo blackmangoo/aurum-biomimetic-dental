@@ -1,73 +1,78 @@
 "use client";
 
 import React, { useRef, useCallback } from "react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 import { SCROLL_SCENES } from "@/data/clinicData";
 import { ScrollSequenceStage } from "@/components/canvas/ScrollSequenceStage";
 import { smoothScrollTo } from "@/lib/scrollBus";
 import { useSceneScrollScrub } from "@/lib/useSceneScrollScrub";
 import { ArrowUpRightIcon } from "@/components/icons/DentalIcons";
+import { MagneticButton } from "@/components/ui/MagneticButton";
 
-const MONOGRAPH_SPECS = [
+const PILLARS = [
   {
-    code: "SPEC 01 // CONSERVATION",
-    metric: "96.4%",
-    title: "Virgin Enamel Retained",
-    note: "Zero full-crown tooth stump grinding",
+    metric: "96%",
+    title: "Enamel Preserved",
+    note: "Additive restorations without aggressive crown grinding",
   },
   {
-    code: "SPEC 02 // CERAMIC GAUGE",
     metric: "0.2 mm",
-    title: "Platinum-Foil Swiss Veils",
-    note: "Hand-sintered in Geneva & Zurich",
+    title: "No-Prep Veneers",
+    note: "Contact-lens thin porcelain hand-layered on platinum foil",
   },
   {
-    code: "SPEC 03 // ADHESION",
-    metric: "51.5 MPa",
-    title: "DEJ-Mimetic Bio-Seal",
-    note: "Immediate Dentin Sealing (IDS)",
+    metric: "60 sec",
+    title: "Optical 3D Scan",
+    note: "Radiation-free light imaging with zero putty impressions",
   },
   {
-    code: "SPEC 04 // DIAGNOSTICS",
-    metric: "8,000 fps",
-    title: "Near-Infrared OCT",
-    note: "0 mSv radiation sub-surface map",
+    metric: "Calm-First",
+    title: "Private Penthouse",
+    note: "One patient at a time with warm buffered numbing",
   },
 ] as const;
-
-const ACTIVE_ACT_ROW =
-  "w-full text-left border-l-2 border-[#C6A46C] bg-black/25 px-3.5 py-2 xl:px-4 xl:py-2.5 transition-colors cursor-pointer";
-const INACTIVE_ACT_ROW =
-  "hidden lg:block w-full text-left border-l-2 border-white/15 bg-transparent px-3.5 py-1.5 xl:px-4 xl:py-2 hover:bg-black/15 transition-colors cursor-pointer opacity-75";
 
 export function HeroSceneSection() {
   const scene = SCROLL_SCENES["scene-01-hero"];
   const trackRef = useRef<HTMLDivElement | null>(null);
   const pinSectionRef = useRef<HTMLDivElement | null>(null);
   const progressBarRef = useRef<HTMLDivElement | null>(null);
+  const copyColRef = useRef<HTMLDivElement | null>(null);
+
+  // Choreographed entrance animation on mount
+  useGSAP(
+    () => {
+      if (!copyColRef.current) return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      gsap.from(copyColRef.current.children, {
+        y: 28,
+        opacity: 0,
+        duration: 0.9,
+        stagger: 0.1,
+        ease: "power3.out",
+      });
+    },
+    { scope: pinSectionRef }
+  );
 
   const applyActDom = useCallback((actIdx: 0 | 1 | 2) => {
     const root = pinSectionRef.current;
     if (!root) return;
     root.dataset.act = String(actIdx);
 
-    root
-      .querySelectorAll<HTMLButtonElement>("[data-hero-act-row]")
-      .forEach((row) => {
-        const active = row.dataset.heroActRow === String(actIdx);
-        row.setAttribute("aria-selected", active ? "true" : "false");
-        row.className = active ? ACTIVE_ACT_ROW : INACTIVE_ACT_ROW;
-        const sub = row.querySelector<HTMLElement>("[data-hero-act-sub]");
-        if (sub) sub.classList.toggle("hidden", !active);
-      });
+    root.querySelectorAll<HTMLElement>("[data-hero-act-panel]").forEach((el) => {
+      el.classList.toggle("hidden", el.dataset.heroActPanel !== String(actIdx));
+    });
 
     root
-      .querySelectorAll<HTMLButtonElement>("[data-hero-mob-pill]")
+      .querySelectorAll<HTMLButtonElement>("[data-hero-act-pill]")
       .forEach((btn) => {
-        const active = btn.dataset.heroMobPill === String(actIdx);
+        const active = btn.dataset.heroActPill === String(actIdx);
         btn.setAttribute("aria-selected", active ? "true" : "false");
         btn.className = active
-          ? "flex-1 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] bg-[#C6A46C] text-[#120E0D] cursor-pointer"
-          : "flex-1 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] bg-black/25 text-[#FAF6EE]/80 cursor-pointer";
+          ? "flex-1 rounded-full py-1.5 px-3 text-[11px] font-semibold tracking-wider uppercase transition-all cursor-pointer bg-[#C6A46C] text-[#140B0A] shadow-sm"
+          : "flex-1 rounded-full py-1.5 px-3 text-[11px] font-medium tracking-wider uppercase transition-all cursor-pointer bg-white/10 text-[#FAF6EE]/80 hover:bg-white/20";
       });
   }, []);
 
@@ -93,10 +98,7 @@ export function HeroSceneSection() {
   });
 
   return (
-    <section
-      id="hero-stage"
-      aria-label="Monograph 01 — Burgundy-Crimson Biomimetic Arch Stage"
-    >
+    <section id="hero-stage" aria-label="Aurum Atelier — Biomimetic Dentistry">
       <div
         ref={trackRef}
         className="scene-sticky-track relative"
@@ -107,139 +109,119 @@ export function HeroSceneSection() {
           } as React.CSSProperties
         }
       >
-        {/* Asymmetric Swiss Monograph Split Stage on Deep Burgundy-Crimson (#4B1917) */}
         <div
           ref={pinSectionRef}
           data-act="0"
-          className="scene-sticky-stage w-full overflow-hidden flex items-center pt-[74px] pb-4 lg:pt-[84px] lg:pb-6"
+          className="scene-sticky-stage w-full overflow-hidden flex items-center pt-[74px] pb-5 lg:pt-[84px] lg:pb-6"
           style={{ backgroundColor: scene.sectionBgHex, color: "#FAF6EE" }}
         >
-          <div className="mx-auto w-full max-w-[1440px] px-4 sm:px-8 lg:px-10 xl:px-12 grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-5 lg:gap-8 items-center">
-            {/* Left Column (5 Cols): Swiss Architectural Monograph Index & Vertical Act Ledger */}
-            <div className="lg:col-span-5 order-2 lg:order-1 flex flex-col justify-between">
+          <div className="mx-auto w-full max-w-[1440px] px-4 sm:px-8 lg:px-10 xl:px-12 grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 items-center">
+            {/* Left Column (5 Cols): Restrained, Breathing Editorial Copy */}
+            <div
+              ref={copyColRef}
+              className="lg:col-span-5 order-2 lg:order-1 flex flex-col justify-between"
+            >
               <div>
-                <div className="inline-flex items-center gap-2 border border-[#C6A46C]/45 bg-black/20 px-2.5 py-0.5 text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.18em] text-[#C6A46C]">
-                  <span>MONOGRAPH N° 01 // GENEVA &amp; BEVERLY HILLS</span>
-                </div>
+                <p className="text-xs font-medium uppercase tracking-[0.2em] text-[#C6A46C] mb-2">
+                  {scene.eyebrow}
+                </p>
 
-                <h1 className="mt-1.5 lg:mt-2 font-serif text-2xl sm:text-4xl lg:text-[34px] xl:text-[46px] font-normal uppercase leading-[1.03] tracking-tight text-[#FAF6EE]">
-                  We Never Grind
+                <h1 className="font-serif text-3xl sm:text-5xl lg:text-[42px] xl:text-[54px] font-normal leading-[1.04] tracking-tight text-[#FAF6EE]">
+                  Living enamel,
                   <br />
-                  Living Teeth{" "}
-                  <span className="italic font-normal text-[#C6A46C]">
-                    Into Stumps.
+                  <span className="italic text-[#C6A46C]">
+                    left untouched.
                   </span>
                 </h1>
 
-                <p className="scene-compact-hide hidden sm:block mt-2 text-xs sm:text-sm leading-relaxed text-[#FAF6EE]/85">
-                  Conventional crowns amputate 70% of healthy tooth structure.
-                  Our Swiss biomimetic laboratory bonds 0.2mm platinum-foil
-                  porcelain veils directly to intact enamel at 51.5 MPa.
+                <p className="scene-compact-hide hidden sm:block mt-3 text-sm sm:text-base leading-relaxed text-[#FAF6EE]/85 max-w-md">
+                  We preserve your natural teeth with contact-lens thin 0.2mm
+                  porcelain veils, clear aligners, and calm single-patient
+                  suites in Beverly Hills.
                 </p>
               </div>
 
-              {/* Mobile Compact Act Switcher */}
-              <div
-                className="mt-2.5 flex lg:hidden items-center gap-1"
-                role="tablist"
-                aria-label="Hero Sequence Acts Mobile"
-              >
+              {/* Minimal Single-Card Chapter Switcher */}
+              <div className="mt-4 lg:mt-6 rounded-2xl border border-white/15 bg-black/20 p-4 sm:p-5">
                 {scene.acts.map((act, idx) => (
-                  <button
+                  <div
                     key={act.id}
-                    type="button"
-                    role="tab"
-                    data-hero-mob-pill={String(idx)}
-                    aria-selected={idx === 0}
-                    onClick={() => handleManualActClick(idx as 0 | 1 | 2)}
-                    className={
-                      idx === 0
-                        ? "flex-1 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] bg-[#C6A46C] text-[#120E0D] cursor-pointer"
-                        : "flex-1 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] bg-black/25 text-[#FAF6EE]/80 cursor-pointer"
-                    }
+                    data-hero-act-panel={String(idx)}
+                    className={idx === 0 ? "" : "hidden"}
                   >
-                    Act 0{idx + 1}
-                  </button>
+                    <div className="flex items-baseline justify-between gap-2">
+                      <h2 className="font-serif text-lg sm:text-xl text-[#FAF6EE]">
+                        {act.title}
+                      </h2>
+                      <span className="shrink-0 font-serif text-lg text-[#C6A46C]">
+                        {act.metricValue}{" "}
+                        <span className="font-sans text-[11px] text-[#FAF6EE]/70">
+                          {act.metricLabel}
+                        </span>
+                      </span>
+                    </div>
+                    <p className="mt-1 text-xs sm:text-sm leading-relaxed text-[#FAF6EE]/80">
+                      {act.subtitle}
+                    </p>
+                  </div>
                 ))}
-              </div>
 
-              {/* Vertical Swiss Hairline Act Ledger */}
-              <div
-                className="mt-2.5 lg:mt-3 space-y-1.5"
-                role="tablist"
-                aria-label="Hero Sequence Acts"
-              >
-                {scene.acts.map((act, idx) => {
-                  const isActive = idx === 0;
-                  return (
+                <div
+                  className="mt-3.5 flex items-center gap-1.5"
+                  role="tablist"
+                  aria-label="Restorative Chapters"
+                >
+                  {scene.acts.map((act, idx) => (
                     <button
                       key={act.id}
                       type="button"
                       role="tab"
-                      data-hero-act-row={String(idx)}
-                      aria-selected={isActive}
+                      data-hero-act-pill={String(idx)}
+                      aria-selected={idx === 0}
                       onClick={() => handleManualActClick(idx as 0 | 1 | 2)}
-                      className={isActive ? ACTIVE_ACT_ROW : INACTIVE_ACT_ROW}
+                      className={
+                        idx === 0
+                          ? "flex-1 rounded-full py-1.5 px-3 text-[11px] font-semibold tracking-wider uppercase transition-all cursor-pointer bg-[#C6A46C] text-[#140B0A] shadow-sm"
+                          : "flex-1 rounded-full py-1.5 px-3 text-[11px] font-medium tracking-wider uppercase transition-all cursor-pointer bg-white/10 text-[#FAF6EE]/80 hover:bg-white/20"
+                      }
                     >
-                      <div className="flex items-baseline justify-between gap-2">
-                        <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-[#C6A46C]">
-                          {act.badge}
-                        </span>
-                        <span className="font-serif text-sm sm:text-base text-[#FAF6EE]">
-                          {act.metricValue}{" "}
-                          <span className="font-sans text-[10px] text-[#FAF6EE]/70">
-                            {act.metricLabel}
-                          </span>
-                        </span>
-                      </div>
-                      <div className="mt-0.5 font-serif text-sm sm:text-base xl:text-lg text-[#FAF6EE]">
-                        {act.title}
-                      </div>
-                      <p
-                        data-hero-act-sub
-                        className={`${
-                          isActive ? "" : "hidden"
-                        } mt-0.5 text-xs leading-relaxed text-[#FAF6EE]/80 line-clamp-2`}
-                      >
-                        {act.subtitle}
-                      </p>
+                      {act.tabLabel}
                     </button>
-                  );
-                })}
-              </div>
+                  ))}
+                </div>
 
-              {/* Bottom Progress Rail & Dual Actions */}
-              <div className="mt-3 pt-2.5 border-t border-white/15">
-                <div className="mb-2.5 h-1 w-full overflow-hidden bg-black/30">
+                <div className="mt-3 h-1 w-full overflow-hidden rounded-full bg-white/15">
                   <div
                     ref={progressBarRef}
-                    className="h-full w-full origin-left bg-[#C6A46C] will-change-transform"
+                    className="h-full w-full origin-left rounded-full bg-[#C6A46C] will-change-transform"
                     style={{ transform: "scaleX(0.05)" }}
                   />
                 </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => smoothScrollTo("#services")}
-                    className="inline-flex h-9 sm:h-10 items-center gap-1.5 bg-[#FAF6EE] px-3.5 sm:px-4.5 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.12em] text-[#120E0D] hover:bg-[#C6A46C] transition-colors cursor-pointer whitespace-nowrap"
-                  >
-                    <span>Protocol Matrix</span>
-                    <ArrowUpRightIcon className="w-3.5 h-3.5" />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => smoothScrollTo("#booking")}
-                    className="inline-flex h-9 sm:h-10 items-center border border-[#C6A46C]/60 bg-black/20 px-3.5 sm:px-4 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.12em] text-[#FAF6EE] hover:bg-white/10 transition-colors cursor-pointer whitespace-nowrap"
-                  >
-                    Commission Dossier
-                  </button>
-                </div>
+              </div>
+
+              {/* Clean CTA Row */}
+              <div className="mt-4 lg:mt-5 flex items-center gap-3">
+                <MagneticButton
+                  type="button"
+                  onClick={() => smoothScrollTo("#services")}
+                  className="inline-flex h-11 items-center gap-2 rounded-full bg-[#FAF6EE] px-5 text-xs font-semibold uppercase tracking-[0.12em] text-[#140B0A] hover:bg-[#C6A46C] transition-colors cursor-pointer whitespace-nowrap shadow-md"
+                >
+                  <span>Explore Treatments</span>
+                  <ArrowUpRightIcon className="w-3.5 h-3.5" />
+                </MagneticButton>
+                <MagneticButton
+                  type="button"
+                  onClick={() => smoothScrollTo("#booking")}
+                  className="inline-flex h-11 items-center rounded-full border border-white/35 bg-white/5 px-5 text-xs font-semibold uppercase tracking-[0.12em] text-[#FAF6EE] hover:bg-white/15 transition-colors cursor-pointer whitespace-nowrap"
+                >
+                  Book a Visit
+                </MagneticButton>
               </div>
             </div>
 
-            {/* Right Column (7 Cols): Seamless Burgundy-Crimson 16:9 Studio Aperture */}
-            <div className="lg:col-span-7 order-1 lg:order-2 flex flex-col items-center justify-center">
-              <div className="relative w-full max-w-[540px] lg:max-w-[880px] aspect-[16/9] max-h-[26svh] sm:max-h-[36svh] lg:max-h-[calc(100vh-120px)]">
+            {/* Right Column (7 Cols): Seamless 16:9 Burgundy-Crimson Studio Stage */}
+            <div className="lg:col-span-7 order-1 lg:order-2 flex items-center justify-center">
+              <div className="relative w-full max-w-[540px] lg:max-w-[880px] aspect-[16/9] max-h-[28svh] sm:max-h-[38svh] lg:max-h-[calc(100vh-116px)]">
                 <ScrollSequenceStage
                   scene={scene}
                   eager={true}
@@ -252,21 +234,20 @@ export function HeroSceneSection() {
         </div>
       </div>
 
-      {/* Architectural Hairline Specification Strip on Warm Travertine (#DFD3C3) */}
-      <div className="border-t border-b border-[#C8B9A6] bg-[#DFD3C3] text-[#181210]">
-        <div className="mx-auto max-w-[1440px] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-[#C8B9A6]">
-          {MONOGRAPH_SPECS.map((sp) => (
-            <div key={sp.code} className="px-6 py-7 lg:py-8">
-              <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#7A5928]">
-                {sp.code}
+      {/* Calm 4-Pillar Strip on Warm Travertine (#DFD3C3) */}
+      <div className="border-b border-[#C8B9A6] bg-[#DFD3C3] text-[#181210]">
+        <div className="mx-auto max-w-[1440px] px-5 sm:px-8 lg:px-12 py-10 grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-10">
+          {PILLARS.map((p) => (
+            <div key={p.title}>
+              <div className="font-serif text-3xl sm:text-4xl text-[#4B1917]">
+                {p.metric}
               </div>
-              <div className="mt-2 font-serif text-3xl sm:text-4xl text-[#4B1917]">
-                {sp.metric}
+              <div className="mt-1 text-sm sm:text-base font-semibold text-[#181210]">
+                {p.title}
               </div>
-              <div className="mt-1 text-sm font-semibold uppercase tracking-[0.08em] text-[#181210]">
-                {sp.title}
-              </div>
-              <p className="mt-0.5 text-xs text-[#544A40]">{sp.note}</p>
+              <p className="mt-0.5 text-xs sm:text-sm text-[#544A40]">
+                {p.note}
+              </p>
             </div>
           ))}
         </div>

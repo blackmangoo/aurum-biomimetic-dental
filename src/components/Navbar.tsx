@@ -3,22 +3,22 @@
 import React, { useState, useEffect, useRef } from "react";
 import { smoothScrollTo } from "@/lib/scrollBus";
 import { ArrowUpRightIcon } from "@/components/icons/DentalIcons";
+import { MagneticButton } from "@/components/ui/MagneticButton";
 
-const MONOGRAPH_CHAPTERS = [
-  { code: "01", label: "Monograph", href: "#hero-stage" },
-  { code: "02", label: "Matrix", href: "#services" },
-  { code: "03", label: "Bio-Implant", href: "#craftsmanship" },
-  { code: "04", label: "OCT Scan", href: "#technology" },
-  { code: "05", label: "Dossiers", href: "#transformations" },
-  { code: "06", label: "Longevity", href: "#longevity-sanctuary" },
-  { code: "07", label: "FAQ", href: "#faq" },
+const NAV_LINKS = [
+  { label: "Atelier", href: "#hero-stage" },
+  { label: "Treatments", href: "#services" },
+  { label: "Implants", href: "#craftsmanship" },
+  { label: "3D Scan", href: "#technology" },
+  { label: "Results", href: "#transformations" },
+  { label: "Sanctuary", href: "#longevity-sanctuary" },
+  { label: "FAQ", href: "#faq" },
 ] as const;
 
 export function Navbar() {
   const headerRef = useRef<HTMLElement | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  // Zero-React-re-render scroll state via data-scrolled (opaque surface, zero backdrop-blur)
   useEffect(() => {
     let lastState = false;
     const onScroll = () => {
@@ -51,63 +51,70 @@ export function Navbar() {
     <header
       ref={headerRef}
       data-scrolled="false"
-      className="fixed top-0 left-0 right-0 z-50 bg-[#3B1311]/95 text-[#FAF6EE] border-b border-[#C6A46C]/25 transition-colors duration-200 data-[scrolled=true]:bg-[#0E0C08] data-[scrolled=true]:border-[#C6A46C]/30 data-[scrolled=true]:shadow-xl"
+      className="fixed top-0 left-0 right-0 z-50 bg-transparent text-[#FAF6EE] transition-colors duration-300 data-[scrolled=true]:bg-[#140B0A] data-[scrolled=true]:border-b data-[scrolled=true]:border-white/10 data-[scrolled=true]:shadow-xl"
     >
-      <div className="mx-auto flex h-16 lg:h-[68px] max-w-[1440px] items-center justify-between gap-2 sm:gap-4 px-4 sm:px-8 lg:px-8 xl:px-12">
-        {/* Left: Swiss Monograph Brand Index */}
+      <div className="mx-auto flex h-16 lg:h-[68px] max-w-[1440px] items-center justify-between gap-3 px-4 sm:px-8 lg:px-10 xl:px-12">
+        {/* Clean Sculptural Wordmark */}
         <button
           type="button"
           onClick={() => handleNavClick("#hero-stage")}
-          className="group flex shrink-0 items-center gap-2.5 text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C6A46C] cursor-pointer"
-          aria-label="KRONOS Aurum Biomimetic Atelier — Return to top"
+          className="group flex shrink-0 items-center gap-3 text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C6A46C] cursor-pointer"
+          aria-label="Aurum Atelier — Return to top"
         >
-          <span className="flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center border border-[#C6A46C]/60 bg-[#181210] text-[10px] sm:text-[11px] font-semibold tracking-[0.18em] text-[#C6A46C]">
-            KR
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#C6A46C]/60 bg-[#2A100F] text-[#C6A46C] transition-transform duration-300 group-hover:scale-105">
+            <svg viewBox="0 0 28 28" fill="none" className="h-4.5 w-4.5" aria-hidden="true">
+              <path
+                d="M9.5 10C9.5 7.4 11.4 6 13 6.6L14 7L15 6.6C16.6 6 18.5 7.4 18.5 10C18.5 13.4 16.8 19.8 15.3 19.8C14.6 19.8 14.3 17.2 14 17.2C13.7 17.2 13.4 19.8 12.7 19.8C11.2 19.8 9.5 13.4 9.5 10Z"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
+            </svg>
           </span>
           <span className="flex flex-col">
-            <span className="font-serif text-sm sm:text-base xl:text-lg tracking-[0.14em] uppercase text-[#FAF6EE] leading-none whitespace-nowrap">
-              KRONOS <span className="text-[#C6A46C]">//</span> AURUM
+            <span className="font-serif text-lg sm:text-xl tracking-wide text-[#FAF6EE] leading-none whitespace-nowrap">
+              Aurum Atelier
             </span>
-            <span className="hidden 2xl:block mt-1 text-[9px] font-medium uppercase tracking-[0.2em] text-[#C6A46C]/90 whitespace-nowrap">
-              GENEVA · BEVERLY HILLS BIOMIMETIC LAB
+            <span className="hidden xl:block mt-1 text-[10px] font-medium uppercase tracking-[0.18em] text-[#C6A46C] whitespace-nowrap">
+              Beverly Hills · Biomimetic Dentistry
             </span>
           </span>
         </button>
 
-        {/* Center: Numbered Swiss Architectural Index Bar */}
+        {/* Clean Unnumbered Navigation */}
         <nav
           aria-label="Primary Navigation"
-          className="hidden lg:flex items-center divide-x divide-white/10 rounded-full border border-white/15 bg-black/25 px-1.5 py-1"
+          className="hidden lg:flex items-center gap-5 xl:gap-7"
         >
-          {MONOGRAPH_CHAPTERS.map((item) => (
+          {NAV_LINKS.map((item) => (
             <button
               key={item.href}
               type="button"
               onClick={() => handleNavClick(item.href)}
-              className="px-2.5 2xl:px-3 py-1 text-[10px] 2xl:text-[11px] font-medium uppercase tracking-[0.1em] 2xl:tracking-[0.12em] text-[#FAF6EE]/85 hover:text-[#C6A46C] transition-colors cursor-pointer whitespace-nowrap"
+              className="py-1.5 text-xs font-medium uppercase tracking-[0.13em] text-[#FAF6EE]/85 hover:text-[#C6A46C] transition-colors cursor-pointer whitespace-nowrap"
             >
-              <span className="hidden 2xl:inline text-[#C6A46C] mr-1">{item.code}</span>
-              <span>{item.label}</span>
+              {item.label}
             </button>
           ))}
         </nav>
 
-        {/* Right: Coordinates & Commission Trigger */}
-        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-          <div className="hidden 2xl:flex flex-col text-right text-[10px] tracking-[0.14em] uppercase text-[#FAF6EE]/75 whitespace-nowrap">
-            <span>436 N BEDFORD · PH 500</span>
-            <span className="text-[#C6A46C]">(310) 555-0148</span>
-          </div>
+        {/* Right CTA */}
+        <div className="flex shrink-0 items-center gap-2.5 sm:gap-3">
+          <a
+            href="tel:+13105550148"
+            className="hidden 2xl:inline-flex items-center text-xs font-medium tracking-[0.08em] text-[#FAF6EE]/80 hover:text-white px-2 py-1.5 whitespace-nowrap"
+          >
+            (310) 555-0148
+          </a>
 
-          <button
+          <MagneticButton
             type="button"
             onClick={() => handleNavClick("#booking")}
-            className="inline-flex h-9 sm:h-10 items-center gap-1.5 border border-[#C6A46C] bg-[#C6A46C] px-3 sm:px-4 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.12em] sm:tracking-[0.14em] text-[#120E0D] hover:bg-[#FAF6EE] transition-colors cursor-pointer whitespace-nowrap"
+            className="inline-flex h-10 items-center gap-1.5 rounded-full bg-[#C6A46C] px-4 sm:px-5 text-[11px] font-semibold uppercase tracking-[0.13em] text-[#140B0A] hover:bg-[#FAF6EE] transition-colors cursor-pointer whitespace-nowrap shadow-md"
           >
-            <span className="sm:hidden">Reserve</span>
-            <span className="hidden sm:inline">Commission Dossier</span>
-            <ArrowUpRightIcon className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-          </button>
+            <span>Book a Visit</span>
+            <ArrowUpRightIcon className="w-3.5 h-3.5" />
+          </MagneticButton>
 
           <button
             type="button"
@@ -115,9 +122,21 @@ export function Navbar() {
             aria-expanded={mobileOpen}
             aria-controls="mobile-nav-drawer"
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
-            className="inline-flex lg:hidden h-10 w-10 shrink-0 items-center justify-center border border-[#C6A46C]/50 bg-black/30 text-[#FAF6EE]"
+            className="inline-flex lg:hidden h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/25 bg-black/25 text-[#FAF6EE]"
           >
-            <span className="text-xs font-mono">{mobileOpen ? "✕" : "≡"}</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" className="w-5 h-5">
+              {mobileOpen ? (
+                <>
+                  <path d="M6 6L18 18" />
+                  <path d="M18 6L6 18" />
+                </>
+              ) : (
+                <>
+                  <path d="M4 8H20" />
+                  <path d="M4 16H16" />
+                </>
+              )}
+            </svg>
           </button>
         </div>
       </div>
@@ -128,36 +147,33 @@ export function Navbar() {
           id="mobile-nav-drawer"
           role="dialog"
           aria-label="Mobile Navigation"
-          className="lg:hidden border-b border-[#C6A46C]/30 bg-[#0E0C08] px-6 py-6 text-[#FAF6EE] shadow-2xl"
+          className="lg:hidden border-b border-white/15 bg-[#140B0A] px-6 py-6 text-[#FAF6EE] shadow-2xl"
         >
-          <div className="grid grid-cols-1 gap-1.5">
-            {MONOGRAPH_CHAPTERS.map((item) => (
+          <div className="flex flex-col gap-1.5">
+            {NAV_LINKS.map((item) => (
               <button
                 key={item.href}
                 type="button"
                 onClick={() => handleNavClick(item.href)}
-                className="flex h-11 items-center justify-between border-b border-white/10 px-2 text-left text-sm uppercase tracking-[0.14em] text-[#FAF6EE] hover:text-[#C6A46C]"
+                className="flex h-11 items-center justify-between rounded-xl px-3 text-left text-base font-medium text-[#FAF6EE] hover:bg-white/10"
               >
-                <span>
-                  <strong className="text-[#C6A46C] mr-2">{item.code}</strong>
-                  {item.label}
-                </span>
+                <span>{item.label}</span>
                 <ArrowUpRightIcon className="w-4 h-4 text-[#C6A46C]" />
               </button>
             ))}
-            <div className="mt-4 pt-3 flex flex-col sm:flex-row gap-3">
+            <div className="mt-4 pt-4 border-t border-white/15 flex flex-col sm:flex-row gap-3">
               <a
                 href="tel:+13105550148"
-                className="flex h-11 items-center justify-center border border-white/25 px-4 text-xs uppercase tracking-[0.15em] text-[#FAF6EE]"
+                className="flex h-11 items-center justify-center rounded-full border border-white/25 px-5 text-sm font-medium text-[#FAF6EE]"
               >
-                Call Lab · (310) 555-0148
+                (310) 555-0148
               </a>
               <button
                 type="button"
                 onClick={() => handleNavClick("#booking")}
-                className="flex h-11 items-center justify-center gap-2 bg-[#C6A46C] px-6 text-xs font-semibold uppercase tracking-[0.15em] text-[#120E0D]"
+                className="flex h-11 items-center justify-center gap-2 rounded-full bg-[#C6A46C] px-6 text-sm font-semibold text-[#140B0A]"
               >
-                <span>Commission Dossier</span>
+                <span>Book a Visit</span>
                 <ArrowUpRightIcon className="w-4 h-4" />
               </button>
             </div>

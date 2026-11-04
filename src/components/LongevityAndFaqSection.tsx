@@ -1,30 +1,35 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 import { FAQ_ITEMS } from "@/data/clinicData";
 import { smoothScrollTo } from "@/lib/scrollBus";
 import { ArrowUpRightIcon } from "@/components/icons/DentalIcons";
+import { MagneticButton } from "@/components/ui/MagneticButton";
 import type { ServiceId } from "@/lib/bookingSchema";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 interface LongevityAndFaqSectionProps {
   onSelectServiceForBooking: (serviceId: ServiceId) => void;
 }
 
-const LONGEVITY_PILLARS = [
+const SANCTUARY_FEATURES = [
   {
-    code: "01 // MILLISECOND OCCLUSION",
-    title: "Digital T-Scan 0.01s Bite Calibration",
-    body: "Ultrathin electronic pressure sensors balance left and right molar contact timing to 0.01 seconds, preventing micro-fractures, migraines, and porcelain overload.",
+    title: "Warm Buffered Numbing",
+    body: "pH-neutral anesthetic warmed to body temperature so you never feel a pinch.",
   },
   {
-    code: "02 // NEURO-ACOUSTIC ISOLATION",
-    title: "Binaural Alpha-Wave & Zero-Pinch Suites",
-    body: "Acoustically floated penthouse suites with warm pH-buffered computer-controlled wand anesthesia, binaural soundscapes, and MD anesthesiologist twilight options.",
+    title: "Acoustic Private Suites",
+    body: "Noise-canceling audio, cashmere throws, and one-patient-at-a-time calm.",
   },
   {
-    code: "03 // BIOCOMPATIBILITY AUDIT",
-    title: "100% Metal-Free & Monomer-Pure Materials",
-    body: "We test salivary pH, galvanic currents, and airway volume — ensuring every Swiss ceramic and adhesive supports long-term systemic and immune health.",
+    title: "Upfront Written Pricing",
+    body: "We verify your PPO benefits in advance and hand you a clear summary before care begins.",
   },
 ] as const;
 
@@ -32,66 +37,85 @@ export function LongevityAndFaqSection({
   onSelectServiceForBooking,
 }: LongevityAndFaqSectionProps) {
   const [openFaqIdx, setOpenFaqIdx] = useState<number | null>(0);
+  const sectionRef = useRef<HTMLDivElement | null>(null);
+
+  useGSAP(
+    () => {
+      if (!sectionRef.current) return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      const cards =
+        sectionRef.current.querySelectorAll<HTMLElement>("[data-sanc-card]");
+      gsap.fromTo(
+        cards,
+        { y: 30, opacity: 0 },
+        {
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 82%",
+            once: true,
+          },
+          y: 0,
+          opacity: 1,
+          duration: 0.75,
+          stagger: 0.12,
+          ease: "power3.out",
+        }
+      );
+    },
+    { scope: sectionRef }
+  );
 
   return (
-    <>
-      {/* 1. Oral Longevity & TMJ Engineering Section on Deep Burgundy-Crimson (#4B1917) */}
+    <div ref={sectionRef}>
+      {/* 1. Calm Sanctuary Band on Deep Burgundy-Crimson (#4B1917) */}
       <section
         id="longevity-sanctuary"
         aria-labelledby="longevity-heading"
-        className="bg-[#4B1917] text-[#FAF6EE] py-24 sm:py-28 border-b border-[#C6A46C]/30"
+        className="bg-[#4B1917] text-[#FAF6EE] py-24 sm:py-28"
       >
         <div className="mx-auto max-w-[1440px] px-5 sm:px-8 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             <div className="lg:col-span-5">
-              <span className="inline-block border border-[#C6A46C]/50 bg-black/20 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#C6A46C] mb-4">
-                SECTION 06 // ORAL LONGEVITY &amp; TMJ SANCTUARY
+              <span className="inline-block text-xs font-medium uppercase tracking-[0.2em] text-[#C6A46C] mb-2">
+                Unhurried Comfort
               </span>
               <h2
                 id="longevity-heading"
-                className="font-serif text-3xl sm:text-5xl font-normal uppercase tracking-tight text-[#FAF6EE] leading-[1.04]"
+                className="font-serif text-3xl sm:text-5xl font-normal tracking-tight text-[#FAF6EE] leading-[1.06]"
               >
-                Built For Eighty Years
-                <br />
-                <span className="italic font-normal text-[#C6A46C]">
-                  Of Effortless Bite.
-                </span>
+                Designed for nervous patients.
               </h2>
-              <p className="mt-4 text-sm sm:text-base leading-relaxed text-[#FAF6EE]/85">
-                True prosthodontic luxury is a restoration you never have to
-                replace. By harmonizing TMJ condylar position, nasal airway
-                volume, and biomimetic dentin elasticity, we engineer smiles to
-                last for decades.
+              <p className="mt-3 text-base leading-relaxed text-[#FAF6EE]/80">
+                No crowded waiting rooms, no rushed appointments, and no
+                surprise bills — just quiet, attentive care at your pace.
               </p>
 
-              <div className="mt-7 flex flex-wrap items-center gap-3">
-                <button
+              <div className="mt-7">
+                <MagneticButton
                   type="button"
                   onClick={() => {
                     onSelectServiceForBooking("tmj-neuromuscular");
                     smoothScrollTo("#booking");
                   }}
-                  className="inline-flex h-11 items-center gap-2 bg-[#C6A46C] px-6 text-xs font-semibold uppercase tracking-[0.15em] text-[#120E0D] hover:bg-[#FAF6EE] transition-colors cursor-pointer"
+                  className="inline-flex h-11 items-center gap-2 rounded-full bg-[#C6A46C] px-6 text-xs font-semibold uppercase tracking-[0.13em] text-[#140B0A] hover:bg-[#FAF6EE] transition-colors cursor-pointer shadow-md"
                 >
-                  <span>Commission T-Scan Bite Audit</span>
+                  <span>Reserve a Calm Visit</span>
                   <ArrowUpRightIcon className="w-4 h-4" />
-                </button>
+                </MagneticButton>
               </div>
             </div>
 
-            <div className="lg:col-span-7 grid grid-cols-1 gap-4">
-              {LONGEVITY_PILLARS.map((item) => (
+            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
+              {SANCTUARY_FEATURES.map((item) => (
                 <div
-                  key={item.code}
-                  className="border border-[#C6A46C]/30 bg-black/25 p-6"
+                  key={item.title}
+                  data-sanc-card
+                  className="rounded-3xl border border-white/15 bg-black/20 p-6 flex flex-col justify-between"
                 >
-                  <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#C6A46C]">
-                    {item.code}
-                  </div>
-                  <h3 className="mt-1 font-serif text-2xl text-[#FAF6EE]">
+                  <h3 className="font-serif text-2xl text-[#C6A46C]">
                     {item.title}
                   </h3>
-                  <p className="mt-1.5 text-sm leading-relaxed text-[#FAF6EE]/80">
+                  <p className="mt-3 text-sm leading-relaxed text-[#FAF6EE]/85">
                     {item.body}
                   </p>
                 </div>
@@ -101,30 +125,30 @@ export function LongevityAndFaqSection({
         </div>
       </section>
 
-      {/* 2. FAQ & Transparent Written Dossier Guarantee on Warm Alabaster (#FAF6EE) */}
+      {/* 2. Concise FAQ Accordion on Warm Alabaster (#FAF6EE) */}
       <section
         id="faq"
         aria-labelledby="faq-heading"
-        className="bg-[#FAF6EE] text-[#181210] py-24 sm:py-32"
+        className="bg-[#FAF6EE] text-[#181210] py-24 sm:py-28"
       >
         <div className="mx-auto max-w-[1440px] px-5 sm:px-8 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
             <div className="lg:col-span-4">
-              <span className="inline-block text-[11px] font-semibold uppercase tracking-[0.2em] text-[#6E1B2B] mb-2">
-                SECTION 07 // TECHNICAL INQUIRIES
+              <span className="inline-block text-xs font-semibold uppercase tracking-[0.18em] text-[#4B1917] mb-2">
+                Common Questions
               </span>
               <h2
                 id="faq-heading"
-                className="font-serif text-3xl sm:text-4xl font-normal uppercase text-[#181210]"
+                className="font-serif text-3xl sm:text-4xl font-normal text-[#181210]"
               >
-                Architectural Transparency.
+                Clear answers before you visit.
               </h2>
-              <p className="mt-3 text-sm sm:text-base text-[#5C5349]">
-                For direct fly-in coordination or clinical record transfers,
-                contact our Beverly Hills penthouse desk at{" "}
+              <p className="mt-3 text-base text-[#544A40]">
+                Prefer to speak with us directly? Call our Beverly Hills studio
+                at{" "}
                 <a
                   href="tel:+13105550148"
-                  className="font-semibold text-[#6E1B2B] underline"
+                  className="font-semibold text-[#4B1917] underline"
                 >
                   (310) 555-0148
                 </a>
@@ -132,7 +156,7 @@ export function LongevityAndFaqSection({
               </p>
             </div>
 
-            <div className="lg:col-span-8 divide-y divide-[#D8CFC0] border border-[#D8CFC0] bg-[#EDE6DA]/45 px-6 sm:px-8">
+            <div className="lg:col-span-8 divide-y divide-[#D8CFC0] rounded-3xl border border-[#D8CFC0] bg-[#DFD3C3]/35 px-6 sm:px-8">
               {FAQ_ITEMS.map((item, idx) => {
                 const isOpen = openFaqIdx === idx;
                 const panelId = `faq-panel-${idx}`;
@@ -148,13 +172,13 @@ export function LongevityAndFaqSection({
                         onClick={() =>
                           setOpenFaqIdx((prev) => (prev === idx ? null : idx))
                         }
-                        className="flex w-full items-center justify-between gap-4 text-left font-serif text-lg sm:text-xl font-normal text-[#181210] hover:text-[#6E1B2B] cursor-pointer py-1"
+                        className="flex w-full items-center justify-between gap-4 text-left font-serif text-lg sm:text-xl font-normal text-[#181210] hover:text-[#4B1917] cursor-pointer py-1"
                       >
                         <span>{item.question}</span>
                         <span
-                          className={`flex h-8 w-8 shrink-0 items-center justify-center border border-[#D8CFC0] text-sm transition-transform duration-200 ${
+                          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#D8CFC0] text-sm transition-transform duration-200 ${
                             isOpen
-                              ? "rotate-45 bg-[#6E1B2B] text-[#FAF6EE]"
+                              ? "rotate-45 bg-[#4B1917] text-[#FAF6EE]"
                               : "bg-[#FAF6EE] text-[#181210]"
                           }`}
                           aria-hidden="true"
@@ -168,7 +192,7 @@ export function LongevityAndFaqSection({
                         id={panelId}
                         role="region"
                         aria-labelledby={btnId}
-                        className="mt-3 pr-8 text-sm sm:text-[15px] leading-relaxed text-[#5C5349]"
+                        className="mt-2.5 pr-8 text-sm sm:text-base leading-relaxed text-[#544A40]"
                       >
                         {item.answer}
                       </div>
@@ -180,6 +204,6 @@ export function LongevityAndFaqSection({
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }

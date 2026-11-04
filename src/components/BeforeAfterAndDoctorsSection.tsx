@@ -1,77 +1,129 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 import { TRANSFORMATION_CASES, DOCTORS } from "@/data/clinicData";
 import { smoothScrollTo } from "@/lib/scrollBus";
 import { ArrowUpRightIcon } from "@/components/icons/DentalIcons";
 
-const SHADE_SWATCHES = [
-  {
-    code: "OM1",
-    name: "Zurich Refractory Pearl",
-    bg: "linear-gradient(135deg, #FFFFFF 0%, #F4F7FA 55%, #E4EEF2 100%)",
-    halo: "Blue-Amber Opalescent Incisal Halo",
-    reflectance: "94% Specular Gloss · 0.2mm Foil",
-  },
-  {
-    code: "B1",
-    name: "Natural Biomimetic Ivory",
-    bg: "linear-gradient(135deg, #FAF8F2 0%, #F2ECE1 60%, #E5DCCB 100%)",
-    halo: "Warm Hydroxyapatite Subsurface",
-    reflectance: "91% Specular Gloss · 0.2mm Foil",
-  },
-  {
-    code: "A1",
-    name: "European Warm Enamel",
-    bg: "linear-gradient(135deg, #F7F2E7 0%, #EBE1CE 60%, #DDD0B8 100%)",
-    halo: "Organic Mamelon Translucency",
-    reflectance: "88% Specular Gloss · 0.3mm Foil",
-  },
-] as const;
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 export function BeforeAfterAndDoctorsSection() {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const compWrapRef = useRef<HTMLDivElement | null>(null);
+  const docsWrapRef = useRef<HTMLDivElement | null>(null);
+  const stageRef = useRef<HTMLDivElement | null>(null);
+  const draggingRef = useRef(false);
+
   const [selectedCaseIdx, setSelectedCaseIdx] = useState(0);
-  const [selectedShadeIdx, setSelectedShadeIdx] = useState(0);
-  const [teethCount, setTeethCount] = useState<8 | 10 | 20>(10);
   const [sliderPct, setSliderPct] = useState<number>(52);
 
   const activeCase = TRANSFORMATION_CASES[selectedCaseIdx];
-  const activeShade = SHADE_SWATCHES[selectedShadeIdx];
+
+  useGSAP(
+    () => {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      if (compWrapRef.current) {
+        gsap.from(compWrapRef.current.children, {
+          scrollTrigger: {
+            trigger: compWrapRef.current,
+            start: "top 82%",
+            once: true,
+          },
+          y: 36,
+          opacity: 0,
+          duration: 0.85,
+          stagger: 0.14,
+          ease: "power3.out",
+        });
+      }
+
+      if (docsWrapRef.current) {
+        const cards =
+          docsWrapRef.current.querySelectorAll<HTMLElement>("[data-doc-card]");
+        gsap.fromTo(
+          cards,
+          { y: 36, opacity: 0 },
+          {
+            scrollTrigger: {
+              trigger: docsWrapRef.current,
+              start: "top 85%",
+              once: true,
+            },
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            stagger: 0.12,
+            ease: "power3.out",
+          }
+        );
+      }
+    },
+    { scope: sectionRef }
+  );
+
+  const updateFromClientX = (clientX: number) => {
+    const el = stageRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    if (rect.width <= 0) return;
+    const raw = ((clientX - rect.left) / rect.width) * 100;
+    setSliderPct(Math.max(5, Math.min(95, Math.round(raw))));
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      setSliderPct((v) => Math.max(5, v - 5));
+    } else if (e.key === "ArrowRight") {
+      e.preventDefault();
+      setSliderPct((v) => Math.min(95, v + 5));
+    }
+  };
 
   return (
     <section
+      ref={sectionRef}
       id="transformations"
       aria-labelledby="transformations-heading"
-      className="bg-[#EDE6DA] text-[#181210] py-24 sm:py-32 border-t border-b border-[#D8CFC0]"
+      className="bg-[#FAF6EE] text-[#181210] py-24 sm:py-32"
     >
       <div className="mx-auto max-w-[1440px] px-5 sm:px-8 lg:px-12">
-        {/* Part 1: Swiss Case Dossiers + Interactive Shade & Veneer Planner */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-          {/* Left Column: Clinical Case Dossier Ledger */}
-          <div className="lg:col-span-6">
-            <span className="inline-block text-[11px] font-semibold uppercase tracking-[0.22em] text-[#6E1B2B] mb-2">
-              SECTION 05 // ARCHIVAL CLINICAL DOSSIERS
+        {/* Part 1: Interactive Drag-Curtain Before/After Comparator */}
+        <div
+          ref={compWrapRef}
+          className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center"
+        >
+          <div className="lg:col-span-5">
+            <span className="inline-block text-xs font-semibold uppercase tracking-[0.18em] text-[#4B1917] mb-2">
+              Restorative Outcomes
             </span>
             <h2
               id="transformations-heading"
-              className="font-serif text-3xl sm:text-5xl font-normal uppercase tracking-tight text-[#181210] leading-[1.05]"
+              className="font-serif text-3xl sm:text-5xl font-normal tracking-tight text-[#181210] leading-[1.06]"
             >
-              Documented Conservation.
+              Natural translucency.
               <br />
-              <span className="italic font-normal text-[#6E1B2B]">
-                Zero Stump Grinding.
+              <span className="italic text-[#4B1917]">
+                Never opaque chalk.
               </span>
             </h2>
-            <p className="mt-3 text-sm sm:text-base leading-relaxed text-[#5C5349]">
-              Inspect our archival case dossiers and configure your target VITA
-              ceramic shade and tooth count in the interactive laboratory
-              planner.
+            <p className="mt-3 text-base leading-relaxed text-[#544A40]">
+              Drag the optical curtain to see how clear aligner arch expansion
+              and 0.2mm porcelain veils restore symmetry and natural pearl
+              opalescence.
             </p>
 
+            {/* Clean Case Selector Pills */}
             <div
-              className="mt-8 border border-[#D8CFC0] divide-y divide-[#D8CFC0] bg-[#FAF6EE]"
+              className="mt-6 space-y-2.5"
               role="tablist"
-              aria-label="Clinical Dossiers"
+              aria-label="Restorative Cases"
             >
               {TRANSFORMATION_CASES.map((c, idx) => {
                 const isSelected = selectedCaseIdx === idx;
@@ -82,57 +134,33 @@ export function BeforeAfterAndDoctorsSection() {
                     role="tab"
                     aria-selected={isSelected}
                     onClick={() => setSelectedCaseIdx(idx)}
-                    className={`w-full text-left p-5 sm:p-6 transition-colors cursor-pointer ${
+                    className={`w-full text-left rounded-2xl p-4 border transition-all cursor-pointer ${
                       isSelected
-                        ? "bg-[#6E1B2B] text-[#FAF6EE]"
-                        : "bg-[#FAF6EE] text-[#181210] hover:bg-[#EDE6DA]"
+                        ? "bg-[#4B1917] border-[#4B1917] text-[#FAF6EE] shadow-lg"
+                        : "bg-[#DFD3C3]/45 border-[#D8CFC0] text-[#181210] hover:bg-[#DFD3C3]/80"
                     }`}
                   >
-                    <div className="flex items-center justify-between text-[10px] font-semibold uppercase tracking-[0.18em]">
+                    <div className="flex items-center justify-between text-xs font-medium">
                       <span
                         className={
-                          isSelected ? "text-[#C6A46C]" : "text-[#8C6B37]"
+                          isSelected ? "text-[#C6A46C]" : "text-[#4B1917]"
                         }
                       >
-                        {c.code} · {c.category}
+                        {c.category}
                       </span>
                       <span
                         className={
-                          isSelected ? "text-[#FAF6EE]" : "text-[#6E1B2B]"
+                          isSelected ? "text-[#FAF6EE]/80" : "text-[#544A40]"
                         }
                       >
-                        {c.enamelSaved} ENAMEL SAVED
+                        {c.duration}
                       </span>
                     </div>
-                    <div className="mt-1.5 font-serif text-xl sm:text-2xl">
-                      {c.title}
-                    </div>
-                    <p
-                      className={`mt-1.5 text-xs sm:text-sm leading-relaxed ${
-                        isSelected ? "text-[#FAF6EE]/85" : "text-[#5C5349]"
-                      }`}
-                    >
-                      {c.summary}
-                    </p>
+                    <div className="mt-1 font-serif text-xl">{c.title}</div>
                     {isSelected && (
-                      <div className="mt-4 pt-3 border-t border-white/15 grid grid-cols-2 gap-4 text-xs">
-                        <div>
-                          <span className="block text-[9px] uppercase tracking-wider text-[#C6A46C]">
-                            Initial State ({c.beforeShade})
-                          </span>
-                          <span className="text-[#FAF6EE]/90">
-                            {c.beforeDetails}
-                          </span>
-                        </div>
-                        <div>
-                          <span className="block text-[9px] uppercase tracking-wider text-[#C6A46C]">
-                            Completed ({c.afterShade})
-                          </span>
-                          <span className="text-[#FAF6EE]/90">
-                            {c.afterDetails}
-                          </span>
-                        </div>
-                      </div>
+                      <p className="mt-1 text-xs sm:text-sm text-[#FAF6EE]/85">
+                        {c.summary}
+                      </p>
                     )}
                   </button>
                 );
@@ -140,30 +168,33 @@ export function BeforeAfterAndDoctorsSection() {
             </div>
           </div>
 
-          {/* Right Column: Interactive Real-Frame Before/After Optical Slider + Zurich Ceramic Planner */}
-          <div className="lg:col-span-6 border border-[#D8CFC0] bg-[#FAF6EE] p-7 sm:p-10">
-            <div className="flex items-center justify-between pb-4 border-b border-[#D8CFC0]">
-              <div>
-                <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#8C6B37]">
-                  ZURICH CERAMIC CALIBRATOR
-                </span>
-                <h3 className="font-serif text-2xl text-[#181210]">
-                  Optical Comparator &amp; Arch Planner
-                </h3>
-              </div>
-              <span className="border border-[#4B1917]/30 px-3 py-1 text-[10px] font-mono font-semibold text-[#4B1917]">
-                {activeCase.code}
-              </span>
-            </div>
-
-            {/* Interactive Real-Frame Before/After Optical Comparator */}
-            <div className="mt-5">
-              <div className="relative aspect-[16/9] w-full overflow-hidden border border-[#D8CFC0] bg-[#0E0C08] select-none">
+          {/* Right Column: Interactive Pointer-Capture Drag Curtain */}
+          <div className="lg:col-span-7">
+            <div className="rounded-[28px] border border-[#D8CFC0] bg-[#DFD3C3]/55 p-4 sm:p-6 shadow-xl">
+              <div
+                ref={stageRef}
+                onPointerDown={(e) => {
+                  draggingRef.current = true;
+                  e.currentTarget.setPointerCapture(e.pointerId);
+                  updateFromClientX(e.clientX);
+                }}
+                onPointerMove={(e) => {
+                  if (!draggingRef.current) return;
+                  updateFromClientX(e.clientX);
+                }}
+                onPointerUp={() => {
+                  draggingRef.current = false;
+                }}
+                onPointerCancel={() => {
+                  draggingRef.current = false;
+                }}
+                className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl bg-[#0E0C08] select-none cursor-ew-resize touch-none"
+              >
                 <img
                   src="/frames/scene-03-scan-whitening/desktop/frame_0180.webp"
-                  alt={`Completed Biomimetic Outcome — ${activeCase.afterShade}`}
+                  alt={`After — ${activeCase.afterShade}`}
                   className="pointer-events-none absolute inset-0 h-full w-full object-cover"
-                  loading="lazy"
+                  draggable={false}
                 />
                 <div
                   className="pointer-events-none absolute inset-0 overflow-hidden"
@@ -171,242 +202,108 @@ export function BeforeAfterAndDoctorsSection() {
                 >
                   <img
                     src="/frames/scene-03-scan-whitening/desktop/frame_0055.webp"
-                    alt={`Pre-Restoration Scan — ${activeCase.beforeShade}`}
+                    alt={`Before — ${activeCase.beforeShade}`}
                     className="block h-full w-full object-cover"
-                    loading="lazy"
+                    draggable={false}
                   />
                 </div>
-                <div className="pointer-events-none absolute top-3 left-3 bg-[#0E0C08]/90 border border-white/15 px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider text-[#FAF6EE]">
-                  BEFORE · {activeCase.beforeShade}
+
+                <div className="pointer-events-none absolute top-4 left-4 rounded-full bg-[#0E0C08]/85 border border-white/15 px-3.5 py-1 text-xs font-medium text-[#FAF6EE]">
+                  {activeCase.beforeShade}
                 </div>
-                <div className="pointer-events-none absolute top-3 right-3 bg-[#4B1917]/95 border border-[#C6A46C]/45 px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider text-[#FAF6EE]">
-                  AFTER · {activeCase.afterShade}
+                <div className="pointer-events-none absolute top-4 right-4 rounded-full bg-[#4B1917]/95 border border-[#C6A46C]/45 px-3.5 py-1 text-xs font-medium text-[#FAF6EE]">
+                  {activeCase.afterShade}
                 </div>
+
+                {/* Draggable Handle */}
                 <div
                   style={{ left: `${sliderPct}%` }}
-                  className="pointer-events-none absolute top-0 bottom-0 -translate-x-1/2 w-0.5 bg-[#C6A46C]"
-                />
-              </div>
-              <div className="mt-2.5 flex items-center gap-3">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-[#5C5349]">
-                  OPTICAL SWEEP
-                </span>
-                <input
-                  type="range"
-                  min={5}
-                  max={95}
-                  value={sliderPct}
-                  onChange={(e) => setSliderPct(Number(e.target.value))}
-                  aria-label="Before and after optical comparison slider"
-                  className="w-full accent-[#4B1917] cursor-pointer h-1.5 bg-[#D8CFC0]"
-                />
-                <span className="text-[10px] font-mono text-[#4B1917] w-9 text-right">
-                  {sliderPct}%
-                </span>
-              </div>
-            </div>
-
-            {/* 1. Optical Ceramic Swatch Selector */}
-            <div className="mt-6">
-              <label className="block text-[10px] font-semibold uppercase tracking-[0.18em] text-[#8C6B37] mb-3">
-                01 // Select Refractory Porcelain Shade &amp; Opalescence
-              </label>
-              <div className="grid grid-cols-3 gap-3">
-                {SHADE_SWATCHES.map((sw, idx) => {
-                  const active = selectedShadeIdx === idx;
-                  return (
-                    <button
-                      key={sw.code}
-                      type="button"
-                      onClick={() => setSelectedShadeIdx(idx)}
-                      className={`p-3.5 text-left border transition-all cursor-pointer ${
-                        active
-                          ? "border-[#6E1B2B] bg-[#EDE6DA] shadow-sm"
-                          : "border-[#D8CFC0] bg-[#FAF6EE] hover:bg-[#EDE6DA]/50"
-                      }`}
+                  className="absolute top-0 bottom-0 -translate-x-1/2 w-0.5 bg-[#C6A46C]"
+                >
+                  <div
+                    role="slider"
+                    tabIndex={0}
+                    aria-label="Before and after smile comparison slider"
+                    aria-valuemin={5}
+                    aria-valuemax={95}
+                    aria-valuenow={sliderPct}
+                    onKeyDown={handleKeyDown}
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex h-11 w-11 items-center justify-center rounded-full border-2 border-[#C6A46C] bg-[#140B0A] text-[#FAF6EE] shadow-xl"
+                  >
+                    <svg
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="w-4.5 h-4.5"
                     >
-                      <div
-                        className="h-10 w-full border border-[#D8CFC0] mb-2.5"
-                        style={{ background: sw.bg }}
-                      />
-                      <div className="font-serif text-lg font-semibold text-[#181210]">
-                        VITA {sw.code}
-                      </div>
-                      <div className="text-[11px] text-[#5C5349] truncate">
-                        {sw.name}
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* 2. Smile Arch Scope Selector */}
-            <div className="mt-6">
-              <label className="block text-[10px] font-semibold uppercase tracking-[0.18em] text-[#8C6B37] mb-3">
-                02 // Select Smile Corridor Restoration Scope
-              </label>
-              <div className="grid grid-cols-3 gap-3">
-                {(
-                  [
-                    [8, "8 Anterior Units", "Central to 1st Premolar"],
-                    [10, "10-Unit Broad Arc", "Full Buccal Smile Corridor"],
-                    [20, "20-Unit Full Rehab", "Upper & Lower Occlusal Arc"],
-                  ] as const
-                ).map(([count, title, sub]) => {
-                  const active = teethCount === count;
-                  return (
-                    <button
-                      key={count}
-                      type="button"
-                      onClick={() => setTeethCount(count)}
-                      className={`p-3.5 text-left border transition-all cursor-pointer ${
-                        active
-                          ? "border-[#6E1B2B] bg-[#6E1B2B] text-[#FAF6EE]"
-                          : "border-[#D8CFC0] bg-[#FAF6EE] text-[#181210] hover:bg-[#EDE6DA]"
-                      }`}
-                    >
-                      <div className="font-serif text-xl">{title}</div>
-                      <div
-                        className={`text-[10px] mt-0.5 ${
-                          active ? "text-[#C6A46C]" : "text-[#5C5349]"
-                        }`}
-                      >
-                        {sub}
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* 3. Live Calculated Biomimetic Dossier Readout */}
-            <div className="mt-6 border border-[#D8CFC0] bg-[#120E0D] p-5 text-[#FAF6EE]">
-              <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-[0.18em] text-[#C6A46C] pb-3 border-b border-white/10">
-                <span>COMPUTED LABORATORY SPECIFICATION</span>
-                <span>{teethCount} REFRACTORY UNITS</span>
-              </div>
-              <div className="mt-3 grid grid-cols-2 gap-4 text-xs">
-                <div>
-                  <span className="block text-[10px] uppercase text-[#FAF6EE]/60">
-                    Optical Profile
-                  </span>
-                  <span className="font-serif text-base text-[#FAF6EE]">
-                    VITA {activeShade.code} · {activeShade.halo}
-                  </span>
-                </div>
-                <div>
-                  <span className="block text-[10px] uppercase text-[#FAF6EE]/60">
-                    Completion Itinerary
-                  </span>
-                  <span className="font-serif text-base text-[#C6A46C]">
-                    2 Visits · {teethCount === 20 ? "14 Days" : "10 Days"} Total
-                  </span>
-                </div>
-                <div>
-                  <span className="block text-[10px] uppercase text-[#FAF6EE]/60">
-                    Surface Physics
-                  </span>
-                  <span className="text-[#FAF6EE]/90">
-                    {activeShade.reflectance}
-                  </span>
-                </div>
-                <div>
-                  <span className="block text-[10px] uppercase text-[#FAF6EE]/60">
-                    Enamel Preservation
-                  </span>
-                  <span className="text-[#5CE6C4] font-semibold">
-                    96.4% Intact · 0 Root Canals
-                  </span>
+                      <path d="M7 6L3 10L7 14" />
+                      <path d="M13 6L17 10L13 14" />
+                    </svg>
+                  </div>
                 </div>
               </div>
-            </div>
-
-            <div className="mt-6 flex items-center justify-between">
-              <span className="text-xs text-[#5C5349]">
-                Includes 3D reversible Trial Smile before final bonding
-              </span>
-              <button
-                type="button"
-                onClick={() => smoothScrollTo("#booking")}
-                className="inline-flex h-11 items-center gap-2 bg-[#6E1B2B] px-6 text-xs font-semibold uppercase tracking-[0.14em] text-[#FAF6EE] hover:bg-[#181210] transition-colors cursor-pointer"
-              >
-                <span>Lock Specification</span>
-                <ArrowUpRightIcon className="w-3.5 h-3.5" />
-              </button>
             </div>
           </div>
         </div>
 
-        {/* Part 2: Horizontal Editorial Magazine-Spread Faculty Dossiers */}
+        {/* Part 2: Clean, Human Doctor Cards with Hover Lift */}
         <div className="mt-24 pt-20 border-t border-[#D8CFC0]">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
             <div>
-              <span className="inline-block text-[11px] font-semibold uppercase tracking-[0.22em] text-[#6E1B2B] mb-2">
-                CLINICAL FACULTY // ZURICH · GENEVA · BEVERLY HILLS
+              <span className="inline-block text-xs font-semibold uppercase tracking-[0.18em] text-[#4B1917] mb-2">
+                The Doctors
               </span>
-              <h2 className="font-serif text-3xl sm:text-5xl font-normal uppercase tracking-tight text-[#181210]">
-                Architects of Living Enamel.
+              <h2 className="font-serif text-3xl sm:text-5xl font-normal tracking-tight text-[#181210]">
+                Specialists who listen first.
               </h2>
             </div>
-            <p className="max-w-md text-sm text-[#5C5349]">
-              Each patient is treated personally by our founding Swiss- and
-              Ivy-trained prosthodontists in a single-patient penthouse suite.
+            <p className="max-w-md text-base text-[#544A40]">
+              Zurich, Geneva, and Harvard-trained clinicians dedicated to calm,
+              one-on-one care in Beverly Hills.
             </p>
           </div>
 
-          <div className="divide-y divide-[#D8CFC0] border border-[#D8CFC0] bg-[#FAF6EE]">
+          <div
+            ref={docsWrapRef}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-7"
+          >
             {DOCTORS.map((doc) => (
               <article
                 key={doc.id}
-                className="p-7 sm:p-10 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center"
+                data-doc-card
+                className="group rounded-3xl border border-[#D8CFC0] bg-[#DFD3C3]/40 p-7 flex flex-col justify-between hover:bg-[#DFD3C3]/75 hover:-translate-y-1.5 transition-all duration-300 shadow-sm"
               >
-                <div className="lg:col-span-4 flex items-start gap-5">
-                  <div className="flex h-16 w-16 shrink-0 items-center justify-center border border-[#C6A46C] bg-[#6E1B2B] font-serif text-2xl text-[#FAF6EE]">
-                    {doc.monogram}
-                  </div>
-                  <div>
-                    <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#8C6B37]">
-                      {doc.code}
+                <div>
+                  <div className="flex items-center justify-between gap-4 mb-5">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#4B1917] font-serif text-xl text-[#FAF6EE] border border-[#C6A46C]/45">
+                      {doc.monogram}
+                    </div>
+                    <span className="rounded-full bg-[#FAF6EE] px-3.5 py-1 text-xs font-medium text-[#4B1917]">
+                      {doc.role}
                     </span>
-                    <h3 className="mt-1 font-serif text-2xl text-[#181210]">
-                      {doc.name}
-                    </h3>
-                    <p className="text-xs font-semibold uppercase tracking-wider text-[#6E1B2B] mt-0.5">
-                      {doc.credentials}
-                    </p>
-                    <p className="text-xs text-[#5C5349] mt-1">
-                      {doc.education}
-                    </p>
                   </div>
-                </div>
 
-                <div className="lg:col-span-5">
-                  <blockquote className="border-l-2 border-[#6E1B2B] pl-4 font-serif text-lg italic text-[#181210] leading-relaxed">
+                  <h3 className="font-serif text-2xl text-[#181210]">
+                    {doc.name}
+                  </h3>
+                  <p className="mt-1 text-xs text-[#544A40]">{doc.education}</p>
+
+                  <blockquote className="mt-4 border-l-2 border-[#4B1917] pl-4 font-serif text-base italic text-[#181210]/90 leading-relaxed">
                     “{doc.quote}”
                   </blockquote>
                 </div>
 
-                <div className="lg:col-span-3 flex flex-col lg:items-end justify-between gap-3">
-                  <div className="flex flex-wrap lg:justify-end gap-1.5">
-                    {doc.specialties.map((sp) => (
-                      <span
-                        key={sp}
-                        className="border border-[#D8CFC0] bg-[#EDE6DA] px-2.5 py-1 text-[11px] font-medium text-[#181210]"
-                      >
-                        {sp}
-                      </span>
-                    ))}
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => smoothScrollTo("#booking")}
-                    className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-[#6E1B2B] hover:text-[#181210] cursor-pointer"
-                  >
-                    <span>Request Dossier with {doc.name.split(",")[0]}</span>
-                    <ArrowUpRightIcon className="w-3.5 h-3.5" />
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  onClick={() => smoothScrollTo("#booking")}
+                  className="mt-6 pt-4 border-t border-[#C8B9A6] inline-flex items-center justify-between text-xs font-semibold uppercase tracking-[0.12em] text-[#4B1917] hover:text-[#181210] cursor-pointer"
+                >
+                  <span>Book with {doc.name.split(",")[0]}</span>
+                  <ArrowUpRightIcon className="w-3.5 h-3.5" />
+                </button>
               </article>
             ))}
           </div>
