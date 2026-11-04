@@ -490,14 +490,24 @@ export function BookingAndFooterSection({
         className="bg-[#0E0C08] text-[#FAF6EE] py-14 sm:py-16 border-t border-white/10"
       >
         <div className="mx-auto max-w-[1440px] px-5 sm:px-8 lg:px-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-          <div>
-            <div className="font-serif text-2xl text-[#FAF6EE]">
-              Aurum Atelier
+          <div className="flex items-center gap-3.5">
+            <img
+              src="/brand/logo-emblem.webp"
+              alt="Aurum Atelier Medallion"
+              width={48}
+              height={48}
+              loading="lazy"
+              className="h-12 w-12 shrink-0 rounded-full object-cover shadow-md"
+            />
+            <div>
+              <div className="font-serif text-2xl text-[#FAF6EE]">
+                Aurum Atelier
+              </div>
+              <p className="mt-0.5 text-xs text-[#FAF6EE]/65">
+                436 N Bedford Dr, Penthouse 500 · Beverly Hills, CA 90210 · (310)
+                555-0148
+              </p>
             </div>
-            <p className="mt-1 text-xs text-[#FAF6EE]/65">
-              436 N Bedford Dr, Penthouse 500 · Beverly Hills, CA 90210 · (310)
-              555-0148
-            </p>
           </div>
 
           <a

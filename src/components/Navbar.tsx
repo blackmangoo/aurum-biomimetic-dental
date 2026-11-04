@@ -60,23 +60,20 @@ export function Navbar() {
       className="fixed top-0 left-0 right-0 z-50 text-[#FAF6EE] transition-colors duration-300"
     >
       <div className="mx-auto flex h-16 lg:h-[68px] max-w-[1440px] items-center justify-between gap-3 px-4 sm:px-8 lg:px-10 xl:px-12">
-        {/* Clean Sculptural Wordmark */}
+        {/* Brand Wordmark with Real Sculpted Marble & 24k Gold Medallion */}
         <button
           type="button"
           onClick={() => handleNavClick("#hero-stage")}
           className="group flex shrink-0 items-center gap-3 text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C6A46C] cursor-pointer"
           aria-label="Aurum Atelier — Return to top"
         >
-          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#C6A46C]/60 bg-[#2A100F] text-[#C6A46C] transition-transform duration-300 group-hover:scale-105">
-            <svg viewBox="0 0 28 28" fill="none" className="h-4.5 w-4.5" aria-hidden="true">
-              <path
-                d="M9.5 10C9.5 7.4 11.4 6 13 6.6L14 7L15 6.6C16.6 6 18.5 7.4 18.5 10C18.5 13.4 16.8 19.8 15.3 19.8C14.6 19.8 14.3 17.2 14 17.2C13.7 17.2 13.4 19.8 12.7 19.8C11.2 19.8 9.5 13.4 9.5 10Z"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
-            </svg>
-          </span>
+          <img
+            src="/brand/logo-emblem.webp"
+            alt="Aurum Atelier Medallion"
+            width={40}
+            height={40}
+            className="h-9 w-9 sm:h-10 sm:w-10 shrink-0 rounded-full object-cover shadow-md transition-transform duration-300 group-hover:scale-105"
+          />
           <span className="flex flex-col">
             <span className="font-serif text-lg sm:text-xl tracking-wide text-[#FAF6EE] leading-none whitespace-nowrap">
               Aurum Atelier

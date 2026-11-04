@@ -414,7 +414,7 @@ export interface DoctorProfile {
   role: string;
   education: string;
   quote: string;
-  monogram: string;
+  portraitUrl: string;
 }
 
 export const DOCTORS: DoctorProfile[] = [
@@ -425,7 +425,7 @@ export const DOCTORS: DoctorProfile[] = [
     education: "University of Zurich · Harvard Dental Medicine",
     quote:
       "When we respect how nature built living enamel, restorations feel and age just like your own teeth.",
-    monogram: "JS",
+    portraitUrl: "/doctors/dr-sorensen.webp",
   },
   {
     id: "dr-valmont",
@@ -434,7 +434,7 @@ export const DOCTORS: DoctorProfile[] = [
     education: "University of Geneva · UCLA Implant Fellowship",
     quote:
       "Warm gold and pure ceramic keep the gumline healthy, calm, and naturally luminous for life.",
-    monogram: "CV",
+    portraitUrl: "/doctors/dr-valmont.webp",
   },
   {
     id: "dr-kuroda",
@@ -443,7 +443,7 @@ export const DOCTORS: DoctorProfile[] = [
     education: "UCSF Dentistry · Stanford Airway Fellowship",
     quote:
       "A balanced bite and an unhurried appointment turn dental care into true restoration.",
-    monogram: "KK",
+    portraitUrl: "/doctors/dr-kuroda.webp",
   },
 ];
 

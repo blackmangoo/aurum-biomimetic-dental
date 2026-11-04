@@ -293,12 +293,6 @@ export function ElegantCalendarPicker({
               }`}
             >
               <span>{cell.day}</span>
-              {!cell.isSelected && (
-                <span
-                  className="absolute bottom-1 h-1 w-1 rounded-full bg-[#14473E]/40"
-                  aria-hidden="true"
-                />
-              )}
             </button>
           );
         })}

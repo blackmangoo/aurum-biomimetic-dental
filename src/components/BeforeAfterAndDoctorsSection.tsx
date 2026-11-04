@@ -154,8 +154,7 @@ export function BeforeAfterAndDoctorsSection() {
           className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center"
         >
           <div className="lg:col-span-5">
-            <span className="inline-flex items-center gap-2 rounded-full bg-[#F7E3DF] px-3.5 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-[#7A2825] mb-3">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#7A2825]" />
+            <span className="inline-flex items-center rounded-full bg-[#F7E3DF] px-3.5 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-[#7A2825] mb-3">
               <span>Restorative Outcomes</span>
             </span>
             <h2
@@ -305,12 +304,11 @@ export function BeforeAfterAndDoctorsSection() {
           </div>
         </div>
 
-        {/* Part 2: Multi-Tonal Doctor Cards */}
+        {/* Part 2: Multi-Tonal Doctor Cards with Real Studio Photography */}
         <div className="mt-24 pt-20 border-t border-[#E6DEC8]">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
             <div>
-              <span className="inline-flex items-center gap-2 rounded-full bg-[#E3ECF7] px-3.5 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-[#1E3F66] mb-3">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#1E3F66]" />
+              <span className="inline-flex items-center rounded-full bg-[#E3ECF7] px-3.5 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-[#1E3F66] mb-3">
                 <span>The Doctors</span>
               </span>
               <h2 className="font-serif text-3xl sm:text-5xl font-normal tracking-tight text-[#181210]">
@@ -336,17 +334,19 @@ export function BeforeAfterAndDoctorsSection() {
                 <article
                   key={doc.id}
                   data-doc-card
-                  className={`group rounded-3xl border ${theme.cardBorder} ${theme.cardBg} p-7 flex flex-col justify-between hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300`}
+                  className={`group rounded-3xl border ${theme.cardBorder} ${theme.cardBg} p-6 sm:p-7 flex flex-col justify-between hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300`}
                 >
                   <div>
-                    <div className="flex items-center justify-between gap-4 mb-5">
-                      <div
-                        className={`flex h-14 w-14 items-center justify-center rounded-2xl ${theme.monogramBg} font-serif italic text-xl text-[#FAF6EE] shadow-md`}
-                      >
-                        {doc.monogram}
-                      </div>
+                    {/* Real Studio Portrait Photograph */}
+                    <div className="relative aspect-[4/4.6] w-full overflow-hidden rounded-2xl mb-5 bg-[#EAE2D3] shadow-md">
+                      <img
+                        src={doc.portraitUrl}
+                        alt={doc.name}
+                        loading="lazy"
+                        className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                      />
                       <span
-                        className={`rounded-full ${theme.roleBg} px-3.5 py-1 text-xs font-semibold ${theme.roleText}`}
+                        className={`absolute bottom-3 left-3 rounded-full ${theme.roleBg} px-3.5 py-1 text-xs font-semibold ${theme.roleText} shadow-sm`}
                       >
                         {doc.role}
                       </span>
@@ -371,7 +371,9 @@ export function BeforeAfterAndDoctorsSection() {
                     onClick={() => smoothScrollTo("#booking")}
                     className={`mt-6 pt-4 border-t border-black/10 inline-flex items-center justify-between text-xs font-semibold uppercase tracking-[0.12em] ${theme.roleText} hover:text-[#181210] cursor-pointer`}
                   >
-                    <span>Book with {doc.name.split(" ").slice(0, 2).join(" ")}</span>
+                    <span>
+                      Book with {doc.name.split(" ").slice(0, 2).join(" ")}
+                    </span>
                     <ArrowUpRightIcon className="w-3.5 h-3.5" />
                   </button>
                 </article>

@@ -92,8 +92,7 @@ export function LongevityAndFaqSection({
         <div className="mx-auto max-w-[1440px] px-5 sm:px-8 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             <div className="lg:col-span-5">
-              <span className="inline-flex items-center gap-2 rounded-full bg-white/10 border border-[#5CE6C4]/35 px-3.5 py-1 text-xs font-medium uppercase tracking-[0.18em] text-[#5CE6C4] mb-3">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#5CE6C4]" />
+              <span className="inline-flex items-center rounded-full bg-white/10 border border-[#5CE6C4]/35 px-3.5 py-1 text-xs font-medium uppercase tracking-[0.18em] text-[#5CE6C4] mb-3">
                 <span>Unhurried Comfort</span>
               </span>
               <h2
@@ -161,8 +160,7 @@ export function LongevityAndFaqSection({
         <div className="mx-auto max-w-[1440px] px-5 sm:px-8 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
             <div className="lg:col-span-4">
-              <span className="inline-flex items-center gap-2 rounded-full bg-[#F9EED8] px-3.5 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-[#9A6B26] mb-3">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#9A6B26]" />
+              <span className="inline-flex items-center rounded-full bg-[#F9EED8] px-3.5 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-[#9A6B26] mb-3">
                 <span>Common Questions</span>
               </span>
               <h2

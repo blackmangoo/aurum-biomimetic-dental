@@ -217,8 +217,7 @@ export function ServicesBentoSection({
           className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-14"
         >
           <div>
-            <span className="inline-flex items-center gap-2 rounded-full bg-[#DFF0EC] px-3.5 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-[#164239] mb-3">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#164239]" />
+            <span className="inline-flex items-center rounded-full bg-[#DFF0EC] px-3.5 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-[#164239] mb-3">
               <span>Restorative Specialties</span>
             </span>
             <h2

@@ -137,8 +137,7 @@ export function HeroSceneSection() {
               className="lg:col-span-5 order-2 lg:order-1 flex flex-col justify-between"
             >
               <div>
-                <div className="inline-flex items-center gap-2 rounded-full border border-[#E59888]/35 bg-[#7A2825]/45 px-3.5 py-1 text-[11px] font-medium uppercase tracking-[0.2em] text-[#F2C98A] mb-3">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#5CE6C4]" />
+                <div className="inline-flex items-center rounded-full border border-[#E59888]/35 bg-[#7A2825]/45 px-3.5 py-1 text-[11px] font-medium uppercase tracking-[0.2em] text-[#F2C98A] mb-3">
                   <span>{scene.eyebrow}</span>
                 </div>
 
@@ -260,9 +259,8 @@ export function HeroSceneSection() {
             >
               <div className="flex items-center justify-between mb-2">
                 <span
-                  className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-semibold ${p.badgeBg} ${p.badgeText}`}
+                  className={`inline-flex items-center rounded-full px-3 py-1 text-[11px] font-semibold ${p.badgeBg} ${p.badgeText}`}
                 >
-                  <span className={`h-1.5 w-1.5 rounded-full ${p.dotColor}`} />
                   <span>{p.title}</span>
                 </span>
               </div>
